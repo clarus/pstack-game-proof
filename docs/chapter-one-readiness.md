@@ -6,7 +6,7 @@ Implementation and seven-lantern update: 2 November 2026. Scope: all seven Proof
 
 D01 introduces an assumption and reuses it; D02 unpacks AND; D03 builds AND; D04 rearranges conjunctions; D05 chooses an OR conclusion; D06 handles both OR cases and applies implications; D07 combines these rules. Each includes story, lesson, two-stage hints, move labels/tactics, feedback, live ordered goals and hypotheses, undo/restart, and a proof-script view. Legal unhelpful choices remain unfinished and offer undo.
 
-Seven distinct environments, Pip, room-specific completed states and posters are code-drawn. Seven original room scores share a recurring motif, with gentle music transitions; effects remain synthesized. Each completed proof lights its room’s lantern, and the full Workshop ending requires all seven. Wider compact cards retain a portrait miniature of the room and Pip beside the proof. At widths up to 400px and heights up to 500px, each room begins with an arrival scene, then Start proof opens the full-width proof workspace. View room / Continue proof preserves state, and Next room introduces the next scene. Both layouts have larger proof/action text, a More menu for secondary tools, and a direct expand link carrying progress. See [the seven-lantern story and art/audio specification](art-and-audio.md). The game is usable silently. Progress is replay-validated, local to each edition, and transferable by bounded code or the full-game resume link. Branch tabs inspect other obligations; moves always act on the first goal. All rooms can be opened directly without unlocks. The chapter ending points to the menu and marks future chapters coming soon.
+Seven distinct environments, Pip, room-specific completed states and posters are code-drawn. Seven original scores remain authored, but the game now uses only the Storeroom/D02 soundtrack continuously across all rooms and editions; effects remain synthesized. Each completed proof lights its room’s lantern, and the full Workshop ending requires all seven. Wider compact cards retain a portrait miniature of the room and Pip beside the proof. At widths up to 400px and heights up to 500px, each room begins with an arrival scene, then Start proof opens the full-width proof workspace. View room / Continue proof preserves state, and Next room introduces the next scene. Both layouts have larger proof/action text, a More menu for secondary tools, and a direct expand link carrying progress. See [the seven-lantern story and art/audio specification](art-and-audio.md). The game is usable silently. Progress is replay-validated, local to each edition, and transferable by bounded code or the full-game resume link. Branch tabs inspect other obligations; moves always act on the first goal. All rooms can be opened directly without unlocks. The chapter ending points to the menu and marks future chapters coming soon.
 
 ## Local evidence
 
@@ -19,7 +19,7 @@ Seven distinct environments, Pip, room-specific completed states and posters are
 | pstack skill exercise | Actual shipped D01/n1 goal changed from A to B; CLI failed with state mismatch. File restored and full verification passed |
 | Browser suite | 90 checks passed after the compact-card redesign across Chromium/Firefox/WebKit; zero skipped/flaky cases. No physical-device or X-client result is inferred |
 | Accessibility | Automated axe WCAG A/AA-tagged checks for initial room, branching states, menu/glossary, desktop and compact layouts; keyboard/reduced-motion paths tested. This is not a full accessibility audit |
-| Sound | User activation/mute, unavailable-device timeout, offline signal headroom and note lifecycle, scheduler stop/resume, seven distinct complete offline score renders, and rapid room-change retirement tested |
+| Sound | User activation/mute, unavailable-device timeout, offline signal headroom and note lifecycle, scheduler stop/resume, seven distinct complete offline score renders, and continuous playback across room navigation tested |
 | Visual review | Seven-scene arrival/restored contact sheets plus desktop, mobile, and 320×245 screenshots inspected; proof context stays visible with internal scrolling |
 | Dependency audit | npm reported zero vulnerabilities for the pinned installed dependency set during implementation |
 | Skills/provenance | Local skill frontmatter validated; upstream pstack SHA-256 manifest unchanged |
@@ -32,21 +32,23 @@ Browser evidence was collected on this Linux workstation with Playwright 1.56.1:
 
 Bugs found and fixed included Rocq tactics that automatically introduce assumptions, context-order mismatch after destruct, stale DOM clicks advancing a replacement state, a missing absolute Vite content-watch path, unavailable audio leaving activation pending, and low-contrast proof labels. The fault and browser cases retain regression coverage for these boundaries.
 
-The CI audio repair was checked locally by reproducing both Firefox failures with an unreachable audio server, then running with an isolated PulseAudio virtual output. All 81 browser checks passed in 229 seconds with zero skipped/flaky cases; that was the CI-audio repair run; the latest report now covers the compact redesign. A final focused run of both Firefox regressions and the unavailable-audio fallback passed with wrapper exit status 0 and the temporary server directory removed. Workflow YAML and shell syntax also passed local validation. Hosted confirmation remains pending.
+The CI audio repair was checked locally by reproducing both Firefox failures with an unreachable audio server, then running with an isolated PulseAudio virtual output. All 81 browser checks passed in 229 seconds with zero skipped/flaky cases; that was the CI-audio repair run; the latest report now covers the continuous-soundtrack checks. A final focused run of both Firefox regressions and the unavailable-audio fallback passed with wrapper exit status 0 and the temporary server directory removed. Workflow YAML and shell syntax also passed local validation. Hosted confirmation remains pending.
 
 ## Compact redesign validation
 
-The 2 November X screenshot exposed tiny labels and missing scenery. The redesign was inspected at its approximate 518×292 size and at 320×245. Wider cards now show seven distinct portrait miniatures; small cards alternate panoramic arrivals and full-width proof play. The room/proof switch and Next-room arrivals preserve proof history. All 90 checks passed across Chromium, Firefox and WebKit, with zero skipped/flaky cases, including every room at both sizes, readable font/visible-pane bounds, completion/undo, scene/proof switching, menus, expansion with progress transfer, resize, and accessibility of the arrival and proof views. `npm run check` also passed. The source content hash is unchanged.
+The 2 November X screenshot exposed tiny labels and missing scenery. The redesign was inspected at its approximate 518×292 size and at 320×245. Wider cards now show seven distinct portrait miniatures; small cards alternate panoramic arrivals and full-width proof play. The room/proof switch and Next-room arrivals preserve proof history. All 90 checks passed across Chromium, Firefox and WebKit, with zero skipped/flaky cases, including every room at both sizes, readable font/visible-pane bounds, completion/undo, scene/proof switching, menus, expansion with progress transfer, resize, and accessibility of the arrival and proof views. `npm run check` also passed. The source content hash is unchanged. A later spacing refinement removes only the idle prompt in narrow cards, recovering 32px for the proof while preserving hints and move feedback; this was measured at 320×245, with the wider-card prompt also checked.
 
 Visual review artifacts from this change are `artifacts/compact-518.png`, `compact-320-arrival.png`, `compact-320.png`, and `compact-rooms.png` (all seven miniatures before/after completion). They are local review evidence; the revised layout still needs to be deployed and checked in the actual X post.
+
+The idle-prompt change passed the full 90-check browser suite (`artifacts/browser-prompt-results.json`). After selecting the fixed D02 soundtrack and removing room-based music switching, `npm run check` passed again and all 27 audio/journey checks passed across Chromium, Firefox and WebKit (`artifacts/browser-results.json`). The navigation test observes the real game's audio instance: score, music bus, scheduler start count and musical step remain continuous, and navigation while muted leaves voices stopped.
 
 ## Built editions
 
 | Profile | Rooms | Gzip upper bound |
 | --- | --- | --- |
-| `chapter` | D01–D07 | 22,978 bytes (22.4 KiB) |
-| `preview` | D01–D06 | 22,242 bytes (21.7 KiB) |
-| `embed-test` | D01 only | 20,555 bytes (20.1 KiB) |
+| `chapter` | D01–D07 | 22,799 bytes (22.3 KiB) |
+| `preview` | D01–D06 | 22,130 bytes (21.6 KiB) |
+| `embed-test` | D01 only | 20,438 bytes (20.0 KiB) |
 
 Each total includes one HTML entry, all CSS and JavaScript (including content, graphics and audio code), the poster, and `.nojekyll`. The duplicate embed/share HTML is excluded from the first-page total. This conservative gzip sum includes the poster even though the running game does not fetch it; it excludes HTTP/TLS overhead. It is a build measurement, not a phone-network benchmark. All profiles pass the 150 KiB ceiling. Profile-specific browser checks load the actual static files under a subdirectory, verify initial-HTML Player Card metadata, complete D01, check room counts, and reject later-room content in smaller editions.
 
@@ -57,7 +59,7 @@ Review artifacts (untracked, reproducible with `npm run review` and the dev serv
 - `artifacts/dungeon-desktop.png`, `dungeon-mobile.png`, `dungeon-compact.png`.
 - `artifacts/dungeon-walkthrough.webm`.
 - `artifacts/rooms-arrival.png` and `rooms-restored.png`: all seven environments.
-- `artifacts/music/D01.wav` through `D07.wav`: complete score previews with one-second tails. At default volume, peaks range from 0.0279 to 0.0438; detailed RMS/duration data is in `artifacts/audio-review.json`. `dungeon-audio.wav` is the entrance preview. These are not shipped assets or human listening results.
+- `artifacts/music/D01.wav` through `D07.wav`: complete score previews with one-second tails. At default volume, peaks range from 0.0279 to 0.0438; detailed RMS/duration data is in `artifacts/audio-review.json`. `dungeon-audio.wav` is the selected Storeroom soundtrack preview when regenerated. These are not shipped assets or human listening results.
 - `artifacts/rocq-coverage.json`, `audio-review.json`, and browser logs.
 
 ## Remaining test and release gates

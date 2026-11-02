@@ -1187,6 +1187,12 @@ dd {
   main {
     grid-template-columns: minmax(0, 1fr);
   }
+  .shell[data-stage="proof"] main:has(> .feedback.idle) {
+    grid-template-rows: minmax(78px, 1fr) auto 28px;
+  }
+  .feedback.idle {
+    display: none;
+  }
   .scene {
     display: none;
   }

@@ -8,7 +8,7 @@ const levels: Level[] = JSON.parse(
   ),
 );
 
-test("each room has a distinct scene, identity and matching score selection", async ({
+test("each room has a distinct scene and keeps the Storeroom score", async ({
   page,
 }) => {
   test.setTimeout(60000);
@@ -18,7 +18,7 @@ test("each room has a distinct scene, identity and matching score selection", as
     await page.goto(`/#room=${level.id}`);
     await expect(page.locator(".shell")).toHaveAttribute(
       "data-score-id",
-      level.id,
+      "D02",
     );
     names.add(await page.locator(".scene-label").innerText());
     scenes.add(

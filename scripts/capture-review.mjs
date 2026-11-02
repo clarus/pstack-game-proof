@@ -81,7 +81,7 @@ try {
       );
     });
     writeFileSync(`artifacts/music/${id}.wav`, wav);
-    if (id === "D01") writeFileSync("artifacts/dungeon-audio.wav", wav);
+    if (id === "D02") writeFileSync("artifacts/dungeon-audio.wav", wav);
     stats.push({
       id,
       title,

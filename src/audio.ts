@@ -50,7 +50,7 @@ export class Music {
   ctx: AudioContext | null = null;
   master: GainNode | null = null;
   bed: GainNode | null = null;
-  score = scoreFor("D01");
+  readonly score = scoreFor("D02");
   destinations = new Map<AudioScheduledSourceNode, AudioNode>();
   enabled = false;
   volume = 0.35;
@@ -130,36 +130,6 @@ export class Music {
       )
         destination.disconnect();
     };
-  }
-  setRoom(id: string) {
-    if (this.score.id === id) return;
-    this.score = scoreFor(id);
-    this.step = 0;
-    if (!this.enabled || !this.ctx || !this.master || document.hidden) {
-      this.pause();
-      return;
-    }
-    const now = this.ctx.currentTime,
-      previous = this.bed;
-    if (previous) {
-      previous.gain.cancelScheduledValues(now);
-      previous.gain.setValueAtTime(previous.gain.value, now);
-      previous.gain.linearRampToValueAtTime(0, now + 0.12);
-      let retiring = false;
-      for (const [voice, destination] of this.destinations)
-        if (destination === previous) {
-          voice.stop(now + 0.14);
-          retiring = true;
-        }
-      if (!retiring) previous.disconnect();
-    }
-    this.bed = this.ctx.createGain();
-    this.bed.connect(this.master);
-    this.bed.gain.setValueAtTime(0, now);
-    this.bed.gain.linearRampToValueAtTime(1, now + 0.32);
-    this.next = now + 0.16;
-    if (this.timer === undefined)
-      this.timer = window.setInterval(() => this.schedule(), 80);
   }
   start() {
     if (!this.enabled || !this.ctx || document.hidden) return;

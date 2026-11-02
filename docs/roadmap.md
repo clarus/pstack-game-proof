@@ -25,6 +25,7 @@ The user’s 2 November desktop X screenshot shows room 2 and one lit lantern, b
 - [x] Keep a distinct miniature room, Pip, and visible completion/undo changes in wider compact cards. At widths up to 400px, alternate a room-arrival scene and full-width proof play, with View room / Continue proof and a new arrival at each Next room.
 - [x] Increase move labels to 13–14px, facts to 18px, and goals to 20px while keeping both proof panes visible.
 - [x] Move secondary tools into More and provide direct expansion with progress transfer.
+- [x] Remove the idle prompt in narrow cards and keep the Storeroom/D02 soundtrack continuous across room changes.
 - [x] Exercise every room at 320×245 and the screenshot’s approximate 518×292 size; add menu/resize/expansion regressions.
 - [ ] Confirm the revised layout on the published X post and on physical phones; retain the existing accessibility and release gates.
 
@@ -239,7 +240,7 @@ Selected direction, Q5A: deterministic browser synthesis with short effects and 
 
 Exit: sound works after user activation on supported clients, has no required role in solving puzzles, and does not cause performance or lifecycle regressions.
 
-S03/S04/S05 now include seven room-specific scores connected by a recurring motif, bass/harmony, tonal/noise cues and gentle room transitions. Later chapter arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
+S03/S04/S05 produced seven authored scores. The later user direction selects the Storeroom/D02 track for every room and edition, preserving playback across navigation instead of changing music. Tonal/noise cues remain. Later chapter arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
 
 ## Testing and continuous verification workstream
 

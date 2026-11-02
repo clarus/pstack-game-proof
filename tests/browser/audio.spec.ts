@@ -86,7 +86,7 @@ test("synth scheduler preserves its place and stops on pause", async ({
     music.pause();
     return { first, stopped, resumed };
   });
-  expect(result.first).toEqual({ step: 1, next: 0.29, count: 2 });
+  expect(result.first).toEqual({ step: 1, next: 0.26, count: 2 });
   expect(result.stopped).toBe(true);
   expect(result.resumed).toBe(2);
 });
@@ -135,49 +135,75 @@ test("every room score renders a distinct non-clipping complete loop", async ({
   }
 });
 
-test("rapid room changes retire old music and mute prevents restart", async ({
+test("room changes preserve the Storeroom music and mute prevents restart", async ({
   page,
 }) => {
+  test.setTimeout(60000);
   await page.goto("/");
+  await page.evaluate(async () => {
+    const path = "/src/audio.ts";
+    const { Music } = await import(path);
+    const start = Music.prototype.start;
+    let music: InstanceType<typeof Music>;
+    let bed: GainNode | null = null;
+    let starts = 0;
+    Music.prototype.start = function (this: InstanceType<typeof Music>) {
+      start.call(this);
+      music = this;
+      bed ??= this.bed;
+      starts++;
+    };
+    Object.assign(window, {
+      musicSnapshot: () => ({
+        id: music.score.id,
+        starts,
+        sameBed: music.bed === bed,
+        step: music.step,
+        enabled: music.enabled,
+        ticking: music.timer !== undefined,
+        voices: music.voices.size,
+      }),
+    });
+  });
   await page.getByRole("button", { name: "Toggle sound" }).click();
   await expect(
     page.getByRole("button", { name: "Toggle sound" }),
   ).toHaveAttribute("aria-pressed", "true");
-  const result = await page.evaluate(async () => {
-    const path = "/src/audio.ts";
-    const { Music } = await import(path);
-    const music = new Music();
-    await music.enable(true);
-    const oldBus = music.bed;
-    music.setRoom("D02");
-    music.setRoom("D03");
-    music.setRoom("D07");
-    await new Promise((r) => setTimeout(r, 500));
-    const result = {
-      id: music.score.id,
-      oldNotes: [...music.destinations.values()].filter((d) => d === oldBus)
-        .length,
-      voices: music.voices.size,
-    };
-    await music.enable(false);
-    music.setRoom("D05");
-    await new Promise((r) => setTimeout(r, 200));
-    const muted = {
-      id: music.score.id,
-      enabled: music.enabled,
-      timer: music.timer,
-      voices: music.voices.size,
-    };
-    music.dispose();
-    return { result, muted };
-  });
-  expect(result.result.id).toBe("D07");
-  expect(result.result.oldNotes).toBe(0);
-  expect(result.result.voices).toBeLessThanOrEqual(12);
-  expect(result.muted).toEqual({
-    id: "D05",
+  const snapshot = () =>
+    page.evaluate<{
+      id: string;
+      starts: number;
+      sameBed: boolean;
+      step: number;
+      enabled: boolean;
+      ticking: boolean;
+      voices: number;
+    }>("window.musicSnapshot()");
+  const before = await snapshot();
+  for (const id of ["D02", "D03", "D07"]) {
+    await page.getByRole("button", { name: "Chapters", exact: true }).click();
+    await page.locator(`[data-select-room="${id}"]`).click();
+    await expect(page.locator(".shell")).toHaveAttribute(
+      "data-score-id",
+      "D02",
+    );
+  }
+  const after = await snapshot();
+  expect(after.id).toBe("D02");
+  expect(after.starts).toBe(before.starts);
+  expect(after.sameBed).toBe(true);
+  expect(after.step).toBeGreaterThanOrEqual(before.step);
+  expect(after.ticking).toBe(true);
+  expect(after.voices).toBeLessThanOrEqual(12);
+  await page.getByRole("button", { name: "Toggle sound" }).click();
+  await page.getByRole("button", { name: "Chapters", exact: true }).click();
+  await page.locator('[data-select-room="D05"]').click();
+  const muted = await snapshot();
+  expect(muted).toMatchObject({
+    id: "D02",
     enabled: false,
-    timer: undefined,
+    ticking: false,
     voices: 0,
+    starts: before.starts,
   });
 });

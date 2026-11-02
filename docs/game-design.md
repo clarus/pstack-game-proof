@@ -45,6 +45,8 @@ Every displayed transformation has an explicit supported Rocq counterpart. Restr
 
 ## Chapter 1 — The Proof Dungeon
 
+The dungeon once lit the path to the Proof Workshop, but its seven lanterns have gone dark. Pip remembers the route and asks the player to restore it, one proof at a time. Each room has its own environment, arrival/resolution dialogue and synthesized melody, connected by a recurring musical motif. Lanterns count actual completed proofs; visiting or skipping ahead does not light them. The full seven-lantern ending opens a view toward the Workshop. Compact cards retain the room name, lantern count and story access alongside the visible proof state.
+
 Restore the dungeon's exits using facts found in each room. Doors are goals; reusable tools are hypotheses. A conjunction door has two locks. A disjunction goal allows a choice of exit. A disjunction hypothesis creates two possible versions of the room, both of which must be solved.
 
 The first six rooms form the initial playable release. Target 30–90 seconds per room after onboarding, with no time limit.

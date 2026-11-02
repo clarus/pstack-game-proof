@@ -1,32 +1,34 @@
 # Chapter 1 local readiness
 
-Implementation date: 2 November 2026. Scope: all seven Proof Dungeon rooms, ready for local review and preparation of an authorized hosted/X test. **No deployment, live X test, or public release has occurred.** Chapters 2–4 remain planned.
+Implementation and seven-lantern update: 2 November 2026. Scope: all seven Proof Dungeon rooms, ready for local review and preparation of an authorized hosted/X test. **No deployment, live X test, or public release has occurred.** Chapters 2–4 remain planned.
 
 ## Implemented experience
 
 D01 introduces an assumption and reuses it; D02 unpacks AND; D03 builds AND; D04 rearranges conjunctions; D05 chooses an OR conclusion; D06 handles both OR cases and applies implications; D07 combines these rules. Each includes story, lesson, two-stage hints, move labels/tactics, feedback, live ordered goals and hypotheses, undo/restart, and a proof-script view. Legal unhelpful choices remain unfinished and offer undo.
 
-Pip, the dungeon, the door-opening state and posters are code-drawn. Music and effects are synthesized from source. The game is usable silently. Progress is replay-validated, local to each edition, and transferable by bounded code or the full-game resume link. Branch tabs inspect other obligations; moves always act on the first goal. All rooms can be opened directly without unlocks. The chapter ending points to the menu and marks future chapters coming soon.
+Seven distinct environments, Pip, room-specific completed states and posters are code-drawn. Seven original room scores share a recurring motif, with gentle music transitions; effects remain synthesized. Each completed proof lights its room’s lantern, and the full Workshop ending requires all seven. Compact cards retain a room/story button and lantern count. See [the seven-lantern story and art/audio specification](art-and-audio.md). The game is usable silently. Progress is replay-validated, local to each edition, and transferable by bounded code or the full-game resume link. Branch tabs inspect other obligations; moves always act on the first goal. All rooms can be opened directly without unlocks. The chapter ending points to the menu and marks future chapters coming soon.
 
 ## Local evidence
 
 | Check | Result / scope |
 | --- | --- |
-| `npm run check` | Pass: generated-content freshness, TypeScript, 20 runtime tests, Rocq, seven mutation checks, all three builds |
+| `npm run check` | Pass: generated-content freshness, TypeScript, 21 runtime/score tests, Rocq, seven mutation checks, all three builds |
 | Rocq 9.0.1 | 21 existing curriculum examples compile; the invalid fixture is rejected |
 | Authored graph conformance | All 46 nodes and 102 offered moves checked: 39 accepted edges, 63 rejected edges; seven exported runtime proof scripts compile through `Qed` |
 | Fault sensitivity | Wrong goal, false completion, dropped AND/OR branches, leaked OR fact, wrong successor, unsupported syntax rejected |
 | pstack skill exercise | Actual shipped D01/n1 goal changed from A to B; CLI failed with state mismatch. File restored and full verification passed |
-| Browser suite | 63 checks passed: 60 in the final full run plus 3 fresh-context progress-link checks, across Chromium/Firefox/WebKit; zero skipped/flaky cases. No physical-device or X-client result is inferred |
+| Browser suite | 81 checks passed in the updated full suite across Chromium/Firefox/WebKit; zero skipped/flaky cases. No physical-device or X-client result is inferred |
 | Accessibility | Automated axe WCAG A/AA-tagged checks for initial room, branching states, menu/glossary, desktop and compact layouts; keyboard/reduced-motion paths tested. This is not a full accessibility audit |
-| Sound | User activation/mute, unavailable-device timeout, offline signal headroom and note lifecycle, scheduler stop/resume tested |
-| Visual review | Desktop, mobile, and 320×245 screenshots inspected; proof context stays visible with internal scrolling |
+| Sound | User activation/mute, unavailable-device timeout, offline signal headroom and note lifecycle, scheduler stop/resume, seven distinct complete offline score renders, and rapid room-change retirement tested |
+| Visual review | Seven-scene arrival/restored contact sheets plus desktop, mobile, and 320×245 screenshots inspected; proof context stays visible with internal scrolling |
 | Dependency audit | npm reported zero vulnerabilities for the pinned installed dependency set during implementation |
 | Skills/provenance | Local skill frontmatter validated; upstream pstack SHA-256 manifest unchanged |
 
+The seven-lantern update preserves every original theorem, node, edge, action ID and solution history (compared with commit `f6b9ac5`); only narrative content changed in the generated graphs. Existing saves remain compatible. `src/environments.ts` is now included in verification freshness hashes because it supplies authored arrival text.
+
 The finite graph checker uses the real shipped data and independent Rocq parsing; it rejects hidden goals and unverified path merging. It does not prove arbitrary TypeScript behavior. Quantifiers, dependent terms, induction, arbitrary tactic entry, asynchronous chapter loading and simulator invariants are outside this check. See [the verification skill](../skills/game/verify-dungeon-graphs/SKILL.md) and [reviewed coverage hashes](../verification/dungeon-coverage.json).
 
-Browser evidence was collected on this Linux workstation with Playwright 1.56.1: Chromium 141.0.7390.37 (revision 1194), Firefox 142.0.1 (1495), and WebKit 26.0 (2215). The full run took 194 seconds; the three additional progress-transfer cases took 8 seconds. Reports are `artifacts/browser-results.json` and `artifacts/browser-progress-transfer.json`. Local WebKit needed three missing media libraries supplied from temporary extracted packages and a launcher override; standard setup is `npx playwright install --with-deps`, not committing workstation paths. Desktop Firefox initially hit an audio activation stall; the final normal-device test passed and the forced-stall fallback is also tested. These Linux engines do not stand in for Safari/iOS, Android hardware, or X webviews.
+Browser evidence was collected on this Linux workstation with Playwright 1.56.1: Chromium 141.0.7390.37 (revision 1194), Firefox 142.0.1 (1495), and WebKit 26.0 (2215). The updated full run took 262 seconds. Its report is `artifacts/browser-results.json`; the log is `artifacts/browser-journey.log`. Tests now launch a fresh isolated Vite server on port 5180, preventing a stale development preview from affecting stylesheet checks. Local WebKit needed three missing media libraries supplied from temporary extracted packages and a launcher override; standard setup is `npx playwright install --with-deps`, not committing workstation paths. Desktop Firefox initially hit an audio activation stall; the final normal-device test passed and the forced-stall fallback is also tested. These Linux engines do not stand in for Safari/iOS, Android hardware, or X webviews.
 
 Bugs found and fixed included Rocq tactics that automatically introduce assumptions, context-order mismatch after destruct, stale DOM clicks advancing a replacement state, a missing absolute Vite content-watch path, unavailable audio leaving activation pending, and low-contrast proof labels. The fault and browser cases retain regression coverage for these boundaries.
 
@@ -34,19 +36,20 @@ Bugs found and fixed included Rocq tactics that automatically introduce assumpti
 
 | Profile | Rooms | Gzip upper bound |
 | --- | --- | --- |
-| `chapter` | D01–D07 | 16,909 bytes (16.5 KiB) |
-| `preview` | D01–D06 | 16,363 bytes (16.0 KiB) |
-| `embed-test` | D01 only | 14,634 bytes (14.3 KiB) |
+| `chapter` | D01–D07 | 21,215 bytes (20.7 KiB) |
+| `preview` | D01–D06 | 20,478 bytes (20.0 KiB) |
+| `embed-test` | D01 only | 18,794 bytes (18.4 KiB) |
 
 Each total includes one HTML entry, all CSS and JavaScript (including content, graphics and audio code), the poster, and `.nojekyll`. The duplicate embed/share HTML is excluded from the first-page total. This conservative gzip sum includes the poster even though the running game does not fetch it; it excludes HTTP/TLS overhead. It is a build measurement, not a phone-network benchmark. All profiles pass the 150 KiB ceiling. Profile-specific browser checks load the actual static files under a subdirectory, verify initial-HTML Player Card metadata, complete D01, check room counts, and reject later-room content in smaller editions.
 
-`artifacts/build-*.json` records exact public file hashes. The content identity for this run is `29acf02a67fd021ad5a0a9cf74fcec77dbf17dbdd95000f591fdb90cc50f3960`. Build refusal is tied to the graph and covered source hashes in fresh Rocq evidence. No proof tools, skills, source fixtures, or runtime services are shipped.
+`artifacts/build-*.json` records exact public file hashes. The content identity for this run is `3a5cd845e779e6f193794fa3dd8f1b1433c4237215ce31ca210a487885b51e85`. Build refusal is tied to the graph and covered source hashes in fresh Rocq evidence. No proof tools, skills, source fixtures, or runtime services are shipped.
 
 Review artifacts (untracked, reproducible with `npm run review` and the dev server):
 
 - `artifacts/dungeon-desktop.png`, `dungeon-mobile.png`, `dungeon-compact.png`.
 - `artifacts/dungeon-walkthrough.webm`.
-- `artifacts/dungeon-audio.wav`: nine-second offline review preview, peak 0.0552, RMS 0.00638 at default volume. Not a shipped asset or a human listening result.
+- `artifacts/rooms-arrival.png` and `rooms-restored.png`: all seven environments.
+- `artifacts/music/D01.wav` through `D07.wav`: complete score previews with one-second tails. At default volume, peaks range from 0.0279 to 0.0438; detailed RMS/duration data is in `artifacts/audio-review.json`. `dungeon-audio.wav` is the entrance preview. These are not shipped assets or human listening results.
 - `artifacts/rocq-coverage.json`, `audio-review.json`, and browser logs.
 
 ## Remaining test and release gates

@@ -1,6 +1,6 @@
 # Proof Quest
 
-A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapter 1 is implemented locally:** seven dungeon rooms, live proof states, hints, undo, proof scripts, pixel art, synthesized music, and browser-only progress. Chapters 2–4 remain planned.
+A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapter 1 is implemented locally:** seven dungeon rooms, live proof states, hints, undo, proof scripts, seven distinct pixel-art settings, a seven-lantern story, room-specific synthesized music, and browser-only progress. Chapters 2–4 remain planned.
 
 Nothing has been deployed or posted to X. Local iframe success does not establish X compatibility; see the [readiness record](docs/chapter-one-readiness.md).
 
@@ -41,7 +41,7 @@ Browser installation may need operating-system package permissions. The reposito
 | `npm run test:mutations` | Seven intentionally broken variants must be rejected |
 | `npm run check` | Content, type checking, runtime, Rocq, mutations, and all static builds |
 | `npm run test:browser` | Three browser engines, accessibility, audio, compact/iframe flows, static editions |
-| `npm run review` | Screenshots, short walkthrough video, and WAV review preview; requires the dev server |
+| `npm run review` | Scene contact sheets, screenshots, walkthrough video, and seven WAV previews; requires the dev server |
 | `npm run format` | Format owned TypeScript, CSS, HTML, and test sources |
 
 Builds require fresh Rocq evidence for the actual content and covered source files. `npm run build:all` produces:

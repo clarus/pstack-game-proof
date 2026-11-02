@@ -169,7 +169,7 @@ def main():
     for level in levels:
         entry=verify(level); report.append(entry); print(f'PASS {entry}',flush=True)
     out=ROOT/'artifacts'; out.mkdir(exist_ok=True)
-    covered=['src/content/dungeon.json','src/model.ts','scripts/generate-content.ts','scripts/export-proofs.ts','scripts/verify_graphs.py']
+    covered=['src/environments.ts','src/content/dungeon.json','src/model.ts','scripts/generate-content.ts','scripts/export-proofs.ts','scripts/verify_graphs.py']
     sources={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in covered}
     (out/'rocq-coverage.json').write_text(json.dumps({'rocq':'9.0.1','checkedAtUtc':datetime.now(timezone.utc).isoformat(),'sources':sources,'sha256':sources['src/content/dungeon.json'],'levels':report,'scope':'All published nodes and edges of the authored propositional graphs; not a proof of arbitrary JavaScript programs.'},indent=2)+'\n')
     print('PASS: every authored graph edge checked against Rocq, including rejected moves and terminal Qed.')

@@ -1,7 +1,4 @@
-export const melody = [
-  69, 0, 72, 76, 74, 72, 69, 0, 67, 0, 69, 72, 71, 67, 64, 0, 65, 0, 69, 72, 74,
-  72, 69, 65, 64, 0, 67, 71, 69, 0, 0, 0,
-];
+import { scoreFor, scoreEvents, type Score } from "./score.ts";
 export function frequency(note: number) {
   return 440 * 2 ** ((note - 69) / 12);
 }
@@ -31,9 +28,30 @@ export function tone(
   };
   return oscillator;
 }
+export function scheduleScore(
+  ctx: BaseAudioContext,
+  destination: AudioNode,
+  score: Score,
+  start = 0.04,
+) {
+  for (let step = 0; step < score.melody.length; step++)
+    for (const event of scoreEvents(score, step))
+      tone(
+        ctx,
+        destination,
+        event.note,
+        start + step * score.stepSeconds,
+        event.duration,
+        event.kind,
+        event.gain,
+      );
+}
 export class Music {
   ctx: AudioContext | null = null;
   master: GainNode | null = null;
+  bed: GainNode | null = null;
+  score = scoreFor("D01");
+  destinations = new Map<AudioScheduledSourceNode, AudioNode>();
   enabled = false;
   volume = 0.35;
   timer: number | undefined;
@@ -85,20 +103,74 @@ export class Music {
     time: number,
     duration: number,
     kind: OscillatorType = "triangle",
-    gain = 0.08,
+    gain = 0.06,
+    destination: AudioNode | null = this.master,
   ) {
-    if (!this.ctx || !this.master || this.voices.size >= 12) return;
-    const voice = tone(this.ctx, this.master, note, time, duration, kind, gain);
+    if (!this.ctx || !destination || this.voices.size >= 12) return;
+    const voice = tone(
+      this.ctx,
+      destination,
+      note,
+      time,
+      duration,
+      kind,
+      Math.min(gain, 0.06),
+    );
+    this.destinations.set(voice, destination);
     this.voices.add(voice);
     const cleanup = voice.onended;
     voice.onended = (event) => {
       if (typeof cleanup === "function") cleanup.call(voice, event);
       this.voices.delete(voice);
+      this.destinations.delete(voice);
+      if (
+        destination !== this.master &&
+        destination !== this.bed &&
+        ![...this.destinations.values()].includes(destination)
+      )
+        destination.disconnect();
     };
+  }
+  setRoom(id: string) {
+    if (this.score.id === id) return;
+    this.score = scoreFor(id);
+    this.step = 0;
+    if (!this.enabled || !this.ctx || !this.master || document.hidden) {
+      this.pause();
+      return;
+    }
+    const now = this.ctx.currentTime,
+      previous = this.bed;
+    if (previous) {
+      previous.gain.cancelScheduledValues(now);
+      previous.gain.setValueAtTime(previous.gain.value, now);
+      previous.gain.linearRampToValueAtTime(0, now + 0.12);
+      let retiring = false;
+      for (const [voice, destination] of this.destinations)
+        if (destination === previous) {
+          voice.stop(now + 0.14);
+          retiring = true;
+        }
+      if (!retiring) previous.disconnect();
+    }
+    this.bed = this.ctx.createGain();
+    this.bed.connect(this.master);
+    this.bed.gain.setValueAtTime(0, now);
+    this.bed.gain.linearRampToValueAtTime(1, now + 0.32);
+    this.next = now + 0.16;
+    if (this.timer === undefined)
+      this.timer = window.setInterval(() => this.schedule(), 80);
   }
   start() {
     if (!this.enabled || !this.ctx || document.hidden) return;
     this.pause();
+    if (this.master) {
+      this.bed?.disconnect();
+      this.bed = this.ctx.createGain();
+      this.bed.connect(this.master);
+      this.bed.gain.setValueAtTime(0, this.ctx.currentTime);
+      this.bed.gain.linearRampToValueAtTime(1, this.ctx.currentTime + 0.15);
+    }
     this.next = this.ctx.currentTime + 0.04;
     this.timer = window.setInterval(() => this.schedule(), 80);
     this.schedule();
@@ -106,24 +178,16 @@ export class Music {
   schedule() {
     if (!this.ctx) return;
     while (this.next < this.ctx.currentTime + 0.16) {
-      const n = melody[this.step % melody.length];
-      if (n)
+      for (const event of scoreEvents(this.score, this.step))
         this.play(
-          n,
+          event.note,
           this.next,
-          0.35,
-          this.step % 8 === 0 ? "square" : "triangle",
-          this.step % 8 === 0 ? 0.025 : 0.07,
+          event.duration,
+          event.kind,
+          event.gain,
+          this.bed,
         );
-      if (this.step % 4 === 0)
-        this.play(
-          [45, 43, 41, 40][Math.floor(this.step / 8) % 4],
-          this.next,
-          0.8,
-          "sine",
-          0.09,
-        );
-      this.next += 0.25;
+      this.next += this.score.stepSeconds;
       this.step++;
     }
   }
@@ -194,5 +258,7 @@ export class Music {
     void this.ctx?.close();
     this.ctx = null;
     this.master = null;
+    this.bed?.disconnect();
+    this.bed = null;
   }
 }

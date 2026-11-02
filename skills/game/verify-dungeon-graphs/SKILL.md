@@ -19,11 +19,12 @@ Rocq checks this property directly; no TLA+ abstraction is needed for these fini
 
 ## Coverage and synchronization
 
-Read `verification/dungeon-coverage.json` for the last reviewed file hashes and base revision. Initial implementation was verified as **uncommitted work based on `12d38c346227e3615c08085ebcbdb3f5e57e444b`**; that commit does not contain the implementation. Current run evidence is `artifacts/rocq-coverage.json`. Do not move the synchronized revision forward merely because a command passed: first confirm the file/function mapping below still describes the implementation, then record the new revision and hashes.
+Read `verification/dungeon-coverage.json` for the last reviewed file hashes and base revision. The initial implementation is committed at `f6b9ac5`. The seven-lantern follow-up is checked as uncommitted changes on that base; its hashes identify the checked working files. The proof nodes, offered moves and saved action histories are unchanged; arrival text now comes from `src/environments.ts`. Current run evidence is `artifacts/rocq-coverage.json`. Do not move the synchronized revision forward merely because a command passed: first confirm the file/function mapping below still describes the implementation, then record the new revision and hashes.
 
 | Covered file/function | Correspondence |
 | --- | --- |
 | `scripts/generate-content.ts:applyTactic`, recipes | Offline authoring emits proposed states; Rocq is the independent authority |
+| `src/environments.ts` | Arrival text included by the generator; hashed for build freshness, with no role in proof semantics |
 | `src/content/dungeon.json` | The exact 7-room published graph; 46 nodes and 102 offered edges at initial verification |
 | `src/model.ts:replay`, `move`, `proofScript` | Browser follows authored edges; runtime tests cover replay/rejection/undo, exports compile in Rocq |
 | `scripts/verify_graphs.py:Rocq`, `formula`, `state`, `compare`, `paths`, `verify` | Pinned XML adapter, strict formula parser, ordered context/goal comparison, graph constraints |

@@ -10,6 +10,7 @@ import {
 } from "./progress.ts";
 import { Music } from "./audio.ts";
 import { drawScene } from "./art.ts";
+import { environmentFor, journeyEnding } from "./environments.ts";
 import "./style.css";
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const storage = () => ({
@@ -97,25 +98,41 @@ function render() {
     done = levels.filter(
       (x) => replay(x, progress.histories[x.id] ?? []).complete,
     ).length;
-  app.innerHTML = `<div class="shell"><header class="topbar"><a class="brand" href="#room=D01" aria-label="Proof Quest, first room"><span class="brand-mark">⊢</span> ${__PROFILE__ === "embed-test" ? "PROOF CARD" : "PROOF QUEST"}<span class="edition">A SMALL ADVENTURE IN BIG IDEAS</span></a><div class="top-actions">${button(music.enabled ? "♫ Sound on" : "♪ Sound off", "sound", 'aria-label="Toggle sound" aria-pressed="' + music.enabled + '" ' + (audioPending ? "disabled" : ""))}${button("Chapters", "chapters")}</div></header>
- <div class="layout"><aside class="sidebar"><div class="eyebrow">YOUR JOURNEY</div><h2>The Proof<br>Dungeon<span class="chapter-number">01</span></h2><p class="sidebar-note">Seven doors. A new way to think.</p><nav aria-label="Dungeon rooms">${levels
+  const environment = environmentFor(l.id);
+  const lanterns = levels.map(
+    (x) => replay(x, progress.histories[x.id] ?? []).complete,
+  );
+  const allSeven = levels.length === 7 && done === 7;
+  const resolution = allSeven ? journeyEnding : environment.resolution;
+  music.setRoom(l.id);
+  document.documentElement.style.setProperty(
+    "--room-accent",
+    environment.accent,
+  );
+  app.innerHTML = `<div class="shell" data-room-id="${l.id}" data-score-id="${music.score.id}"><header class="topbar"><a class="brand" href="#room=D01" aria-label="Proof Quest, first room"><span class="brand-mark">⊢</span> <span class="brand-name">${__PROFILE__ === "embed-test" ? "PROOF CARD" : "PROOF QUEST"}</span><span class="lantern-count" aria-label="${done} of ${levels.length} lanterns lit">✦ ${done}/${levels.length}</span><span class="edition">A SMALL ADVENTURE IN BIG IDEAS</span></a><div class="top-actions">${button(music.enabled ? "♫ Sound on" : "♪ Sound off", "sound", 'aria-label="Toggle sound" aria-pressed="' + music.enabled + '" ' + (audioPending ? "disabled" : ""))}${button("Chapters", "chapters")}</div></header>
+ <div class="layout"><aside class="sidebar"><div class="eyebrow">YOUR JOURNEY</div><h2>The Proof<br>Dungeon<span class="chapter-number">01</span></h2><p class="sidebar-note">Relight the path to the Workshop.</p><nav aria-label="Dungeon rooms">${levels
    .map((r, i) => {
      const solved = replay(r, progress.histories[r.id] ?? []).complete;
      return `<button class="room-link ${r.id === l.id ? "selected" : ""}" data-room="${r.id}" ${r.id === l.id ? 'aria-current="step"' : ""}><span class="room-num">${solved ? "✓" : String(i + 1).padStart(2, "0")}</span><span>${escape(r.title)}</span><span class="room-arrow">${r.id === l.id ? "↗" : ""}</span></button>`;
    })
    .join(
      "",
-   )}</nav><div class="journey-progress"><span>${done} / ${levels.length} rooms solved</span><div class="progress-track"><i style="width:${(done / levels.length) * 100}%"></i></div></div><p class="sidebar-foot">Take your time.<br>Every good proof starts with a question.</p></aside>
+   )}</nav><div class="journey-progress"><span>${done} / ${levels.length} lanterns lit</span><div class="progress-track"><i style="width:${(done / levels.length) * 100}%"></i></div></div><p class="sidebar-foot">Take your time.<br>Every good proof starts with a question.</p></aside>
  <main><div class="room-heading"><div><p class="eyebrow">CHAPTER 01 <span>/</span> ROOM ${String(index + 1).padStart(2, "0")}</p><h1>${escape(l.title)}</h1><p class="subtitle">${escape(l.subtitle)}</p></div><span class="room-seal">${node.complete ? "✓" : "⊢"}</span></div>
- <section class="scene" aria-label="Pixel-art dungeon room"><canvas id="scene" aria-hidden="true"></canvas><span class="scene-label">THE KEEPER’S HALL</span><span class="scene-caption">${node.complete ? "A little more light in the dungeon." : "Some doors open with a good argument."}</span></section>
- <div class="guide"><span class="pip-icon" aria-hidden="true">P</span><div><strong>PIP, THE KEEPER</strong><p>${escape(node.complete ? l.lesson : l.story)}</p></div></div>
- <section class="proof-workspace" aria-label="Live proof state"><div class="proof-heading"><span class="eyebrow">${node.complete ? "PROOF COMPLETE" : "YOUR PROOF STATE"}</span><div class="branch-tabs" aria-label="Open goals">${node.goals.map((_, i) => `<button data-branch="${i}" aria-pressed="${focused === i}" aria-label="Inspect goal ${i + 1}">${i === 0 ? "●" : "○"} ${i + 1}</button>`).join("")}<span>${node.goals.length} open</span></div></div>
+ <section class="scene" aria-label="${escape(environment.name)}${node.complete ? ", lantern lit" : ", lantern unlit"}"><canvas id="scene" aria-hidden="true"></canvas><span class="scene-label">${escape(environment.name)}</span><span class="scene-caption">${allSeven ? "The Workshop awaits at dawn." : node.complete ? "Another lantern on the way upstairs." : "Follow the lanterns. Find the way upstairs."}</span></section>
+ <div class="guide"><span class="pip-icon" aria-hidden="true">P</span><div><strong>PIP, THE KEEPER</strong><p>${escape(node.complete ? resolution : l.story)}</p></div>${button("Story", "story", 'class="story-button" aria-label="Read room story"')}</div>
+ <section class="proof-workspace" aria-label="Live proof state"><div class="proof-heading"><span class="eyebrow proof-state-label">${node.complete ? "PROOF COMPLETE" : "YOUR PROOF STATE"}</span>${button(`${String(index + 1).padStart(2, "0")} · ${escape(environment.name)}`, "story", 'class="compact-room" aria-label="Read room story"')}<div class="branch-tabs" aria-label="Open goals">${node.goals.map((_, i) => `<button data-branch="${i}" aria-pressed="${focused === i}" aria-label="Inspect goal ${i + 1}">${i === 0 ? "●" : "○"} ${i + 1}</button>`).join("")}<span>${node.goals.length} open</span></div></div>
  <div class="proof-columns"><div class="hypotheses"><h3>WHAT YOU KNOW <span>hypotheses</span></h3><div class="context" tabindex="0" aria-label="Available hypotheses">${goal?.context.length ? goal.context.map((x) => `<div class="fact"><code>${escape(x.name)}</code><span>${escape(format(x.type))}</span></div>`).join("") : `<p class="empty">${node.complete ? "Every obligation is closed." : "No assumptions yet."}</p>`}</div></div><div class="goal-pane"><h3>${node.complete ? "ESTABLISHED" : "WHAT TO PROVE"} <span>${node.complete ? "theorem" : "goal"}</span></h3><div class="formula">${escape(node.complete ? l.theorem.replace(/\/\\/g, "∧").replace(/\\\//g, "∨").replace(/->/g, "→") : format(goal.conclusion))}</div><p class="goal-note">${node.complete ? "A complete proof, built by you." : focused ? "Inspecting this branch. Moves act on goal 1." : "One small step at a time."}</p></div></div></section>
  <section class="choices" aria-label="Proof moves">${node.complete ? `<div class="completion"><strong>Door opened.</strong><span>${index === levels.length - 1 ? "You’ve reached the end of this edition." : "Your next room is waiting."}</span>${button(index < levels.length - 1 ? "Next room →" : "Chapter complete ✓", index < levels.length - 1 ? "next" : "chapters", 'class="primary"')}</div>` : focused ? button("Return to active goal", "active", 'class="choice"') : node.actions.length ? node.actions.map((a) => `<button class="choice" data-move="${a.id}"><span>${escape(a.label)}</span><code>${escape(a.tactic)}</code><span class="choice-arrow" aria-hidden="true">↗</span></button>`).join("") : `<div class="dead-end"><span>Inspect this goal, then try the other route.</span>${button("Undo this choice", "undo", 'class="primary"')}</div>`}</section>
  <p class="feedback ${node.complete ? "success" : ""}" role="status" aria-live="polite">${escape(feedback || (node.complete ? "All goals closed. Well reasoned." : "Choose a move. You can always undo."))}</p>
  <footer class="toolbar"><div>${button("↶ Undo", "undo", h.length ? "" : "disabled")}${button("↻ Restart", "restart")}${button("✧ Hint", "hint", node.complete ? "disabled" : "")}</div><div>${button("Proof script", "script")}${button("Save / restore", "progress")}</div><span class="save-status">${saving ? "Saved on this browser" : "Session only · copy progress"}</span></footer>
  </main></div><footer class="page-footer"><span>BUILT FROM SMALL, CERTAIN STEPS.</span><span>Chapter 01 · ${__PROFILE__ === "embed-test" ? "Technical preview" : "A journey into Rocq"}</span></footer></div><dialog id="dialog" aria-label="Game menu"></dialog>`;
-  drawScene(document.querySelector("#scene")!, index + 1, node.complete);
+  drawScene(
+    document.querySelector("#scene")!,
+    index + 1,
+    node.complete,
+    lanterns,
+  );
   app
     .querySelectorAll<HTMLButtonElement>("[data-room]")
     .forEach((b) => (b.onclick = () => navigate(b.dataset.room!)));
@@ -137,6 +154,14 @@ function render() {
         hintCount = 0;
         persist();
         const now = replay(l, result.history);
+        if (now.complete)
+          feedback =
+            levels.length === 7 &&
+            levels.every(
+              (x) => replay(x, progress.histories[x.id] ?? []).complete,
+            )
+              ? journeyEnding
+              : environmentFor(l.id).resolution;
         music.cue(
           now.complete ? "complete" : result.accepted ? "move" : "invalid",
         );
@@ -209,6 +234,17 @@ async function command(name: string) {
       audioPending = false;
       render();
     }
+  }
+  if (name === "story") {
+    const solved = replay(l, history()).complete;
+    const all =
+      levels.length === 7 &&
+      levels.every((x) => replay(x, progress.histories[x.id] ?? []).complete);
+    const room = environmentFor(l.id);
+    modal(
+      room.name,
+      `<p>${escape(l.story)}</p>${solved ? `<p>${escape(all ? journeyEnding : room.resolution)}</p>` : ""}<h3>The proof idea</h3><p>${escape(l.lesson)}</p>`,
+    );
   }
   if (name === "script") {
     modal(

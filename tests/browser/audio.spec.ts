@@ -90,3 +90,94 @@ test("synth scheduler preserves its place and stops on pause", async ({
   expect(result.stopped).toBe(true);
   expect(result.resumed).toBe(2);
 });
+
+test("every room score renders a distinct non-clipping complete loop", async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await page.goto("/");
+  const rendered = await page.evaluate(async () => {
+    const scorePath = "/src/score.ts",
+      audioPath = "/src/audio.ts";
+    const { scores } = await import(scorePath);
+    const { scheduleScore } = await import(audioPath);
+    const results = [];
+    for (const score of scores) {
+      const ctx = new OfflineAudioContext(
+        1,
+        Math.ceil((score.melody.length * score.stepSeconds + 1) * 22050),
+        22050,
+      );
+      scheduleScore(ctx, ctx.destination, score);
+      const samples = (await ctx.startRendering()).getChannelData(0);
+      let peak = 0,
+        energy = 0,
+        hash = 2166136261;
+      for (const sample of samples) {
+        peak = Math.max(peak, Math.abs(sample));
+        energy += sample * sample;
+        hash = Math.imul(hash ^ Math.round(sample * 32767), 16777619);
+      }
+      results.push({
+        id: score.id,
+        peak,
+        rms: Math.sqrt(energy / samples.length),
+        hash,
+      });
+    }
+    return results;
+  });
+  expect(new Set(rendered.map((r) => r.hash)).size).toBe(7);
+  for (const r of rendered) {
+    expect(r.peak).toBeGreaterThan(0.025);
+    expect(r.peak).toBeLessThan(0.5);
+    expect(r.rms).toBeGreaterThan(0.003);
+  }
+});
+
+test("rapid room changes retire old music and mute prevents restart", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Toggle sound" }).click();
+  await expect(
+    page.getByRole("button", { name: "Toggle sound" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  const result = await page.evaluate(async () => {
+    const path = "/src/audio.ts";
+    const { Music } = await import(path);
+    const music = new Music();
+    await music.enable(true);
+    const oldBus = music.bed;
+    music.setRoom("D02");
+    music.setRoom("D03");
+    music.setRoom("D07");
+    await new Promise((r) => setTimeout(r, 500));
+    const result = {
+      id: music.score.id,
+      oldNotes: [...music.destinations.values()].filter((d) => d === oldBus)
+        .length,
+      voices: music.voices.size,
+    };
+    await music.enable(false);
+    music.setRoom("D05");
+    await new Promise((r) => setTimeout(r, 200));
+    const muted = {
+      id: music.score.id,
+      enabled: music.enabled,
+      timer: music.timer,
+      voices: music.voices.size,
+    };
+    music.dispose();
+    return { result, muted };
+  });
+  expect(result.result.id).toBe("D07");
+  expect(result.result.oldNotes).toBe(0);
+  expect(result.result.voices).toBeLessThanOrEqual(12);
+  expect(result.muted).toEqual({
+    id: "D05",
+    enabled: false,
+    timer: undefined,
+    voices: 0,
+  });
+});

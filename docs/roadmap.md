@@ -119,6 +119,22 @@ All propositions below quantify the displayed propositional variables. The first
 
 Chapter gate: users can explain why an OR hypothesis creates two obligations while an OR goal offers one choice. Verification must catch a missing disjunction branch and premature completion.
 
+## Chapter 1 follow-up — Seven lanterns
+
+Approved after the initial chapter implementation: replace the repeated hall and shared loop with seven distinct environments and seven related compositions. Pip guides the player along a dark route to the Proof Workshop; each solved room lights its own lantern. Direct room access remains available, and the story must not claim unsolved rooms are complete.
+
+| Task | Deliverable | Acceptance |
+| --- | --- | --- |
+| J01 | Arrival and resolution text for all seven rooms; workshop ending | Short story supports each logical lesson; full ending requires all seven proofs |
+| J02 | Entrance, storeroom, cistern bridge, machinery, courtyard, mirror hall, lantern gate | Different composition/landmarks and completed states, original code-drawn art |
+| J03 | Seven distinct synthesized loops with a recurring motif | Sparse entrance, plucked store, answering bridge, clockwork, airy courtyard, mirrored phrases, full gate arrangement |
+| J04 | Gentle music changes on Next/menu/deep-link/restore | Latest room wins during rapid navigation; mute/background pause remain effective |
+| J05 | Compact room identity and lantern progress; story access | Goal, hypotheses and choices remain visible at 320×245, 375×245 and 560×315 |
+| J06 | Regression checks and review artifacts | Distinct scenes/scores, completion/undo/save behavior, rendered-audio headroom, three-browser suite, Rocq and build budgets |
+| J07 | Updated design, art/audio notes and readiness evidence | Local evidence distinguished from human listening and live X acceptance |
+
+Status: J01–J07 complete locally. Evidence: 81 browser checks, 21 runtime/score tests, 102 Rocq-checked moves, seven fault cases, rendered music previews and scene contact sheets; see [readiness](chapter-one-readiness.md) and [art/audio](art-and-audio.md). No publication is part of this goal. Original proof transitions and save histories remain compatible; reduced motion and silent play remain supported.
+
 ## P4 — Chapter 2 inventory
 
 Use explicit `T : Type`, predicates into `Prop`, and inhabitants where needed. Do not assume all types are inhabited.
@@ -182,7 +198,7 @@ Selected direction, Q3A/Q4A: warm pixel-art environments drawn in code with a sh
 
 - [x] G01 Produce a small style sheet: palette, silhouettes, scale, contrast, typography, icon meanings, and motion rules. Compare candidate styles in the actual card dimensions.
 - [x] G02 Make a production inventory: player/guide, fact and goal markers, conjunction/disjunction symbols, branch badges, buttons, progress markers, and settings icons.
-- [ ] G03 Dungeon kit: doors, locks, toolbox, reusable evidence tokens, split-room indicator, and chapter completion scene.
+- [x] G03 Dungeon kit: doors, locks, toolbox, reusable evidence tokens, split-room indicator, and chapter completion scene.
 - [ ] G04 Workshop kit: workbench, certificate packages, witness characters, rule machine, and gate.
 - [ ] G05 Railway kit: zero/successor blocks, carriage and coupling pieces, empty train, induction certificate, and base/step station markers.
 - [ ] G06 Observatory kit: robot, track, fuel gauge, trace timeline, invariant indicator, and broken-move visualization.
@@ -194,7 +210,7 @@ Selected direction, Q3A/Q4A: warm pixel-art environments drawn in code with a sh
 
 Exit: every core interaction is understandable without animation, and every chapter has a coherent asset kit. Source-generated graphics are a production option; this plan does not require all art to be code.
 
-Chapter 1 implementation uses a shared code-drawn hall, Pip, toolbox, door-opening state, branch badges and proof-pane transition; G03/G07 retain richer per-action/chapter kits as future work. G10 has a poster, favicon, screenshots and video; full-campaign artwork is incomplete. G11 has automated contrast checks and visual inspection; physical-device readability remains a human gate. See [art/audio direction](art-and-audio.md).
+The seven-lantern follow-up replaces the shared hall with seven distinct scenes, room-specific completion states and actual lantern progress; G03/G07 retain richer per-action/chapter kits as future work. G10 has a poster, favicon, screenshots and video; full-campaign artwork is incomplete. G11 has automated contrast checks and visual inspection; physical-device readability remains a human gate. See [art/audio direction](art-and-audio.md).
 
 ## Sound and music workstream
 
@@ -213,7 +229,7 @@ Selected direction, Q5A: deterministic browser synthesis with short effects and 
 
 Exit: sound works after user activation on supported clients, has no required role in solving puzzles, and does not cause performance or lifecycle regressions.
 
-S03/S04/S05 currently cover one dungeon motif, bass and tonal/noise cues with resume at the saved musical step. Later arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
+S03/S04/S05 now include seven room-specific scores connected by a recurring motif, bass/harmony, tonal/noise cues and gentle room transitions. Later chapter arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
 
 ## Testing and continuous verification workstream
 

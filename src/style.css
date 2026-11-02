@@ -1061,3 +1061,57 @@ dd {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Room identity stays visible when the decorative scene is removed. */
+.room-seal,
+.scene-label {
+  color: var(--room-accent, var(--gold));
+}
+.scene {
+  border-top: 3px solid var(--room-accent, var(--gold));
+}
+.lantern-count {
+  display: none;
+}
+.compact-room {
+  display: none;
+}
+.story-button {
+  font-size: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+@media (max-height: 500px) {
+  .brand-name {
+    display: none;
+  }
+  .lantern-count {
+    display: inline;
+    color: var(--room-accent, var(--gold));
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .proof-state-label {
+    display: none;
+  }
+  .compact-room {
+    display: block;
+    min-height: 24px;
+    max-width: 63%;
+    border: 0;
+    padding: 2px 0;
+    font-size: 9px;
+    font-weight: 650;
+    color: #34452f;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+  }
+  .compact-room:hover {
+    background: #d2d9be;
+  }
+  .proof-workspace {
+    border-top: 3px solid var(--room-accent, var(--gold));
+  }
+}

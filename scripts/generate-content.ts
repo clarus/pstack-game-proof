@@ -1,3 +1,4 @@
+import { environmentFor } from "../src/environments.ts";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   parseFormula as p,
@@ -11,7 +12,6 @@ const recipes = [
     "D01",
     "Borrowed key",
     "Every proof begins somewhere.",
-    "I’m Pip, keeper of these halls. The door asks for A. First, let it lend you A.",
     "To prove an implication, assume its premise. An exact matching fact closes a goal.",
     "A -> A",
     ["intro HA.", "exact HA."],
@@ -20,7 +20,6 @@ const recipes = [
     "D02",
     "Open the toolbox",
     "Two facts, one little box.",
-    "This box contains A and B. Open it, then show the door the fact it needs.",
     "An AND hypothesis contains both facts. Destruct unpacks them; the facts remain reusable.",
     "(A /\\ B) -> A",
     ["intro H.", "destruct H as [HA HB].", "exact HA."],
@@ -29,7 +28,6 @@ const recipes = [
     "D03",
     "Two locks",
     "Both lights must glow.",
-    "One door, two locks. A and B each have their own proof to finish.",
     "An AND goal requires both parts. Finishing one branch does not finish the room.",
     "A -> B -> A /\\ B",
     ["intro HA.", "intro HB.", "split.", "exact HA.", "exact HB."],
@@ -38,7 +36,6 @@ const recipes = [
     "D04",
     "Rearrange the tools",
     "Same facts. A new arrangement.",
-    "The old keeper packed these backwards. You have everything you need.",
     "Unpack an AND hypothesis, then build the AND conclusion in the requested order.",
     "(A /\\ B) -> B /\\ A",
     ["intro H.", "destruct H as [HA HB].", "split.", "exact HB.", "exact HA."],
@@ -47,7 +44,6 @@ const recipes = [
     "D05",
     "Choose an exit",
     "Only one path needs a proof.",
-    "Two exits await. You carry B. Which promise can you keep?",
     "An OR goal lets you choose a side. A legal choice can still leave you without the evidence you need.",
     "B -> A \\/ B",
     ["intro HB.", "right.", "exact HB."],
@@ -56,7 +52,6 @@ const recipes = [
     "D06",
     "Both possible worlds",
     "Be ready for either possibility.",
-    "The sealed box holds A or B. There is a route to C in either world. We must check both.",
     "An OR hypothesis requires both cases. Apply a rule backwards: to reach C using A → C, prove A.",
     "(A \\/ B) -> (A -> C) -> (B -> C) -> C",
     [
@@ -74,7 +69,6 @@ const recipes = [
     "D07",
     "The keeper’s gate",
     "Bring every lesson together.",
-    "A stays with you. B or C changes the route. Show me that both worlds reach the gate.",
     "OR in a hypothesis means both cases; OR in a goal means a choice. A shared fact can be reused in each branch.",
     "A /\\ (B \\/ C) -> (A /\\ B) \\/ (A /\\ C)",
     [
@@ -175,7 +169,7 @@ const feedback = (t: string) =>
             ? "That fact matches exactly. One goal is closed."
             : "You chose a side. Now provide evidence for it.";
 const levels: Level[] = recipes.map(
-  ([id, title, subtitle, story, lesson, theorem, steps]) => {
+  ([id, title, subtitle, lesson, theorem, steps]) => {
     const nodes: ProofNode[] = [];
     let goals: Goal[] = [{ context: [], conclusion: p(theorem) }];
     for (let i = 0; i <= steps.length; i++) {
@@ -246,7 +240,7 @@ const levels: Level[] = recipes.map(
       id,
       title,
       subtitle,
-      story,
+      story: environmentFor(id).arrival,
       lesson,
       theorem,
       nodes,

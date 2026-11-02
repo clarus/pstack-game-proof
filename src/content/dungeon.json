@@ -3,7 +3,7 @@
     "id": "D01",
     "title": "Borrowed key",
     "subtitle": "Every proof begins somewhere.",
-    "story": "I’m Pip, keeper of these halls. The door asks for A. First, let it lend you A.",
+    "story": "I’m Pip. Seven lanterns once lit the path to the Proof Workshop. Help me relight them. First, borrow the door’s glowing seal: assume A, then show it A.",
     "lesson": "To prove an implication, assume its premise. An exact matching fact closes a goal.",
     "theorem": "A -> A",
     "nodes": [
@@ -90,13 +90,16 @@
         "complete": true
       }
     ],
-    "solution": ["advance", "advance"]
+    "solution": [
+      "advance",
+      "advance"
+    ]
   },
   {
     "id": "D02",
     "title": "Open the toolbox",
     "subtitle": "Two facts, one little box.",
-    "story": "This box contains A and B. Open it, then show the door the fact it needs.",
+    "story": "Dusty shelves, one promising chest. Inside are A and B. Unpack both facts, then show this room’s door A.",
     "lesson": "An AND hypothesis contains both facts. Destruct unpacks them; the facts remain reusable.",
     "theorem": "(A /\\ B) -> A",
     "nodes": [
@@ -256,13 +259,17 @@
         "complete": true
       }
     ],
-    "solution": ["advance", "advance", "advance"]
+    "solution": [
+      "advance",
+      "advance",
+      "advance"
+    ]
   },
   {
     "id": "D03",
     "title": "Two locks",
     "subtitle": "Both lights must glow.",
-    "story": "One door, two locks. A and B each have their own proof to finish.",
+    "story": "The bridge has two locking mechanisms. One needs A, the other B. Prove both parts before we cross the dark water.",
     "lesson": "An AND goal requires both parts. Finishing one branch does not finish the room.",
     "theorem": "A -> B -> A /\\ B",
     "nodes": [
@@ -569,13 +576,19 @@
         "complete": true
       }
     ],
-    "solution": ["advance", "advance", "advance", "advance", "advance"]
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
   },
   {
     "id": "D04",
     "title": "Rearrange the tools",
     "subtitle": "Same facts. A new arrangement.",
-    "story": "The old keeper packed these backwards. You have everything you need.",
+    "story": "The old machinery is packed backwards. Our box holds A and B; the mechanism asks for B and A. Unpack, then rebuild.",
     "lesson": "Unpack an AND hypothesis, then build the AND conclusion in the requested order.",
     "theorem": "(A /\\ B) -> B /\\ A",
     "nodes": [
@@ -882,13 +895,19 @@
         "complete": true
       }
     ],
-    "solution": ["advance", "advance", "advance", "advance", "advance"]
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
   },
   {
     "id": "D05",
     "title": "Choose an exit",
     "subtitle": "Only one path needs a proof.",
-    "story": "Two exits await. You carry B. Which promise can you keep?",
+    "story": "Two archways lead out of this mossy courtyard. You carry B. Choose the promise you can prove; one supported exit is enough.",
     "lesson": "An OR goal lets you choose a side. A legal choice can still leave you without the evidence you need.",
     "theorem": "B -> A \\/ B",
     "nodes": [
@@ -1057,13 +1076,17 @@
         "complete": true
       }
     ],
-    "solution": ["advance", "advance", "advance"]
+    "solution": [
+      "advance",
+      "advance",
+      "advance"
+    ]
   },
   {
     "id": "D06",
     "title": "Both possible worlds",
     "subtitle": "Be ready for either possibility.",
-    "story": "The sealed box holds A or B. There is a route to C in either world. We must check both.",
+    "story": "The mirrors show two possible worlds: A or B. A rule reaches C in each. We must check both worlds before trusting the way forward.",
     "lesson": "An OR hypothesis requires both cases. Apply a rule backwards: to reach C using A → C, prove A.",
     "theorem": "(A \\/ B) -> (A -> C) -> (B -> C) -> C",
     "nodes": [
@@ -1780,7 +1803,7 @@
     "id": "D07",
     "title": "The keeper’s gate",
     "subtitle": "Bring every lesson together.",
-    "story": "A stays with you. B or C changes the route. Show me that both worlds reach the gate.",
+    "story": "Here is the gate to the stairs above. A stays with you; B or C changes the route. Show that either world reaches an exit, then bring every lantern to life.",
     "lesson": "OR in a hypothesis means both cases; OR in a goal means a choice. A shared fact can be reused in each branch.",
     "theorem": "A /\\ (B \\/ C) -> (A /\\ B) \\/ (A /\\ C)",
     "nodes": [

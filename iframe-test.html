@@ -33,7 +33,6 @@
         width="320"
         height="245"
         sandbox="allow-scripts allow-same-origin"
-        src="http://localhost:5173/embed.html"
       ></iframe></label
     ><label
       >560 × 315<iframe
@@ -41,8 +40,15 @@
         width="560"
         height="315"
         sandbox="allow-scripts allow-same-origin"
-        src="http://localhost:5173/embed.html"
       ></iframe
     ></label>
+    <script>
+      const player = new URL("embed.html", location.href);
+      player.hostname =
+        location.hostname === "localhost" ? "127.0.0.1" : "localhost";
+      document.querySelectorAll("iframe").forEach((frame) => {
+        frame.src = player.href;
+      });
+    </script>
   </body>
 </html>

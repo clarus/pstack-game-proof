@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.vo
+*.vos
+*.vok
+*.glob
+.*.aux
+.lia.cache
+node_modules/
+dist/

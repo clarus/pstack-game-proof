@@ -30,7 +30,9 @@ npm run check
 npm run test:browser
 ```
 
-Browser installation may need operating-system package permissions. The repository pins npm dependencies and browser revisions in `package-lock.json`. CI provisions the same compiler/library versions; its hosted run is still pending.
+Browser installation may need operating-system package permissions. The repository pins npm dependencies and browser revisions in `package-lock.json`. CI provisions the same compiler/library versions. Its first hosted run passed 79 browser checks but failed two Firefox audio activation checks; hosted confirmation of the virtual audio fix is pending.
+
+On headless Linux, install `pulseaudio` and `pulseaudio-utils`, then use `bash scripts/test-browser-ci.sh` instead of `npm run test:browser`. This starts an isolated PulseAudio server with a virtual output, runs the unchanged browser suite, and removes the server afterward. It does not change the desktop audio server. Playwright arguments can be appended, for example `bash scripts/test-browser-ci.sh --project=firefox`. CI uses this wrapper because Firefox needs an audio output for the live music tests, even though offline synthesis tests work without one.
 
 | Command | What it checks or produces |
 | --- | --- |

@@ -32,6 +32,8 @@ Browser evidence was collected on this Linux workstation with Playwright 1.56.1:
 
 Bugs found and fixed included Rocq tactics that automatically introduce assumptions, context-order mismatch after destruct, stale DOM clicks advancing a replacement state, a missing absolute Vite content-watch path, unavailable audio leaving activation pending, and low-contrast proof labels. The fault and browser cases retain regression coverage for these boundaries.
 
+The CI audio repair was checked locally by reproducing both Firefox failures with an unreachable audio server, then running with an isolated PulseAudio virtual output. All 81 browser checks passed in 229 seconds with zero skipped/flaky cases; this is the latest `artifacts/browser-results.json`. A final focused run of both Firefox regressions and the unavailable-audio fallback passed with wrapper exit status 0 and the temporary server directory removed. Workflow YAML and shell syntax also passed local validation. Hosted confirmation remains pending.
+
 ## Built editions
 
 | Profile | Rooms | Gzip upper bound |
@@ -55,7 +57,7 @@ Review artifacts (untracked, reproducible with `npm run review` and the dev serv
 ## Remaining test and release gates
 
 1. **Local human review:** a beginner should complete D01–D06, explain the two different OR rules, and try a renamed example. Check compact text/taps, screen-reader announcements, zoom, music on headphones/phone speakers, and real background/foreground audio behavior. Record an identified mid-range phone and measured input latency, rendering/audio CPU, and memory before making performance claims.
-2. **Hosted CI:** push only when requested; inspect the first GitHub Actions run. The local commands pass, but the authored GitHub workflow has not run on a hosted runner.
+2. **Hosted CI:** the first hosted run passed 79 browser checks and failed two Firefox live-audio activation checks. Both failures were reproduced locally with an unreachable audio server. CI now installs PulseAudio and runs the unchanged browser suite through `scripts/test-browser-ci.sh`, which provides an isolated virtual output and cleans it up afterward. Push the fix only when requested, then confirm a new hosted run passes before publication.
 3. **Hosted test:** enable GitHub Pages Actions and explicitly dispatch `Publish selected edition to Pages` with `embed-test`. This publishes the one-room test edition. Initial-HTML Player Card URLs derive from the Pages URL; confirm HTTPS redirects, poster, repository asset paths, crawler access and actual framing/CSP/X-Frame-Options headers. The local server cannot establish those facts.
 4. **Actual X test, with the user:** make an authorized test post from the selected account. Record post/page URL, date, X/client versions, viewport, inline play versus link fallback, D01 completion, audio, overlays, and storage on x.com desktop, iOS and Android. The post/site may be public even if the account has few followers. No posting action is automated here.
 5. **Preview release:** after human and X gates pass, explicitly publish `preview`. Record source revision, tested artifact hashes, supported-client limits and remaining issues. Later publish `chapter` for D07. A workflow dispatch replaces the existing Pages edition; it does not create separate secret URLs.

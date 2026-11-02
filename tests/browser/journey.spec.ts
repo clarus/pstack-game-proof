@@ -66,6 +66,8 @@ test("compact card keeps room identity, story access and proof state", async ({
 }) => {
   await page.setViewportSize({ width: 320, height: 245 });
   await page.goto("/#room=D06");
+  await expect(page.locator(".scene")).toBeVisible();
+  await page.getByRole("button", { name: "Start proof" }).click();
   await expect(page.locator(".compact-room")).toContainText("Hall of Mirrors");
   await expect(page.locator(".lantern-count")).toHaveAttribute(
     "aria-label",
@@ -73,9 +75,11 @@ test("compact card keeps room identity, story access and proof state", async ({
   );
   await expect(page.locator(".goal-pane")).toBeVisible();
   await expect(page.locator(".hypotheses")).toBeVisible();
+  await page.getByRole("button", { name: "View room" }).click();
   await page.getByRole("button", { name: "Read room story" }).click();
   await expect(page.locator("dialog")).toContainText("two possible worlds");
   await page.getByRole("button", { name: "Close dialog" }).click();
+  await page.getByRole("button", { name: "Start proof" }).click();
   await expect(page.locator('[data-move="advance"]')).toBeVisible();
 });
 

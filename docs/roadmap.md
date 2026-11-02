@@ -11,12 +11,22 @@ The [game design](game-design.md) owns gameplay and learning goals. This roadmap
 - [x] Local curriculum and X-delivery skills added.
 - [x] Twenty-one representative Rocq theorems compiled with 9.0.1; invalid-proof and runner mutation checks passed during the design work.
 - [x] Seven-room browser game, authored graphs, exhaustive Rocq edge comparison, code-drawn dungeon art, synthesized music/effects, progress codes, static build profiles, and local verification skill.
-- [x] CI and manually dispatched Pages workflows authored; hosted execution remains untested.
+- [x] CI and manually dispatched Pages workflows authored; first hosted audio failures reproduced and fixed with virtual output. A user-provided desktop X screenshot shows the embedded game; the full client matrix remains pending.
 - [ ] Human learning/listening/device checks, actual hosting response checks, and X-client tests.
 
 The core campaign contains **25 levels: 7 dungeon rooms, 6 workshop stations, 6 railway stations, and 6 observatory stages**. The first public slice is the first six dungeon rooms under the recommended release plan. Core content covers conjunction, disjunction, implication, universal and existential quantification, equality, natural numbers, lists, induction, and a robot invariant. Extra rooms for negation, equivalence, deeper list proofs, and additional invariants are separately tracked below.
 
 A representative proof is not a finished level. Each level also needs choices, intermediate states, hints, feedback, art, sound cues, compact layout, replay, and verification. Existing proof fixtures seed that work; they do not count as completed browser levels.
+
+## Compact X presentation follow-up
+
+The user’s 2 November desktop X screenshot shows room 2 and one lit lantern, but exposes tiny text and absent scenery. This is limited evidence of an embedded session, not a full device/client pass.
+
+- [x] Keep a distinct miniature room, Pip, and visible completion/undo changes in wider compact cards. At widths up to 400px, alternate a room-arrival scene and full-width proof play, with View room / Continue proof and a new arrival at each Next room.
+- [x] Increase move labels to 13–14px, facts to 18px, and goals to 20px while keeping both proof panes visible.
+- [x] Move secondary tools into More and provide direct expansion with progress transfer.
+- [x] Exercise every room at 320×245 and the screenshot’s approximate 518×292 size; add menu/resize/expansion regressions.
+- [ ] Confirm the revised layout on the published X post and on physical phones; retain the existing accessibility and release gates.
 
 ## Delivery order and dependencies
 

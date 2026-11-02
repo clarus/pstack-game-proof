@@ -1,6 +1,6 @@
 # Proof Quest
 
-A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapter 1 is implemented locally:** seven dungeon rooms, live proof states, hints, undo, proof scripts, seven distinct pixel-art settings, a seven-lantern story, room-specific synthesized music, and browser-only progress. Chapters 2–4 remain planned.
+A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapter 1 is implemented locally:** seven dungeon rooms, live proof states, hints, undo, proof scripts, seven distinct pixel-art settings, a seven-lantern story, room-specific synthesized music, and browser-only progress. Chapters 2–4 remain planned. Compact cards use larger proof/action text and a miniature room; the smallest cards introduce each room with its scene, then switch to a full-width proof view. View room revisits the scene, More holds secondary tools, and ↗ opens the game with your current progress.
 
 Nothing has been deployed or posted to X. Local iframe success does not establish X compatibility; see the [readiness record](docs/chapter-one-readiness.md).
 

@@ -73,6 +73,8 @@ for (const size of [
   }) => {
     await page.setViewportSize(size);
     await page.goto("/#room=D06");
+    if (size.width <= 400 && size.height <= 500)
+      await page.getByRole("button", { name: "Start proof" }).click();
     for (let i = 0; i < 4; i++)
       await page.locator('[data-move="advance"]').click();
     await expect(page.locator(".hypotheses")).toBeVisible();
@@ -156,6 +158,7 @@ test("audio requires activation and mute survives room navigation", async ({
 test("cross-origin sandbox frame remains playable", async ({ page }) => {
   await page.goto("/iframe-test.html");
   const frame = page.frameLocator('iframe[title="Compact game"]');
+  await frame.getByRole("button", { name: "Start proof" }).click();
   await frame.locator('[data-move="advance"]').click();
   await frame.locator('[data-move="advance"]').click();
   await expect(frame.getByText("Door opened.", { exact: true })).toBeVisible();

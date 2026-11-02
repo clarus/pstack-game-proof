@@ -10,6 +10,16 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto("/#room=D06");
+    if (viewport.height <= 500) {
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.getByRole("button", { name: "Start proof" }).click();
+    }
     for (let i = 0; i < 4; i++)
       await page.locator('[data-move="advance"]').click();
     const result = await new AxeBuilder({ page })

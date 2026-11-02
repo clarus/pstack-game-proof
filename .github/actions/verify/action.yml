@@ -1,0 +1,33 @@
+name: Verify Proof Quest
+description: Check Rocq graphs, mutations, builds, and browser behavior.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - uses: ocaml/setup-ocaml@v3
+      with:
+        ocaml-compiler: '5.4.1'
+    - shell: bash
+      run: opam install -y rocq-prover.9.0.0 rocq-core.9.0.1 rocq-stdlib.9.0.0 coqide-server.9.0.1
+    - shell: bash
+      run: npm ci
+    - shell: bash
+      run: opam exec -- npm run check
+    - shell: bash
+      run: npx playwright install --with-deps chromium firefox webkit
+    - shell: bash
+      run: npm run test:browser
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: verification-evidence
+        path: |
+          artifacts/
+          test-results/
+        retention-days: 14

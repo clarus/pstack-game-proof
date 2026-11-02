@@ -9,8 +9,9 @@ Keep the skills that define this game's engineering workflow in version control 
 | `skills/pstack/create-formal-verification-skill/` | Select a real property, verify it, and generate a project-specific verification skill | Pinned upstream source |
 | `skills/pstack/maintain-formal-verification-skill/` | Reconcile existing verification with code changes | Pinned upstream source |
 | `skills/pstack/statechart/` | Inspect TLA+ results and produce statecharts and counterexample paths | Pinned upstream source and runtime resources |
-| `skills/game/verify-rocq-curriculum/` | Check this game's sample Rocq proofs and preserve the planned transition-verification boundary | Local skill with a working fixture command |
-| `skills/game/check-x-delivery/` | Check the eventual game on the X delivery surface | Local workflow; requires a game and deployed URL |
+| `skills/game/verify-rocq-curriculum/` | Check this game's sample Rocq proofs and route Chapter 1 transition checks | Local fixture workflow |
+| `skills/game/verify-dungeon-graphs/` | Exhaustively compare authored dungeon moves and proof states with Rocq | Generated from the pstack workflow, with tested mutations |
+| `skills/game/check-x-delivery/` | Check local compact/static builds, then authorized X delivery | Local commands implemented; live X evidence pending |
 
 The three pstack skills come from `cursor/plugins`, revision `c742dd61706fbacc1b95f1a20b7b988cf096ce6c`. `skills/pstack/UPSTREAM.json` records every included file's SHA-256; `skills/pstack/LICENSE` retains the upstream MIT license. The statechart test corpus is omitted; its scripts and rendering reference are included unchanged. Its upstream package test command therefore is not a runnable test suite in this subset. Run upstream tests in a full checkout when upgrading or modifying that tool.
 
@@ -25,7 +26,7 @@ There are two different relationships in pstack:
 - Orchestration: a skill directs an agent to another existing skill when that workflow is needed.
 - Generation: the creation skill produces a new project-specific skill, together with checks tied to real code. Future agents rerun those checks; maintenance reconciles them when code changes.
 
-For this project, the future sequence is: implemented proof-state code → creation workflow → a concrete verification skill and check → rerun after relevant changes → maintenance when verification drifts. Generate those system-specific skills after runnable targets exist. Do not create empty “verified” skill stubs now.
+Chapter 1 now follows this sequence: implemented graph/replay code → pstack creation workflow → `verify-dungeon-graphs` and the Rocq adapter → rerun after relevant changes → maintenance when verification drifts. The generated skill links actual files, commands, counterexamples, and source hashes. No TLA+ model was needed for this finite, synchronous proof graph; later event-driven systems may warrant one.
 
 The game's correctness comes from executable checks and their stated coverage, not the number of skills or references between them. Keep the local curriculum and delivery skills short and focused; use pstack where its verification workflow adds value.
 
@@ -48,6 +49,7 @@ On an ordinary writable checkout, native discovery can use relative directory sy
 ```sh
 mkdir -p .agents/skills
 ln -s ../../skills/game/verify-rocq-curriculum .agents/skills/verify-rocq-curriculum
+ln -s ../../skills/game/verify-dungeon-graphs .agents/skills/verify-dungeon-graphs
 ln -s ../../skills/game/check-x-delivery .agents/skills/check-x-delivery
 ln -s ../../skills/pstack/create-formal-verification-skill .agents/skills/create-formal-verification-skill
 ln -s ../../skills/pstack/maintain-formal-verification-skill .agents/skills/maintain-formal-verification-skill
@@ -77,4 +79,4 @@ For pstack, choose a new exact upstream revision and review the diff, including 
 
 For generated formal checks, record property, scope, code locations, assumptions, bounds, tool versions, reproduction command, and the revision actually checked. Update the synchronized revision only after checking correspondence. During initial uncommitted work, record that fact and content hashes rather than claiming the current HEAD includes new files. A passing old model can be stale; a changed model can reveal a real bug.
 
-Current validation: the curriculum runner checks the sample proofs and a deliberately invalid variant. It does not validate browser transitions. The X workflow is ready to guide implementation but cannot supply client evidence before a deployed game exists. The vendored statechart tool is source-pinned, not claimed to have completed a model check.
+Current validation: the curriculum runner checks 21 sample proofs and an invalid variant; the dungeon adapter checks 46 nodes and 102 offered moves against Rocq, including complete proof exports. Seven mutation tests demonstrate rejected defects. Runtime and browser tests are separate evidence. See `verification/dungeon-coverage.json` and `docs/chapter-one-readiness.md`. Local iframe checks do not supply X-client evidence. The vendored statechart tool remains source-pinned and has not run a model check.

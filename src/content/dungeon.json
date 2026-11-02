@@ -1,0 +1,2773 @@
+[
+  {
+    "id": "D01",
+    "title": "Borrowed key",
+    "subtitle": "Every proof begins somewhere.",
+    "story": "I’m Pip, keeper of these halls. The door asks for A. First, let it lend you A.",
+    "lesson": "To prove an implication, assume its premise. An exact matching fact closes a goal.",
+    "theorem": "A -> A",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "A"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HA.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro HA.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n2",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [],
+        "actions": [],
+        "hint": "To prove an implication, assume its premise. An exact matching fact closes a goal.",
+        "complete": true
+      }
+    ],
+    "solution": ["advance", "advance"]
+  },
+  {
+    "id": "D02",
+    "title": "Open the toolbox",
+    "subtitle": "Two facts, one little box.",
+    "story": "This box contains A and B. Open it, then show the door the fact it needs.",
+    "lesson": "An AND hypothesis contains both facts. Destruct unpacks them; the facts remain reusable.",
+    "theorem": "(A /\\ B) -> A",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "atom",
+                "name": "A"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro H.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          }
+        ],
+        "hint": "Assume the premise (intro H.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Unpack both facts",
+            "tactic": "destruct H as [HA HB].",
+            "next": "n2",
+            "feedback": "The package is open. Both facts are now available."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          }
+        ],
+        "hint": "Unpack both facts (destruct H as [HA HB].)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n3",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [],
+        "actions": [],
+        "hint": "An AND hypothesis contains both facts. Destruct unpacks them; the facts remain reusable.",
+        "complete": true
+      }
+    ],
+    "solution": ["advance", "advance", "advance"]
+  },
+  {
+    "id": "D03",
+    "title": "Two locks",
+    "subtitle": "Both lights must glow.",
+    "story": "One door, two locks. A and B each have their own proof to finish.",
+    "lesson": "An AND goal requires both parts. Finishing one branch does not finish the room.",
+    "theorem": "A -> B -> A /\\ B",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "implies",
+                "left": {
+                  "kind": "atom",
+                  "name": "B"
+                },
+                "right": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HA.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro HA.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "atom",
+                "name": "B"
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HB.",
+            "next": "n2",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro HB.)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "B"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Prove both parts",
+            "tactic": "split.",
+            "next": "n3",
+            "feedback": "Two obligations are open. Each needs its own evidence."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Prove both parts (split.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n4",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": "n5",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HB (exact HB.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [],
+        "actions": [],
+        "hint": "An AND goal requires both parts. Finishing one branch does not finish the room.",
+        "complete": true
+      }
+    ],
+    "solution": ["advance", "advance", "advance", "advance", "advance"]
+  },
+  {
+    "id": "D04",
+    "title": "Rearrange the tools",
+    "subtitle": "Same facts. A new arrangement.",
+    "story": "The old keeper packed these backwards. You have everything you need.",
+    "lesson": "Unpack an AND hypothesis, then build the AND conclusion in the requested order.",
+    "theorem": "(A /\\ B) -> B /\\ A",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "B"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro H.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          }
+        ],
+        "hint": "Assume the premise (intro H.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "B"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "A"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Unpack both facts",
+            "tactic": "destruct H as [HA HB].",
+            "next": "n2",
+            "feedback": "The package is open. Both facts are now available."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Unpack both facts (destruct H as [HA HB].)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "B"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "A"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Prove both parts",
+            "tactic": "split.",
+            "next": "n3",
+            "feedback": "Two obligations are open. Each needs its own evidence."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Prove both parts (split.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": "n4",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HB (exact HB.)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n5",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [],
+        "actions": [],
+        "hint": "Unpack an AND hypothesis, then build the AND conclusion in the requested order.",
+        "complete": true
+      }
+    ],
+    "solution": ["advance", "advance", "advance", "advance", "advance"]
+  },
+  {
+    "id": "D05",
+    "title": "Choose an exit",
+    "subtitle": "Only one path needs a proof.",
+    "story": "Two exits await. You carry B. Which promise can you keep?",
+    "lesson": "An OR goal lets you choose a side. A legal choice can still leave you without the evidence you need.",
+    "theorem": "B -> A \\/ B",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "atom",
+                "name": "B"
+              },
+              "right": {
+                "kind": "or",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HB.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro HB.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "B"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Choose the right side",
+            "tactic": "right.",
+            "next": "n2",
+            "feedback": "You chose a side. Now provide evidence for it."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Choose the left side",
+            "tactic": "left.",
+            "next": "dead1",
+            "feedback": "That is a legal Rocq move. This lesson follows the other route; inspect this obligation, then undo."
+          }
+        ],
+        "hint": "Choose the right side (right.)",
+        "complete": false
+      },
+      {
+        "id": "dead1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This choice is legal, but this route is not offered further in this lesson. Undo to try the other side.",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": "n3",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HB (exact HB.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [],
+        "actions": [],
+        "hint": "An OR goal lets you choose a side. A legal choice can still leave you without the evidence you need.",
+        "complete": true
+      }
+    ],
+    "solution": ["advance", "advance", "advance"]
+  },
+  {
+    "id": "D06",
+    "title": "Both possible worlds",
+    "subtitle": "Be ready for either possibility.",
+    "story": "The sealed box holds A or B. There is a route to C in either world. We must check both.",
+    "lesson": "An OR hypothesis requires both cases. Apply a rule backwards: to reach C using A → C, prove A.",
+    "theorem": "(A \\/ B) -> (A -> C) -> (B -> C) -> C",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "or",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "implies",
+                "left": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                },
+                "right": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "atom",
+                      "name": "B"
+                    },
+                    "right": {
+                      "kind": "atom",
+                      "name": "C"
+                    }
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro H.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          }
+        ],
+        "hint": "Assume the premise (intro H.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "or",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "implies",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              },
+              "right": {
+                "kind": "implies",
+                "left": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HAC.",
+            "next": "n2",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro HAC.)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "or",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "implies",
+                "left": {
+                  "kind": "atom",
+                  "name": "B"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              },
+              "right": {
+                "kind": "atom",
+                "name": "C"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro HBC.",
+            "next": "n3",
+            "feedback": "A new assumption is available. Now prove what follows."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Assume the premise (intro HBC.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "or",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Explore both cases",
+            "tactic": "destruct H as [HA | HB].",
+            "next": "n4",
+            "feedback": "Two possible worlds. Both must be solved, with their own facts."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Explore both cases (destruct H as [HA | HB].)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Use rule HAC",
+            "tactic": "apply HAC.",
+            "next": "n5",
+            "feedback": "The rule changes what you need to prove. Supply its premise."
+          }
+        ],
+        "hint": "Use rule HAC (apply HAC.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Use fact HBC",
+            "tactic": "exact HBC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n6",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n6",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Use rule HBC",
+            "tactic": "apply HBC.",
+            "next": "n7",
+            "feedback": "The rule changes what you need to prove. Supply its premise."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Use rule HBC (apply HBC.)",
+        "complete": false
+      },
+      {
+        "id": "n7",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              {
+                "name": "HAC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HAC",
+            "tactic": "exact HAC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HBC",
+            "tactic": "exact HBC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": "n8",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HB (exact HB.)",
+        "complete": false
+      },
+      {
+        "id": "n8",
+        "goals": [],
+        "actions": [],
+        "hint": "An OR hypothesis requires both cases. Apply a rule backwards: to reach C using A → C, prove A.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "D07",
+    "title": "The keeper’s gate",
+    "subtitle": "Bring every lesson together.",
+    "story": "A stays with you. B or C changes the route. Show me that both worlds reach the gate.",
+    "lesson": "OR in a hypothesis means both cases; OR in a goal means a choice. A shared fact can be reused in each branch.",
+    "theorem": "A /\\ (B \\/ C) -> (A /\\ B) \\/ (A /\\ C)",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "or",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              },
+              "right": {
+                "kind": "or",
+                "left": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "B"
+                  }
+                },
+                "right": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact is not available yet. Look at your hypotheses; first introduce an assumption."
+          },
+          {
+            "id": "advance",
+            "label": "Assume the premise",
+            "tactic": "intro H.",
+            "next": "n1",
+            "feedback": "A new assumption is available. Now prove what follows."
+          }
+        ],
+        "hint": "Assume the premise (intro H.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "or",
+                    "left": {
+                      "kind": "atom",
+                      "name": "B"
+                    },
+                    "right": {
+                      "kind": "atom",
+                      "name": "C"
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Choose the left side",
+            "tactic": "left.",
+            "next": "dead1",
+            "feedback": "That is a legal Rocq move. This lesson follows the other route; inspect this obligation, then undo."
+          },
+          {
+            "id": "advance",
+            "label": "Unpack both facts",
+            "tactic": "destruct H as [HA HBC].",
+            "next": "n2",
+            "feedback": "The package is open. Both facts are now available."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact H",
+            "tactic": "exact H.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Unpack both facts (destruct H as [HA HBC].)",
+        "complete": false
+      },
+      {
+        "id": "dead1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "H",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "atom",
+                    "name": "A"
+                  },
+                  "right": {
+                    "kind": "or",
+                    "left": {
+                      "kind": "atom",
+                      "name": "B"
+                    },
+                    "right": {
+                      "kind": "atom",
+                      "name": "C"
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "B"
+              }
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This choice is legal, but this route is not offered further in this lesson. Undo to try the other side.",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HBC",
+                "type": {
+                  "kind": "or",
+                  "left": {
+                    "kind": "atom",
+                    "name": "B"
+                  },
+                  "right": {
+                    "kind": "atom",
+                    "name": "C"
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Explore both cases",
+            "tactic": "destruct HBC as [HB | HC].",
+            "next": "n3",
+            "feedback": "Two possible worlds. Both must be solved, with their own facts."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HBC",
+            "tactic": "exact HBC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Explore both cases (destruct HBC as [HB | HC].)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Choose the left side",
+            "tactic": "left.",
+            "next": "n4",
+            "feedback": "You chose a side. Now provide evidence for it."
+          }
+        ],
+        "hint": "Choose the left side (left.)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "B"
+              }
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Prove both parts",
+            "tactic": "split.",
+            "next": "n5",
+            "feedback": "Two obligations are open. Each needs its own evidence."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Prove both parts (split.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n6",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n6",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HB",
+                "type": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "B"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HB",
+            "tactic": "exact HB.",
+            "next": "n7",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HB (exact HB.)",
+        "complete": false
+      },
+      {
+        "id": "n7",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "or",
+              "left": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "B"
+                }
+              },
+              "right": {
+                "kind": "and",
+                "left": {
+                  "kind": "atom",
+                  "name": "A"
+                },
+                "right": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Use fact HC",
+            "tactic": "exact HC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "advance",
+            "label": "Choose the right side",
+            "tactic": "right.",
+            "next": "n8",
+            "feedback": "You chose a side. Now provide evidence for it."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Choose the right side (right.)",
+        "complete": false
+      },
+      {
+        "id": "n8",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "and",
+              "left": {
+                "kind": "atom",
+                "name": "A"
+              },
+              "right": {
+                "kind": "atom",
+                "name": "C"
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "label": "Prove both parts",
+            "tactic": "split.",
+            "next": "n9",
+            "feedback": "Two obligations are open. Each needs its own evidence."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Use fact HC",
+            "tactic": "exact HC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Prove both parts (split.)",
+        "complete": false
+      },
+      {
+        "id": "n9",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "A"
+            }
+          },
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "label": "Use fact HC",
+            "tactic": "exact HC.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          },
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": "n10",
+            "feedback": "That fact matches exactly. One goal is closed."
+          }
+        ],
+        "hint": "Use fact HA (exact HA.)",
+        "complete": false
+      },
+      {
+        "id": "n10",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "HA",
+                "type": {
+                  "kind": "atom",
+                  "name": "A"
+                }
+              },
+              {
+                "name": "HC",
+                "type": {
+                  "kind": "atom",
+                  "name": "C"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "atom",
+              "name": "C"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice2",
+            "label": "Assume the premise",
+            "tactic": "intro Hnew.",
+            "next": null,
+            "feedback": "This tactic does not fit the active goal’s outer operator."
+          },
+          {
+            "id": "advance",
+            "label": "Use fact HC",
+            "tactic": "exact HC.",
+            "next": "n11",
+            "feedback": "That fact matches exactly. One goal is closed."
+          },
+          {
+            "id": "choice1",
+            "label": "Use fact HA",
+            "tactic": "exact HA.",
+            "next": null,
+            "feedback": "That fact does not match the active goal. Compare the two formulas."
+          }
+        ],
+        "hint": "Use fact HC (exact HC.)",
+        "complete": false
+      },
+      {
+        "id": "n11",
+        "goals": [],
+        "actions": [],
+        "hint": "OR in a hypothesis means both cases; OR in a goal means a choice. A shared fact can be reused in each branch.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  }
+]

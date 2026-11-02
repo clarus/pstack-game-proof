@@ -5,7 +5,9 @@ description: Review or test this game's X Player Card delivery, compact interact
 
 # Check X delivery
 
-Read the X delivery and presentation section of `docs/game-design.md`. Resolve paths from the repository root. Inspect the implemented app and deployment before choosing commands; no app or deployment checker exists at the design baseline.
+Read the X delivery and presentation section of `docs/game-design.md` and `docs/chapter-one-readiness.md`. Resolve paths from the repository root. The current user direction is local/browser checks first, then a separately authorized hosted/X test.
+
+Run `npm run check` followed by `npm run test:browser`. Browser prerequisites and preview commands are in `README.md`. Three builds are produced: `dist/chapter` (seven rooms), `dist/preview` (six), and `dist/embed-test` (one neutral card test). Set `SITE_URL` to the intended HTTPS root before building. `artifacts/build-*.json` records exact public files, hashes, and the conservative gzip total. `tests/browser/builds.spec.ts` exercises actual static files under a subdirectory, metadata, and content isolation. CI checks on push/PR; Pages publication requires a manual workflow dispatch and has not been run.
 
 Verify crawler-visible HTTPS Player Card metadata, absolute player/poster URLs, the dedicated embed route, and compatible framing headers. Inspect actual production responses and redirect behavior, not just source templates.
 

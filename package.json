@@ -1,0 +1,33 @@
+{
+  "name": "proof-quest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.13.1 <25"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "content": "node scripts/generate-content.ts",
+    "test": "node --test --test-isolation=none tests/*.test.ts",
+    "test:rocq": "python3 scripts/check_rocq.py && python3 scripts/verify_graphs.py",
+    "test:browser": "playwright test",
+    "build": "node scripts/build.ts",
+    "build:all": "node scripts/build.ts chapter && node scripts/build.ts preview && node scripts/build.ts embed-test",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "npm run content:check && npm run typecheck && npm test && npm run test:rocq && npm run test:mutations && npm run build:all",
+    "test:mutations": "python3 -m unittest discover -s tests -p test_verification.py -v",
+    "content:check": "node scripts/generate-content.ts --check",
+    "review": "node scripts/capture-review.mjs",
+    "format": "prettier --write \"src/*.{ts,css}\" \"scripts/*.{ts,mjs}\" \"tests/**/*.ts\" \"*.{ts,html,json}\""
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.0",
+    "@playwright/test": "1.56.1",
+    "@types/node": "24.10.0",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Local cross-origin embed checks</title>
+    <style>
+      body {
+        font: 16px system-ui;
+        background: #ddd;
+        padding: 20px;
+      }
+      iframe {
+        display: block;
+        border: 1px solid #777;
+        margin: 15px 0;
+      }
+      label {
+        display: block;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Local embed harness</h1>
+    <p>
+      This tests a separate origin and iframe restrictions. It does not
+      establish X compatibility.
+    </p>
+    <label
+      >320 × 245<iframe
+        title="Compact game"
+        width="320"
+        height="245"
+        sandbox="allow-scripts allow-same-origin"
+        src="http://localhost:5173/embed.html"
+      ></iframe></label
+    ><label
+      >560 × 315<iframe
+        title="Wide game"
+        width="560"
+        height="315"
+        sandbox="allow-scripts allow-same-origin"
+        src="http://localhost:5173/embed.html"
+      ></iframe
+    ></label>
+  </body>
+</html>

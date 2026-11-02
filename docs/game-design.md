@@ -6,7 +6,7 @@ The [implementation roadmap](roadmap.md) expands the milestones into tasks, list
 
 Build a small adventure that teaches how Rocq transforms a proof state. Players progress through four chapters in order, starting with six dungeon rooms. They select moves and witnesses from authored choices; they never need to type proof syntax. Each move reveals its Rocq tactic and the resulting hypotheses and goals.
 
-X is the primary delivery surface. A complete short puzzle must work inside a compact card. Fullscreen and the standalone page provide more room, but are not required to finish the campaign. Rocq runs locally and in CI to validate content and transitions; it is neither embedded in the game nor called through a runtime proof service.
+X is the primary delivery surface. The user has prioritized local/browser implementation and testing first, with hosted/X testing deferred until they can participate. This changes task order, not the final X acceptance gate. A complete short puzzle must work inside a compact card. Fullscreen and the standalone page provide more room, but are not required to finish the campaign. Rocq runs locally and in CI to validate content and transitions; it is neither embedded in the game nor called through a runtime proof service.
 
 Selected direction: curious programmers new to proofs; English first with translation-ready content; warm pixel art drawn in code with a shared palette; live synthesized effects and light chapter music; one guide and brief dialogue. Actions use plain language alongside tactic names, and the active proof state remains visible. Target roughly 1–3 minutes per level, with longer proofs divided into stages. Release six dungeon rooms first, then chapter updates. Use GitHub Pages as the first static-hosting candidate, subject to an actual X embed test. No application backend is required.
 
@@ -155,7 +155,7 @@ No login is needed to begin or finish a room. Add Continue, Next, and Chapters c
 
 Provide Copy progress / Restore progress with a compact versioned code and an optional resume link carrying the token in its fragment. Validate format, size, versions, IDs, and replay bounds before applying an import; offer a selectable text fallback if clipboard access fails. This supports manual transfer across browsers or from X to the standalone page without a backend. Do not promise automatic cross-device synchronization. Clearing site data or using private browsing can remove saves, and embedded storage may be blocked or partitioned from standalone storage. Chapter access does not depend on a stored unlock flag. See [localStorage behavior](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [storage partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning).
 
-Provisional first-load ceiling: 150 KiB gzipped for the first room's HTML, CSS, JavaScript, data, and required art combined. This is a proposed budget, not a measured result. Fetch later chapters on demand. Rocq, proof fixtures, skills, TLA+ tooling, and development dependencies never enter public assets. Avoid custom fonts and third-party runtime requests initially.
+Provisional first-load ceiling: 150 KiB gzipped for the first room's HTML, CSS, JavaScript, data, and required art combined. The Chapter 1 build now enforces this budget; current measurements and limits are in `docs/chapter-one-readiness.md`. Fetch later chapters on demand. Rocq, proof fixtures, skills, TLA+ tooling, and development dependencies never enter public assets. Avoid custom fonts and third-party runtime requests initially.
 
 Sharing is optional and user initiated. Start with a level poster and canonical URL; dynamic result images can follow. Shared completion is a player claim, not a server-validated high score. Competitive leaderboards and accounts are outside the initial scope.
 
@@ -165,7 +165,7 @@ Use a finite authored proof-state graph per level initially. Nodes contain struc
 
 An authoring tool may generate graphs offline. The browser loads data and applies deterministic transitions. There is no general Rocq parser, elaborator, tactic interpreter, or LLM at runtime. Animations consume transition results and cannot decide success.
 
-Proposed shapes, not existing interfaces:
+The broader campaign shapes below remain a design sketch. Chapter 1 implements the narrower `Level`, `ProofNode`, `Action`, `Goal`, and `Formula` types in `src/model.ts`: fixed A/B/C parameters, per-node ordered goals, first-goal moves, and separate accepted/rejected edges. Quantifier/induction types await later chapters.
 
 ```text
 Level: id, contentVersion, theorem, declarations, startNode, nodes, edges

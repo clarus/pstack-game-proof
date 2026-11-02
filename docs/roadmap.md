@@ -1,6 +1,6 @@
 # Proof Quest implementation roadmap
 
-Status: implementation roadmap, updated 2 November 2026. The user selected A for Q1–Q9, with an explicit requirement that the proof state remain visible. GitHub Pages is the first hosting candidate for Q10, subject to an actual X embed test. Chapter navigation and persistence are browser-only.
+Status: Chapter 1 implemented for local/browser review, updated 2 November 2026. See [readiness evidence](chapter-one-readiness.md) for test scope and remaining release gates. The user selected A for Q1–Q9, with an explicit requirement that the proof state remain visible. GitHub Pages is the first hosting candidate for Q10, subject to an actual X embed test. Chapter navigation and persistence are browser-only.
 
 The [game design](game-design.md) owns gameplay and learning goals. This roadmap owns task order, level inventory, production work, testing, and release gates. Fixed decisions: four chapters in sequence, X-first delivery, choice-based interaction, and Rocq only during development and CI. Keep these documents aligned when a decision changes scope.
 
@@ -10,7 +10,9 @@ The [game design](game-design.md) owns gameplay and learning goals. This roadmap
 - [x] Three pstack verification skills vendored with license, pinned revision, and hashes.
 - [x] Local curriculum and X-delivery skills added.
 - [x] Twenty-one representative Rocq theorems compiled with 9.0.1; invalid-proof and runner mutation checks passed during the design work.
-- [ ] Browser game, level graph format, Rocq state comparison, graphics, sound, CI, hosting, and actual X client tests.
+- [x] Seven-room browser game, authored graphs, exhaustive Rocq edge comparison, code-drawn dungeon art, synthesized music/effects, progress codes, static build profiles, and local verification skill.
+- [x] CI and manually dispatched Pages workflows authored; hosted execution remains untested.
+- [ ] Human learning/listening/device checks, actual hosting response checks, and X-client tests.
 
 The core campaign contains **25 levels: 7 dungeon rooms, 6 workshop stations, 6 railway stations, and 6 observatory stages**. The first public slice is the first six dungeon rooms under the recommended release plan. Core content covers conjunction, disjunction, implication, universal and existential quantification, equality, natural numbers, lists, induction, and a robot invariant. Extra rooms for negation, equivalence, deeper list proofs, and additional invariants are separately tracked below.
 
@@ -21,61 +23,65 @@ A representative proof is not a finished level. Each level also needs choices, i
 | Phase | Work | Depends on | Exit evidence |
 | --- | --- | --- | --- |
 | P0 | Establish the selected tool/build foundation | Recorded preferences | Reproducible development commands |
-| P1 | One-room playable slice and X feasibility | P0 | D01 plays in the target surface; its transitions agree with Rocq; measured art/audio/bundle sample |
+| P1 | One-room local playable slice | P0 | D01 plays locally and in compact browser frames; Rocq, art/audio/bundle sample checked |
 | P2 | Reusable authoring, verification, and presentation systems | P1 | Branching and scoped witness examples checked; CI catches representative faults |
-| P3 | Six-room dungeon preview | P2 | D01–D06 meet the level checklist; beginner and X client evidence |
-| P4 | Dungeon finale and workshop | P3 | D07 and W01–W06 complete, including witness scope checks |
+| P3 | Seven-room local dungeon; six-room public preview later | P2 | Local checks first; beginner and X evidence before public release |
+| P4 | Workshop | Local dungeon | D07 is already implemented; W01–W06 and witness scope checks remain |
 | P5 | Induction railway | P4 | N01–N06 complete; induction contexts match Rocq |
 | P6 | Invariant observatory | P5 | O01–O06 complete; reachability proof and simulator conformance checked |
 | P7 | Full-campaign beta and release | P3–P6 | All 25 levels pass release gates; rollback rehearsal succeeds |
 | P8 | Maintenance and selected extensions | P7 | Regressions fixed; extensions meet the same checks |
 
-The early dependency chain is the proof-state representation, the Rocq comparison adapter, and real X embedding. Resolve these before mass-producing content. After P1, chapter art and music can be produced alongside content work using the established palette, formats, and budgets. This is workstream sequencing, not an instruction to spawn agents.
+The user changed the sequence to local/browser-first implementation of all seven dungeon rooms. The proof-state representation and Rocq adapter are implemented. Real X embedding is deferred until the local chapter is reviewable and the user can participate; it remains a release gate before publishing the preview. This explicitly supersedes the earlier X-before-content dependency. After P1, chapter art and music can be produced alongside content work using the established palette, formats, and budgets. This is workstream sequencing, not an instruction to spawn agents.
 
 Do not assign calendar promises until P1 establishes authoring effort and device behavior. After P1, measure the time to author, check, illustrate, and playtest a representative branching room; use that to estimate chapter batches, with explicit allowance for induction and invariant work.
 
 ## P0 — Decisions and foundation
 
 - [x] F01 Record Q1–Q9 selections, visible proof-state requirement, and GitHub Pages as the Q10 candidate with an X feasibility gate.
-- [ ] F02 Choose the smallest browser toolchain that supports typed content, static assets, accessible controls, and reproducible builds. Prototype plain TypeScript and semantic HTML first; adopt additional UI machinery only for demonstrated needs.
-- [ ] F03 Pin the runtime/build tools, package lockfile, Rocq compiler, imported library versions, and local verification adapter. Document a clean-checkout setup.
-- [ ] F04 Establish separate source, content, authoring, verification, and generated-public-output locations. Configure deployment to publish only built public assets.
-- [ ] F05 Add development, production build, fixture check, and size-report commands. Add graph checks when implemented; avoid documenting commands that do not exist.
+- [x] F02 Choose the smallest browser toolchain that supports typed content, static assets, accessible controls, and reproducible builds. Prototype plain TypeScript and semantic HTML first; adopt additional UI machinery only for demonstrated needs.
+- [x] F03 Pin the runtime/build tools, package lockfile, Rocq compiler, imported library versions, and local verification adapter. Document a clean-checkout setup.
+- [x] F04 Establish separate source, content, authoring, verification, and generated-public-output locations. Configure deployment to publish only built public assets.
+- [x] F05 Add development, production build, fixture check, and size-report commands. Add graph checks when implemented; avoid documenting commands that do not exist.
 - [ ] F06 Create a small terminology glossary: hypothesis, goal, branch, witness, arbitrary variable, induction hypothesis, invariant. Separate text keys from logic identifiers for later translation.
-- [ ] F07 Define a task record convention: stable ID, status, dependencies, implementation link, and verification evidence. Tick this roadmap only when its exit evidence exists.
+- [x] F07 Define a task record convention: stable ID, status, dependencies, implementation link, and verification evidence. Tick this roadmap only when its exit evidence exists.
 
 Exit: another checkout can run the actual available commands, and selected product preferences are recorded. Preference answers authorize design choices, not purchases or posting to accounts.
 
-## P1 — One complete room in X
+## P1 — One complete room locally; X test deferred
 
-- [ ] V01 Build D01 with a visible goal, available facts, two or three choices, feedback, undo, reset, completion, and a proof-script view.
-- [ ] V02 Represent D01 as a finite authored graph with stable identifiers, typed actions, and explicit proof states. Keep animation state separate.
-- [ ] V03 Implement the smallest local Rocq adapter needed to replay D01's moves and compare before/after contexts and goals. Independently check the comparison with a deliberately wrong successor state.
+- [x] V01 Build D01 with a visible goal, available facts, two or three choices, feedback, undo, reset, completion, and a proof-script view.
+- [x] V02 Represent D01 as a finite authored graph with stable identifiers, typed actions, and explicit proof states. Keep animation state separate.
+- [x] V03 Implement the smallest local Rocq adapter needed to replay D01's moves and compare before/after contexts and goals. Independently check the comparison with a deliberately wrong successor state.
 - [ ] V04 Build compact and expanded layouts with the active goal and hypothesis pane always visible. Test 320×245, 375×245, and 560×315, then actual X dimensions. Include keyboard input and a touch-only playthrough; reduce decoration before hiding proof state.
-- [ ] V05 Produce one representative room background, player/guide silhouette, door, fact token, and completion effect. Verify readable proof text over the art.
-- [ ] V06 Build one generated sound cue and a short optional music loop to measure audio startup, CPU, and payload before selecting the final sound implementation.
+- [x] V05 Produce one representative room background, player/guide silhouette, door, fact token, and completion effect. Verify readable proof text over the art.
+- [x] V06 Build one generated sound cue and a short optional music loop to measure audio startup, CPU, and payload before selecting the final sound implementation.
 - [ ] V07 Test GitHub Pages with real static HTTPS share/embed entry pages, initial-HTML Player Card metadata, and a poster. Check actual response headers and repository-base-path handling; do not assume configurable headers or server rewrites. Generate distinct HTML share pages when metadata must differ by chapter.
 - [ ] V08 With an authorized test post, exercise D01 on x.com desktop, iOS, and Android. Record URL, versions, viewport, controls, overlays, storage, audio, and fullscreen behavior.
 - [ ] V09 Measure the first room's full gzipped download and interaction responsiveness on an identified mid-range phone. Record device and network assumptions. Start with the design's provisional 150 KiB ceiling.
 - [ ] V10 Observe a small beginner playtest: can a person identify the goal, use the assumption, and explain why the move works? Record confusion and revise the room.
 
-Exit: a complete proof puzzle works in the intended X surface, and its logical transitions are checked. If a required client cannot embed it, document the exact limitation and resolve the delivery decision before scaling production. A standalone fallback remains useful but does not substitute for X-first acceptance.
+Local exit: a complete proof puzzle works in the browser and compact test frames, with Rocq-checked transitions. The hosted/X portion of V07–V09 is deferred by user direction. Before public preview release, test the real X surface and document any limitation. A standalone fallback does not substitute for X-first acceptance.
+
+Local V04 evidence covers 320×245, 375×245, 560×315 and a 390×844 phone viewport, keyboard controls, branch inspection and denied storage. Physical touch-device and X checks remain pending. V09 has a passing build budget, but no physical-phone performance claim.
 
 ## P2 — Authoring and shared systems
 
-- [ ] E01 Specify the level schema: declarations, theorem, nodes, ordered goals, branch contexts, typed actions, edges, exact tactic mapping, hints, display text, and asset references.
-- [ ] E02 Build structural validation for missing references, duplicate IDs, invalid scopes, unreachable authored nodes, unresolved obligations, and terminal-state inconsistencies.
-- [ ] E03 Implement deterministic transition/replay code using the same published level data as the UI. Distinguish invalid actions, valid dead ends, and successful moves.
-- [ ] E04 Implement branch focus, branch completion, undo, restart, and exact action-history export. Test repeated clicks and delayed animation callbacks against stale state.
+Completed E01/E02/E06/E07 apply to the restricted Chapter 1 propositional schema. E04 offers inspection of any branch while moves operate on the first goal; it does not implement arbitrary Rocq focus. E05 still needs quantifiers/dependent contexts for Chapter 2. E09 has automatic Continue on load, Next, Chapters, hints, glossary, proof scripts, system reduced-motion preference, and sound controls; later campaign-wide UI remains unfinished. E11 is unnecessary for the current single small chapter bundle; defer asynchronous pack loading until more chapters exist. E13 was evaluated: synchronous replay, history-derived completion, and stale-click guards currently warrant real-code tests and direct Rocq comparison; no TLA+ claim is made.
+
+- [x] E01 Specify the level schema: declarations, theorem, nodes, ordered goals, branch contexts, typed actions, edges, exact tactic mapping, hints, display text, and asset references.
+- [x] E02 Build structural validation for missing references, duplicate IDs, invalid scopes, unreachable authored nodes, unresolved obligations, and terminal-state inconsistencies.
+- [x] E03 Implement deterministic transition/replay code using the same published level data as the UI. Distinguish invalid actions, valid dead ends, and successful moves.
+- [x] E04 Implement branch focus, branch completion, undo, restart, and exact action-history export. Test repeated clicks and delayed animation callbacks against stale state.
 - [ ] E05 Extend the Rocq adapter to compare full contexts, definitions, goal ordering, binder identity, dependencies, and existential-variable state. Test normalization independently on small fixtures.
-- [ ] E06 Check every reachable published edge. Preserve separate graph nodes when equivalence across histories has not been established. Record the scope of any bounded sequence tests.
-- [ ] E07 Export completed routes as readable Rocq scripts, with correct goal focus and branches, and compile representative routes through `Qed`.
-- [ ] E08 Add namespaced `localStorage` autosaves, schema/content versions, completed levels, current level/action history, settings, and replay validation. Handle quota/permission failures, corrupt saves, migration/reset, and an in-memory fallback. Add Copy progress / Restore progress and optional fragment-based resume links with bounded validation and a non-clipboard fallback. Do not assume iframe and standalone storage are shared or promise automatic cross-device sync.
+- [x] E06 Check every reachable published edge. Preserve separate graph nodes when equivalence across histories has not been established. Record the scope of any bounded sequence tests.
+- [x] E07 Export completed routes as readable Rocq scripts, with correct goal focus and branches, and compile representative routes through `Qed`.
+- [x] E08 Add namespaced `localStorage` autosaves, schema/content versions, completed levels, current level/action history, settings, and replay validation. Handle quota/permission failures, corrupt saves, migration/reset, and an in-memory fallback. Add Copy progress / Restore progress and optional fragment-based resume links with bounded validation and a non-clipboard fallback. Do not assume iframe and standalone storage are shared or promise automatic cross-device sync.
 - [ ] E09 Add Continue, Next, Chapters, a campaign map, hint ladder, glossary, sound settings, reduced-motion settings, and proof-script panel. Keep every released chapter directly accessible; recommend sequential learning without requiring saved unlocks. Mark unreleased chapters coming soon. Use hash navigation so refresh works on static hosting.
 - [ ] E10 Build an authoring preview that can jump to a node, inspect its context/choices, and show verification failures. Start with repository files and a simple preview, not a full graphical level editor.
 - [ ] E11 Establish chapter pack loading, progress/error states, and retry behavior. A failed download must preserve the active proof and leave recovery possible.
-- [ ] E12 Generate project-specific verification skills only once actual code and checks exist. Candidate targets: branch completion, witness scope, and undo/replay. Use the pinned pstack creation and maintenance workflows.
-- [ ] E13 Evaluate whether a small TLA+ model adds coverage for loading, reset, animation, and save interleavings. If used, map actions to code, record bounds, and reproduce counterexamples in real-code tests. Do not use a model pass as evidence for Rocq semantics.
+- [x] E12 Generate project-specific verification skills only once actual code and checks exist. Candidate targets: branch completion, witness scope, and undo/replay. Use the pinned pstack creation and maintenance workflows.
+- [x] E13 Evaluate whether a small TLA+ model adds coverage for loading, reset, animation, and save interleavings. If used, map actions to code, record bounds, and reproduce counterexamples in real-code tests. Do not use a model pass as evidence for Rocq semantics.
 
 Exit: the framework handles conjunction/disjunction branching and an existential witness example before the whole workshop is authored. A false-completion mutation and a scope-leak mutation are caught.
 
@@ -100,16 +106,16 @@ All propositions below quantify the displayed propositional variables. The first
 
 | ID | Level and proof | Production focus | Status |
 | --- | --- | --- | --- |
-| D01 | Borrowed key: `A -> A` | Introduce a temporary assumption; `exact`; first-room onboarding | Planned |
-| D02 | Open the toolbox: `(A /\ B) -> A` | Unpack facts; keep unused evidence available | Planned |
-| D03 | Two locks: `A -> B -> A /\ B` | Two subgoals; visible branch count; completion waits for both | Planned |
-| D04 | Rearrange the tools: `(A /\ B) -> B /\ A` | Combine destruct and split; demonstrate reusable facts | Planned |
-| D05 | Choose an exit: `B -> A \/ B` | Right is useful; left is legal but leads to an unhelpful goal | Planned |
-| D06 | Both possible worlds: `(A \/ B) -> (A -> C) -> (B -> C) -> C` | Guided implication application, then two independent cases | Planned |
-| D07 | Finale: `A /\ (B \/ C) -> (A /\ B) \/ (A /\ C)` | Nested branching and transfer question on the two OR rules | Planned |
+| D01 | Borrowed key: `A -> A` | Introduce a temporary assumption; `exact`; first-room onboarding | Implemented; local checks, human/X gate pending |
+| D02 | Open the toolbox: `(A /\ B) -> A` | Unpack facts; keep unused evidence available | Implemented; local checks, human/X gate pending |
+| D03 | Two locks: `A -> B -> A /\ B` | Two subgoals; visible branch count; completion waits for both | Implemented; local checks, human/X gate pending |
+| D04 | Rearrange the tools: `(A /\ B) -> B /\ A` | Combine destruct and split; demonstrate reusable facts | Implemented; local checks, human/X gate pending |
+| D05 | Choose an exit: `B -> A \/ B` | Right is useful; left is legal but leads to an unhelpful goal | Implemented; local checks, human/X gate pending |
+| D06 | Both possible worlds: `(A \/ B) -> (A -> C) -> (B -> C) -> C` | Guided implication application, then two independent cases | Implemented; local checks, human/X gate pending |
+| D07 | Finale: `A /\ (B \/ C) -> (A /\ B) \/ (A /\ C)` | Nested branching and transfer question on the two OR rules | Implemented; local checks, human/X gate pending |
 
 - [ ] D08 Test D01–D06 as a continuous first-time session before releasing the preview.
-- [ ] D09 Add D07, the dungeon completion scene, and transition into the workshop.
+- [x] D09 Add D07 and the dungeon completion scene; the chapter menu explicitly marks the workshop coming soon.
 
 Chapter gate: users can explain why an OR hypothesis creates two obligations while an OR goal offers one choice. Verification must catch a missing disjunction branch and premature completion.
 
@@ -168,40 +174,46 @@ Chapter gate: the player can use a hypothesis about a smaller structure and expl
 
 Chapter gate: initialization and preservation connect to all reachable executions, and the broken move is demonstrated with a reproducible counterexample.
 
+Chapter 1 production evidence is in [readiness](chapter-one-readiness.md). D08 remains a human beginner session; automated tests complete all seven rooms and cover restore/undo. Level release approval and transfer-learning evidence remain pending.
+
 ## Graphics and animation workstream
 
 Selected direction, Q3A/Q4A: warm pixel-art environments drawn in code with a shared palette, plus semantic HTML proof controls. Keep symbols as crisp text rather than baking them into sprites. The active proof-state pane remains visible over or beside the decorative scene.
 
-- [ ] G01 Produce a small style sheet: palette, silhouettes, scale, contrast, typography, icon meanings, and motion rules. Compare candidate styles in the actual card dimensions.
-- [ ] G02 Make a production inventory: player/guide, fact and goal markers, conjunction/disjunction symbols, branch badges, buttons, progress markers, and settings icons.
+- [x] G01 Produce a small style sheet: palette, silhouettes, scale, contrast, typography, icon meanings, and motion rules. Compare candidate styles in the actual card dimensions.
+- [x] G02 Make a production inventory: player/guide, fact and goal markers, conjunction/disjunction symbols, branch badges, buttons, progress markers, and settings icons.
 - [ ] G03 Dungeon kit: doors, locks, toolbox, reusable evidence tokens, split-room indicator, and chapter completion scene.
 - [ ] G04 Workshop kit: workbench, certificate packages, witness characters, rule machine, and gate.
 - [ ] G05 Railway kit: zero/successor blocks, carriage and coupling pieces, empty train, induction certificate, and base/step station markers.
 - [ ] G06 Observatory kit: robot, track, fuel gauge, trace timeline, invariant indicator, and broken-move visualization.
 - [ ] G07 Implement brief animations for introduce, unpack, split, choose, apply, rewrite, close branch, and finish level. Every animation must have a clear static/reduced-motion equivalent and be interruptible without changing proof state.
-- [ ] G08 Build the selected asset pipeline: source vectors or sprite definitions, reproducible raster/atlas generation where useful, compression, and per-chapter loading. Keep generation inputs and licenses/provenance alongside assets.
+- [x] G08 Build the selected asset pipeline: source vectors or sprite definitions, reproducible raster/atlas generation where useful, compression, and per-chapter loading. Keep generation inputs and licenses/provenance alongside assets.
 - [ ] G09 If generated raster art is selected, produce references and approved variants, normalize palette and dimensions, remove unwanted lettering/artifacts, and inspect at real display size. Ship optimized assets, not generation tools.
 - [ ] G10 Produce card posters, chapter thumbnails, favicon, share artwork, and release screenshots. Include readable alt text where supported.
 - [ ] G11 Check visual consistency, color-independent state cues, small-screen readability, atlas edges/scaling, and payload. Report asset contribution to the download budget.
 
 Exit: every core interaction is understandable without animation, and every chapter has a coherent asset kit. Source-generated graphics are a production option; this plan does not require all art to be code.
 
+Chapter 1 implementation uses a shared code-drawn hall, Pip, toolbox, door-opening state, branch badges and proof-pane transition; G03/G07 retain richer per-action/chapter kits as future work. G10 has a poster, favicon, screenshots and video; full-campaign artwork is incomplete. G11 has automated contrast checks and visual inspection; physical-device readability remains a human gate. See [art/audio direction](art-and-audio.md).
+
 ## Sound and music workstream
 
 Selected direction, Q5A: deterministic browser synthesis with short effects and four variations on one musical theme. No audio files are required. Songs, patches, and event cues are versioned data/code; sound is optional and never carries unique instructional information.
 
-- [ ] S01 Create an audio style sheet: instrument palette, tempo range, loudness targets, cue meanings, and silence policy. Avoid punishing error sounds.
-- [ ] S02 Prototype a small Web Audio synthesizer and sequencer. Compare pulse/wave/noise voices with a simpler tonal implementation; retain the smallest option that meets the chosen style.
+- [x] S01 Create an audio style sheet: instrument palette, tempo range, loudness targets, cue meanings, and silence policy. Avoid punishing error sounds.
+- [x] S02 Prototype a small Web Audio synthesizer and sequencer. Compare pulse/wave/noise voices with a simpler tonal implementation; retain the smallest option that meets the chosen style.
 - [ ] S03 Compose a shared motif and chapter arrangements: quiet dungeon pulse, workshop percussion, railway rhythm, observatory atmosphere. Store note sequences and patches in source.
 - [ ] S04 Generate cues for selection, valid move, unavailable move, new branch, closed goal, hint, undo, and chapter completion. Limit repeated cues during rapid input.
 - [ ] S05 Synchronize optional transitions to musical boundaries and preserve musical position where useful. Music state must not affect deterministic proof replay.
-- [ ] S06 Implement explicit user activation, mute and volume controls, suspended-context recovery, background pause, resume, and disposal of scheduled voices. Keep the game fully playable when audio cannot start.
+- [x] S06 Implement explicit user activation, mute and volume controls, suspended-context recovery, background pause, resume, and disposal of scheduled voices. Keep the game fully playable when audio cannot start.
 - [ ] S07 Cap simultaneous voices; test clipping, excessive volume, clicks, scheduler drift, and CPU on an identified mid-range phone. Listen on phone speakers and headphones.
-- [ ] S08 Add deterministic checks for note timing, cue mapping, voice lifecycle, mute, and disposal. Use perceptual listening for musical quality; avoid brittle cross-browser bit-identical waveform assertions.
-- [ ] S09 Verify no audio starts before activation, mute remains effective through chapter changes, and rapid restart/visibility changes do not leave stuck voices.
-- [ ] S10 Include patches and note data in the measured budget; lazy-load later arrangements. If rendered or generated audio files are chosen instead, compare measured transfer size and document their source/license.
+- [x] S08 Add deterministic checks for note timing, cue mapping, voice lifecycle, mute, and disposal. Use perceptual listening for musical quality; avoid brittle cross-browser bit-identical waveform assertions.
+- [x] S09 Verify no audio starts before activation, mute remains effective through chapter changes, and rapid restart/visibility changes do not leave stuck voices.
+- [x] S10 Include patches and note data in the measured budget; lazy-load later arrangements. If rendered or generated audio files are chosen instead, compare measured transfer size and document their source/license.
 
 Exit: sound works after user activation on supported clients, has no required role in solving puzzles, and does not cause performance or lifecycle regressions.
+
+S03/S04/S05 currently cover one dungeon motif, bass and tonal/noise cues with resume at the saved musical step. Later arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
 
 ## Testing and continuous verification workstream
 
@@ -220,14 +232,16 @@ Tests run as each feature arrives; P7 consolidates evidence rather than introduc
 | Learning | Beginner observation, next-state prediction, renamed transfer puzzle | Each chapter before release |
 | Build/release | Reproducible artifact, payload ceiling, no development-only files, links, cache/version behavior, rollback | Every release |
 
-- [ ] T01 Wire deterministic content, graph, runtime, and build checks into CI with pinned dependencies.
-- [ ] T02 Produce a machine-readable coverage report: level/version, reachable nodes and edges, checked edges, failures, compiler/adapter version, and artifact identity. Incomplete coverage fails the release check.
-- [ ] T03 Tie the checked content to the published artifact using content hashes. Rebuild after any content change; never publish unverified edits after checks pass.
-- [ ] T04 Preserve useful regression cases from real bugs. Add lint rules only when they express a recurring error reliably.
-- [ ] T05 Introduce pstack coverage/synchronization records for implemented formal checks; rerun maintenance when code changes without corresponding verification updates.
+- [x] T01 Wire deterministic content, graph, runtime, and build checks into CI with pinned dependencies.
+- [x] T02 Produce a machine-readable coverage report: level/version, reachable nodes and edges, checked edges, failures, compiler/adapter version, and artifact identity. Incomplete coverage fails the release check.
+- [x] T03 Tie the checked content to the published artifact using content hashes. Rebuild after any content change; never publish unverified edits after checks pass.
+- [x] T04 Preserve useful regression cases from real bugs. Add lint rules only when they express a recurring error reliably.
+- [x] T05 Introduce pstack coverage/synchronization records for implemented formal checks; rerun maintenance when code changes without corresponding verification updates.
 - [ ] T06 Define a browser/device matrix and a mid-range reference phone. Separate automated browser results from manual X-app evidence.
 - [ ] T07 Define measurable responsiveness and steady-state resource targets after P1 measurements; check idle work, animation stalls, and audio CPU. Avoid claiming a performance result without device/test conditions.
-- [ ] T08 Maintain a release evidence checklist containing failures, skipped checks, assumptions, and remaining limitations. Missing checks are never recorded as passes.
+- [x] T08 Maintain a release evidence checklist containing failures, skipped checks, assumptions, and remaining limitations. Missing checks are never recorded as passes.
+
+T01 means workflows are authored and their underlying commands run locally; hosted GitHub execution is pending. T06 uses automated Chromium/Firefox/WebKit on Linux plus compact/mobile viewports; an actual reference phone has not been selected. T07 has no physical-phone performance result.
 
 ## P7 — Hosting, beta, and release
 

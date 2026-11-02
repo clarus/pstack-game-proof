@@ -1,0 +1,58 @@
+{
+  "rocq": "9.0.1",
+  "checkedAtUtc": "2026-11-02T14:19:36.241932+00:00",
+  "sources": {
+    "src/content/dungeon.json": "29acf02a67fd021ad5a0a9cf74fcec77dbf17dbdd95000f591fdb90cc50f3960",
+    "src/model.ts": "ff19997b36540394977019acfb242abe11c3a16104ca9b6354b4e8041412fcd0",
+    "scripts/generate-content.ts": "59b2651ef97b21a9ed0e69b4b28b4632249c8b7f2989aa0bd619ef30fd7f1140",
+    "scripts/export-proofs.ts": "88524f4b231fb5c7ab018fd0c5a2b60fee91756fea461210f8f82783773a1c20",
+    "scripts/verify_graphs.py": "7396f4035437c9f97437a475bbbedf0eab1f6d13026e3d9e65f0cd74352dcf09",
+    "tests/test_verification.py": "7a87151907e250b8d287eb6768939824e935697de72000097e5c708a6ed96667",
+    "tests/model.test.ts": "37fae991d0662ba1df57962c2972e5738788a1c6f846115ebe89a624ec5bcb21",
+    "src/progress.ts": "65019d6f82a2d6fc1575fdb0e08e38e8eac8b1c4b4b2337e3ac839d6c52c670a"
+  },
+  "sha256": "29acf02a67fd021ad5a0a9cf74fcec77dbf17dbdd95000f591fdb90cc50f3960",
+  "levels": [
+    {
+      "id": "D01",
+      "nodes": 3,
+      "edges": 4
+    },
+    {
+      "id": "D02",
+      "nodes": 4,
+      "edges": 8
+    },
+    {
+      "id": "D03",
+      "nodes": 6,
+      "edges": 14
+    },
+    {
+      "id": "D04",
+      "nodes": 6,
+      "edges": 14
+    },
+    {
+      "id": "D05",
+      "nodes": 5,
+      "edges": 7
+    },
+    {
+      "id": "D06",
+      "nodes": 9,
+      "edges": 23
+    },
+    {
+      "id": "D07",
+      "nodes": 13,
+      "edges": 32
+    }
+  ],
+  "scope": "All published nodes and edges of the authored propositional graphs; not a proof of arbitrary JavaScript programs.",
+  "baseRevision": "12d38c346227e3615c08085ebcbdb3f5e57e444b",
+  "implementationState": "Uncommitted implementation; base revision does not contain these files. Source hashes identify the verified code.",
+  "reviewedMappings": "skills/game/verify-dungeon-graphs/SKILL.md",
+  "mutationCases": 7,
+  "scratchMutation": "D01/n1 goal changed A to B in the actual shipped file; CLI failed with State mismatch, file restored and full check passed."
+}

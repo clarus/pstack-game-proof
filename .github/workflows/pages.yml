@@ -1,0 +1,44 @@
+name: Publish selected edition to Pages
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Edition to publish (publication is public)
+        type: choice
+        required: true
+        default: embed-test
+        options:
+          - embed-test
+          - preview
+          - chapter
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        id: pages
+      - uses: ./.github/actions/verify
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/${{ inputs.profile }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

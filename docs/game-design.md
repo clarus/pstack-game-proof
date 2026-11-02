@@ -2,15 +2,19 @@
 
 Status: design baseline, 2 November 2026. Working title: Proof Quest.
 
+The [implementation roadmap](roadmap.md) expands the milestones into tasks, lists all core and optional levels, and tracks graphics, sound, verification, testing, and release work. Its decision record contains the user's answers and the GitHub Pages feasibility gate.
+
 Build a small adventure that teaches how Rocq transforms a proof state. Players progress through four chapters in order, starting with six dungeon rooms. They select moves and witnesses from authored choices; they never need to type proof syntax. Each move reveals its Rocq tactic and the resulting hypotheses and goals.
 
 X is the primary delivery surface. A complete short puzzle must work inside a compact card. Fullscreen and the standalone page provide more room, but are not required to finish the campaign. Rocq runs locally and in CI to validate content and transitions; it is neither embedded in the game nor called through a runtime proof service.
+
+Selected direction: curious programmers new to proofs; English first with translation-ready content; warm pixel art drawn in code with a shared palette; live synthesized effects and light chapter music; one guide and brief dialogue. Actions use plain language alongside tactic names, and the active proof state remains visible. Target roughly 1–3 minutes per level, with longer proofs divided into stages. Release six dungeon rooms first, then chapter updates. Use GitHub Pages as the first static-hosting candidate, subject to an actual X embed test. No application backend is required.
 
 ## Learning goals and game loop
 
 The player should distinguish constructing a conclusion from using a hypothesis; understand cases, scope, and witnesses; use induction on natural numbers and lists; and establish an invariant initially and after every permitted transition.
 
-The repeated loop is: inspect the active goal and available facts, select a target, choose an action, watch the proof state change, and finish every outstanding branch. Completing a room opens the next and offers a replay of the generated Rocq script. Progress is untimed. Hints and undo carry no progression penalty.
+The repeated loop is: inspect the active goal and available facts, select a target, choose an action, watch the proof state change, and finish every outstanding branch. Completing a room offers Next and a replay of the generated Rocq script. A Chapters menu allows direct access to every released chapter; chapter completion recommends the next destination without locking access. Unreleased chapters are labelled coming soon. Progress is untimed. Hints and undo carry no progression penalty.
 
 Each action has a plain-language label and a smaller tactic label, for example “Prove both parts — split”. Initially show two or three choices. Use a separate short chooser for a witness, hypothesis, branch, or rewrite direction. Tapping must suffice; dragging is optional decoration.
 
@@ -24,7 +28,7 @@ A legal choice such as choosing the left side of a disjunction can leave an unpr
 
 ## Shared proof interface
 
-Keep the active goal, available facts, and controls readable at compact sizes. A branch counter stays visible; selecting it opens a branch list. Completing one branch never discards the others. Expanded mode shows the proof tree and script alongside the world.
+Keep a persistent proof-state pane containing the active goal and its hypotheses alongside the action controls, including in compact mode. Do not hide the context behind a reveal button or a separate tab. Long contexts may scroll within the visible pane while the goal remains pinned. A branch counter stays visible; selecting it opens a branch list. Completing one branch never discards the others. Expanded mode adds the full proof tree and script. Reduce decorative artwork before reducing proof readability.
 
 Use stable internal identifiers and friendly display names. Each branch owns its context. Facts introduced in one case cannot leak into another. Ordinary hypotheses are reusable: game items are not consumed as evidence. Highlight newly introduced facts and changed subexpressions.
 
@@ -137,15 +141,19 @@ A bounded model-checking demonstration can show explored states, labelled with i
 
 ## X delivery and presentation
 
-Serve a public HTTPS share page with Player Card metadata in its initial HTML and a dedicated embed route. Permit the intended X embedding ancestors on that route; check for contradictory framing headers. Keep framing permissions scoped to the embed surface.
+Serve a public HTTPS share page with Player Card metadata in its initial HTML and a dedicated static embed page. Start by testing GitHub Pages. Inspect the host's actual framing headers; do not assume the host supports arbitrary route-specific response headers. Where configurable, scope framing policy to the embed surface and permit the intended X ancestors. If the host's response prevents embedding and cannot be adjusted, resolve hosting before scaling the campaign.
+
+GitHub Pages serves static HTML, CSS, and JavaScript and supports deployment through GitHub Actions. Run Rocq and content checks in the build workflow, then publish only the verified public artifact. Use the repository base path correctly for all assets and links. Use hash-based in-game navigation for chapter/level selection, plus real HTML share/embed entry pages, so reloading does not require server rewrites. If chapter-specific card metadata is needed, generate separate HTML pages at build time; URL fragments do not provide distinct crawler metadata. See [GitHub Pages overview](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) and [custom deployment workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
 Treat actual card behavior as a release test. Published implementations demonstrate desktop interaction but do not establish support on every X client. Test x.com desktop, iOS, and Android using a real posted URL. Record client versions and dates. A standalone fallback does not count as passing the X-first requirement on an unsupported client.
 
-Use roughly 245 CSS pixels of compact height as an initial design target. Exercise 320×245, 375×245, and 560×315, then the dimensions observed in real clients. Keep the active goal and two or three actions visible; hypotheses and branch details open in accessible panels. Break long proofs into successive views rather than shrinking mathematical text until unreadable.
+Use roughly 245 CSS pixels of compact height as an initial design target. Exercise 320×245, 375×245, and 560×315, then the dimensions observed in real clients. Keep the active goal, hypothesis pane, and two or three actions visible; other branch details can open in a panel. Break long proofs into successive stages rather than hiding the active proof state or shrinking mathematical text until unreadable.
 
 Use semantic HTML controls and lightweight 2D visuals. Labels and shapes carry information independently of color. Support keyboard focus, announcements of proof changes, reduced motion, and tap targets around 44 CSS pixels. Audio is optional, muted initially, and never needed for instructions. Pause decoration when hidden.
 
-No login is needed to begin or finish a room. Saving is best-effort browser storage with an in-memory fallback when third-party storage is unavailable. Persist a content version, level identifier, and action history; replay and validate on load. Incompatible or invalid saves offer a restart. If continuity into a standalone page is offered, use a versioned compact progress token; do not assume shared storage.
+No login is needed to begin or finish a room. Add Continue, Next, and Chapters controls. Automatically save after logical moves, undo, level completion, and settings changes using a namespaced `localStorage` key. Persist schema/content versions, completed level IDs, active chapter/level, action history, and settings. Replay and validate imported or saved actions instead of trusting a saved terminal flag. Handle unavailable storage, quota failures, and malformed or incompatible data; keep the current session playable in memory and offer a clear restart when replay is incompatible.
+
+Provide Copy progress / Restore progress with a compact versioned code and an optional resume link carrying the token in its fragment. Validate format, size, versions, IDs, and replay bounds before applying an import; offer a selectable text fallback if clipboard access fails. This supports manual transfer across browsers or from X to the standalone page without a backend. Do not promise automatic cross-device synchronization. Clearing site data or using private browsing can remove saves, and embedded storage may be blocked or partitioned from standalone storage. Chapter access does not depend on a stored unlock flag. See [localStorage behavior](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [storage partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning).
 
 Provisional first-load ceiling: 150 KiB gzipped for the first room's HTML, CSS, JavaScript, data, and required art combined. This is a proposed budget, not a measured result. Fetch later chapters on demand. Rocq, proof fixtures, skills, TLA+ tooling, and development dependencies never enter public assets. Avoid custom fonts and third-party runtime requests initially.
 
@@ -212,7 +220,7 @@ Use build checks for download size and repository exclusions. Add lint rules for
 
 Playtest with beginners before polishing the campaign. Ask them to predict the next proof state and solve a renamed variant. Observe first-room completion, hint use, and whether they can explain the two OR rules. Moderated sessions suffice initially; analytics need not enter the first-download budget.
 
-Title, visual theme, hosting provider, and exact asset budget can evolve in the first-room prototype. X-first interaction, all four chapters, choice-based moves, and development-only Rocq are fixed decisions.
+The final title, detailed art treatment, and exact asset budget can evolve in the first-room prototype. GitHub Pages remains conditional on measured X compatibility. X-first interaction, all four chapters, choice-based moves, the visible active proof state, the selected creative direction, and development-only Rocq are fixed decisions.
 
 ## References
 

@@ -3,6 +3,7 @@
 An X-first, choice-based adventure teaching Rocq through four chapters.
 
 - [Game design](docs/game-design.md): curriculum, interaction, delivery, architecture, verification, and milestones.
+- [Implementation roadmap](docs/roadmap.md): task backlog, all 25 core levels, graphics, sound, testing, release, and ten product decisions.
 - [Managing skills](docs/skills.md): local skills, pstack provenance, invocation, version control, and updates.
 - [Agent guidance](AGENTS.md): repository constraints and skill routing.
 

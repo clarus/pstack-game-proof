@@ -50,16 +50,26 @@ class Rocq:
 
 def formula(text):
     text = text.replace('\u00a0',' ')
-    tokens = re.findall(r'->|/\\|\\/|[A-Z][A-Za-z0-9_]*|[()]', text)
+    tokens = re.findall(r'->|/\\|\\/|[A-Za-z][A-Za-z0-9_]*|[():,]', text)
     if ''.join(tokens) != re.sub(r'\s','',text): raise AssertionError(f'Unsupported Rocq formula: {text!r}')
     i = 0
     def atom():
         nonlocal i
         t=tokens[i]; i+=1
+        if t in ('forall', 'exists'):
+            variable=tokens[i]; i+=1
+            assert re.fullmatch('[a-z][A-Za-z0-9_]*',variable) and tokens[i]==':', 'Expected typed binder'
+            i+=1; domain=tokens[i]; i+=1
+            assert re.fullmatch('[A-Z][A-Za-z0-9_]*',domain) and tokens[i]==',', 'Expected binder domain'
+            i+=1
+            return {'kind':t,'variable':variable,'domain':domain,'body':imp()}
         if t=='(':
             f=imp(); assert tokens[i]==')'; i+=1; return f
         assert re.fullmatch('[A-Z][A-Za-z0-9_]*',t)
-        return {'kind':'atom','name':t}
+        args=[]
+        while i<len(tokens) and re.fullmatch('[a-z][A-Za-z0-9_]*',tokens[i]) and tokens[i] not in ('forall','exists'):
+            args.append(tokens[i]); i+=1
+        return {'kind':'app','name':t,'args':args} if args else {'kind':'atom','name':t}
     def binary(sub, token, kind, recurse):
         nonlocal i
         left=sub()
@@ -73,7 +83,8 @@ def formula(text):
     return result
 
 
-def state(value):
+def state(value, parameters=None):
+    parameters = parameters if parameters is not None else [{"name":n,"type":"Prop"} for n in ["A","B","C"]]
     container=value.find('.//goals')
     if container is None: return []
     lists=list(container)
@@ -81,23 +92,42 @@ def state(value):
     assert not list(lists[1]) and not list(lists[2]) and not list(lists[3]), 'Unexpected background, shelved, or abandoned obligations'
     goals=[]
     for goal in lists[0]:
-        fields=list(goal); context=[]; props=[]
+        fields=list(goal); context=[]; bindings=[]
         for hypothesis in fields[1]:
             raw=''.join(hypothesis.itertext()).replace('\u00a0',' ')
             names, typ=raw.split(':',1)
-            names=[n.strip() for n in names.split(',')]
-            if typ.strip()=='Prop': props.extend(names)
-            else:
-                for name in names: context.append({'name':name,'type':formula(typ)})
-        assert props==['A','B','C'], f'Unexpected proposition parameters {props}'
+            assert ':=' not in raw, 'Local definitions are outside the supported graph language'
+            for name in names.split(','): bindings.append({'name':name.strip(),'type':typ.strip()})
+        normalize=lambda text: re.sub(r'\s','',text)
+        assert len(bindings)>=len(parameters), 'Missing theorem parameters'
+        for actual, expected in zip(bindings,parameters):
+            assert actual['name']==expected['name'] and normalize(actual['type'])==normalize(expected['type']), f'Parameter mismatch: {actual} != {expected}'
+        for binding in bindings[len(parameters):]:
+            context.append({'name':binding['name'],'type':formula(binding['type'])})
         goals.append({'context':context,'conclusion':formula(''.join(fields[2].itertext()))})
     return goals
 
 
-def compare(value, expected):
-    actual=state(value)
+def bound_identity(f, binders=()):
+    """Ignore only bound-variable spelling; retain free object names and scope."""
+    kind=f['kind']
+    if kind=='atom': return f
+    if kind=='app':
+        return {'kind':kind,'name':f['name'],'args':[
+            ['bound',list(reversed(binders)).index(arg)] if arg in binders else ['free',arg]
+            for arg in f['args']]}
+    if kind in ('forall','exists'):
+        return {'kind':kind,'domain':f['domain'],'body':bound_identity(f['body'],binders+(f['variable'],))}
+    return {'kind':kind,'left':bound_identity(f['left'],binders),'right':bound_identity(f['right'],binders)}
+
+def comparable(goals):
+    return [{'context':[{'name':h['name'],'type':bound_identity(h['type'])} for h in g['context']],
+             'conclusion':bound_identity(g['conclusion'])} for g in goals]
+
+def compare(value, expected, parameters=None):
+    actual=state(value, parameters)
     # Context order is part of the authored display contract.
-    assert actual==expected['goals'], f'State mismatch\nRocq: {actual}\nGame: {expected["goals"]}'
+    assert comparable(actual)==comparable(expected['goals']), f'State mismatch\nRocq: {actual}\nGame: {expected["goals"]}'
     assert expected['complete']==(len(actual)==0), 'Premature completion'
 
 
@@ -134,9 +164,11 @@ def verify(level):
         for a in checks:
             r=Rocq()
             try:
-                value=r.add(f'Theorem test (A B C : Prop) : {level["theorem"]}.')
+                parameters=level.get('parameters')
+                declaration=' '.join(f'({p["name"]} : {p["type"]})' for p in parameters) if parameters is not None else '(A B C : Prop)'
+                value=r.add(f'Theorem test {declaration} : {level["theorem"]}.')
                 for command in trace: value=r.add(command)
-                compare(value,node)
+                compare(value,node, parameters)
                 if node['complete']:
                     evars=r.call('Evars')
                     assert not evars.findall('.//evar'), 'Unresolved existential variable'
@@ -148,7 +180,7 @@ def verify(level):
                         assert a['next'] is None, f'Accepted action rejected by Rocq: {a}'
                     else:
                         assert a['next'] is not None, f'Rocq accepted a supposedly invalid move: {a}'
-                        compare(result,nodes[a['next']])
+                        compare(result,nodes[a['next']], parameters)
             except Exception as error:
                 raise AssertionError(f'{level["id"]}/{ident}/{a and a["tactic"]}: {error}') from error
             finally: r.close()
@@ -158,7 +190,7 @@ def verify(level):
 def main():
     version=subprocess.check_output(['coqidetop','--version'],text=True)
     assert re.search(r'version 9\.0\.1\s', version), version
-    source=ROOT/'src/content/dungeon.json'; levels=json.loads(source.read_text())
+    source=ROOT/'src/content/dungeon.json'; levels=[level for name in ['dungeon','workshop'] for level in json.loads((ROOT/f'src/content/{name}.json').read_text())]
     subprocess.run(['node','scripts/export-proofs.ts'],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='proof-quest-export-') as temp:
         for level in levels:
@@ -169,9 +201,9 @@ def main():
     for level in levels:
         entry=verify(level); report.append(entry); print(f'PASS {entry}',flush=True)
     out=ROOT/'artifacts'; out.mkdir(exist_ok=True)
-    covered=['src/environments.ts','src/content/dungeon.json','src/model.ts','scripts/generate-content.ts','scripts/export-proofs.ts','scripts/verify_graphs.py']
+    covered=['scripts/workshop-content.ts','src/content/workshop.json','src/environments.ts','src/content/dungeon.json','src/model.ts','scripts/generate-content.ts','scripts/export-proofs.ts','scripts/verify_graphs.py']
     sources={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in covered}
-    (out/'rocq-coverage.json').write_text(json.dumps({'rocq':'9.0.1','checkedAtUtc':datetime.now(timezone.utc).isoformat(),'sources':sources,'sha256':sources['src/content/dungeon.json'],'levels':report,'scope':'All published nodes and edges of the authored propositional graphs; not a proof of arbitrary JavaScript programs.'},indent=2)+'\n')
+    (out/'rocq-coverage.json').write_text(json.dumps({'rocq':'9.0.1','checkedAtUtc':datetime.now(timezone.utc).isoformat(),'sources':sources,'sha256':sources['src/content/dungeon.json'],'levels':report,'scope':'All published nodes and edges of the authored propositional and first-order quantifier graphs; not a proof of arbitrary JavaScript programs.'},indent=2)+'\n')
     print('PASS: every authored graph edge checked against Rocq, including rejected moves and terminal Qed.')
 
 if __name__=='__main__': main()

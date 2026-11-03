@@ -1,16 +1,22 @@
 {
   "rocq": "9.0.1",
-  "checkedAtUtc": "2026-11-02T14:52:21.137676+00:00",
+  "checkedAtUtc": "2026-11-03T08:28:40.957979+00:00",
   "sources": {
-    "src/environments.ts": "4cd5b557acc0a1c1a8ec2a1873c92f1b42e5e7972a54f0beebb9a7f655afb892",
+    "scripts/workshop-content.ts": "5781ca0240a68afc9ce4f0f6b90931e169602d914fb325ab33987b5fcb0360b9",
+    "src/content/workshop.json": "cf5190ec687dfdd3a149db05b3588c8fafe086d2aeb2aff56f9e78d0fc1387d7",
+    "src/environments.ts": "4bf0ed617eee32d630fa0493005ae4ad41b9afd5748f7705ce8498936469412c",
     "src/content/dungeon.json": "3a5cd845e779e6f193794fa3dd8f1b1433c4237215ce31ca210a487885b51e85",
-    "src/model.ts": "ff19997b36540394977019acfb242abe11c3a16104ca9b6354b4e8041412fcd0",
-    "scripts/generate-content.ts": "71e2724802702644ce8937df33d4daf8f1d21c7617c1ac4bd97833209bbe31c4",
-    "scripts/export-proofs.ts": "88524f4b231fb5c7ab018fd0c5a2b60fee91756fea461210f8f82783773a1c20",
-    "scripts/verify_graphs.py": "3bc29100c14ab26d655c4694f4072fca0433000ee1709040d7964ca0f7298b12",
-    "tests/test_verification.py": "7a87151907e250b8d287eb6768939824e935697de72000097e5c708a6ed96667",
+    "src/model.ts": "9f68fa7951f84f9c27724a469db679224459031f8e8748aa1b4d8aa61ce141bd",
+    "scripts/generate-content.ts": "0a8be81ddbbc3527bd96a29c4028c251fb27848aaa047d3044537e92a4a66e72",
+    "scripts/export-proofs.ts": "6a476ea9a21be001c0e5fb57020a3ea7f354449a64021189b0f8e4cd54d3758c",
+    "scripts/verify_graphs.py": "822925fcb71a48e6fadaaaf4a04fbbbd315d4a3c32a67a71a6b2e82eea1d699f",
+    "tests/test_verification.py": "88c72079b2498659032fcd4c185833f4975e6bd06d987bd5a7fc46c729110d0a",
     "tests/model.test.ts": "37fae991d0662ba1df57962c2972e5738788a1c6f846115ebe89a624ec5bcb21",
-    "src/progress.ts": "65019d6f82a2d6fc1575fdb0e08e38e8eac8b1c4b4b2337e3ac839d6c52c670a"
+    "tests/workshop.test.ts": "1c3b6abd5659978990d0d1672984cc2c7d11625e8ff8761cc496615dc455c0de",
+    "src/progress.ts": "65019d6f82a2d6fc1575fdb0e08e38e8eac8b1c4b4b2337e3ac839d6c52c670a",
+    "src/chapters.ts": "90611474b3516b58f2d9c46ac4ed902c791878af385f55ad1cf5796c9590b76f",
+    "src/guarantees.ts": "82d0f5b8031ed07a836af84d71c23b241f77410035e8a3ca4c4b690b8b773483",
+    "verification/rocq/Curriculum.v": "80cb44e5e18cdce3ce345806c86e234cd8f4c3d117123c4b27a9eeec9cf595fd"
   },
   "sha256": "3a5cd845e779e6f193794fa3dd8f1b1433c4237215ce31ca210a487885b51e85",
   "levels": [
@@ -48,12 +54,45 @@
       "id": "D07",
       "nodes": 13,
       "edges": 32
+    },
+    {
+      "id": "W01",
+      "nodes": 5,
+      "edges": 6
+    },
+    {
+      "id": "W02",
+      "nodes": 5,
+      "edges": 7
+    },
+    {
+      "id": "W03",
+      "nodes": 7,
+      "edges": 10
+    },
+    {
+      "id": "W04",
+      "nodes": 7,
+      "edges": 10
+    },
+    {
+      "id": "W05",
+      "nodes": 9,
+      "edges": 14
+    },
+    {
+      "id": "W06",
+      "nodes": 7,
+      "edges": 12
     }
   ],
-  "scope": "All published nodes and edges of the authored propositional graphs; not a proof of arbitrary JavaScript programs.",
-  "baseRevision": "f6b9ac5b1743f7deaaf9c344fea3a57ea0cd4049",
-  "implementationState": "Seven-lantern presentation update is uncommitted on this base. Original proof nodes, edges and saved histories are unchanged.",
+  "scope": "All published nodes and edges of the authored propositional and first-order quantifier graphs; not a proof of arbitrary JavaScript programs.",
+  "baseRevision": "5806e2505f760ca723181510fa7af7b8bf6889e8",
+  "implementationState": "Chapter 2 implementation checked as uncommitted changes on this base; original dungeon JSON is byte-identical to the base.",
   "reviewedMappings": "skills/game/verify-dungeon-graphs/SKILL.md",
-  "mutationCases": 7,
-  "scratchMutation": "Current shipped graph copied to a temporary checkout; D01/n1 goal A changed to B. CLI failed with State mismatch. Working graph untouched."
+  "mutationCases": 14,
+  "scratchMutation": "Actual current sources copied to a temporary checkout; D01/n1 conclusion A changed to B. CLI failed with State mismatch. Working graph untouched and compared byte-for-byte with baseline.",
+  "maintenanceOutcome": "updated",
+  "reviewedHistory": "f6b9ac5..5806e25: e219363 changed environment prose and coverage hashes only; no proof nodes, moves or saved histories changed. Chapter 2 deliberately extends the supported syntax and checked graphs.",
+  "normalization": "Bound-variable spelling compared by binding depth; free names, context order, domains and quantifier order remain exact. Free-witness capture and wrong-object mutations are rejected."
 }

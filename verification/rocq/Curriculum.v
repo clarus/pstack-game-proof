@@ -58,10 +58,31 @@ Proof. intro H. destruct H as [x [HP HQ]]. exists x. exact HP. Qed.
 Theorem general_rule : (forall x : T, P x -> Q x) -> forall x : T, P x -> Q x.
 Proof. intro H. intros x HP. apply (H x). exact HP. Qed.
 
+Theorem universal_engine : (forall x : T, P x /\ Q x) -> forall x : T, P x.
+Proof. intro Hall. intro x. destruct (Hall x) as [HP HQ]. exact HP. Qed.
+
 Theorem open_gate : (exists x : T, Key x) ->
   (forall x : T, Key x -> Opens x) -> exists x : T, Opens x.
 Proof. intros H Hrule. destruct H as [x HK]. exists x. apply (Hrule x). exact HK. Qed.
 End Workshop.
+
+Theorem shared_implies_individual (T U : Type) (R : T -> U -> Prop) :
+  (exists y : U, forall x : T, R x y) -> forall x : T, exists y : U, R x y.
+Proof. intros [y Hall] x. exists y. exact (Hall x). Qed.
+
+Theorem individual_boolean_witness : forall x : bool, exists y : bool, x = y.
+Proof. intro x. exists x. reflexivity. Qed.
+
+Theorem no_shared_boolean_witness : ~ (exists y : bool, forall x : bool, x = y).
+Proof. intros [y Hall]. destruct y.
+- specialize (Hall false). discriminate.
+- specialize (Hall true). discriminate.
+Qed.
+
+Theorem renamed_workshop_transfer (T : Type) (Charged Ready : T -> Prop) :
+  (exists robot : T, Charged robot) ->
+  (forall robot : T, Charged robot -> Ready robot) -> exists robot : T, Ready robot.
+Proof. intros [robot Hcharge] Hrule. exists robot. apply Hrule. exact Hcharge. Qed.
 
 Theorem any_tower : forall n : nat, n + 0 = n.
 Proof. intro n. induction n as [|n IH].

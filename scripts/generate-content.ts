@@ -1,4 +1,5 @@
 import { environmentFor } from "../src/environments.ts";
+import { workshopLevels } from "./workshop-content.ts";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   parseFormula as p,
@@ -262,3 +263,14 @@ if (process.argv.includes("--check")) {
 console.log(
   `Checked ${levels.length} levels, ${levels.reduce((n, l) => n + l.nodes.length, 0)} nodes.`,
 );
+const workshop = workshopLevels();
+const workshopDestination = "src/content/workshop.json";
+if (process.argv.includes("--check")) {
+  if (
+    JSON.stringify(JSON.parse(readFileSync(workshopDestination, "utf8"))) !==
+    JSON.stringify(workshop)
+  )
+    throw new Error("Workshop content is stale. Run npm run content.");
+} else
+  writeFileSync(workshopDestination, JSON.stringify(workshop, null, 2) + "\n");
+console.log(`Checked ${workshop.length} workshop levels.`);

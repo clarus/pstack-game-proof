@@ -1,4 +1,6 @@
-# Chapter 1: the seven lanterns
+# Art, story and audio
+
+## Chapter 1: the seven lanterns
 
 The dungeon once lit the way to the Proof Workshop. Its lanterns have gone dark, and Pip asks the player to restore them. Each completed proof lights that room's lantern. Arrival and resolution lines support the logic without long cutscenes. The final shared ending appears only when all seven actual proofs are complete:
 
@@ -38,4 +40,15 @@ Tests check seven distinct note sequences, repeatable schedules over three loops
 
 With the dev server running, `npm run review` produces `artifacts/rooms-arrival.png` and `rooms-restored.png` contact sheets, desktop/mobile/compact screenshots, a short walkthrough, seven WAV previews in `artifacts/music/`, and `artifacts/audio-review.json` with signal statistics. `dungeon-audio.wav` is the selected D02 soundtrack preview for convenience. All review media is untracked and excluded from releases.
 
-Human headphone/phone-speaker listening, physical-device responsiveness, screen-reader review, beginner playtests, and live X testing remain release gates. Later chapter art kits and arrangements remain future work.
+Human headphone/phone-speaker listening, physical-device responsiveness, screen-reader review, beginner playtests, and live X testing remain release gates. Chapter 3–4 art kits remain future work. The selected constant soundtrack supersedes plans for later per-room arrangements.
+
+
+## Chapter 2: the workshop certificates
+
+The six stations share a warm timber workshop, with distinct machines and completion changes in `src/workshop-art.ts`. Pip repairs the route through a rule press (stamped certificate), packing bench (sealed package), cabinet (opened doors), universal engine (lit machinery), certificate gate (opened passage), and dispatch desk (finished certificates). The last scene introduces a ticket for the planned Induction Railway. The full ending requires all six proofs; visiting stations or solving W06 alone cannot claim it.
+
+Each landmark has panoramic 640×240 and compact 160×160 compositions. Completion changes both the machine and Pip's position/carried paper. Six indicators reflect actual solved histories; Undo restores the unfinished machine. The original dungeon graphics and graph are retained. `scripts/poster.py` draws a separate workshop share poster with the same palette and original pixel geometry.
+
+Both chapters use the fixed D02 Storeroom score and existing move/completion cues, with sound off on a fresh load. No new track is selected at a chapter boundary. This is the user's explicit continuity preference.
+
+Run `REVIEW_URL=http://127.0.0.1:5173 node scripts/capture-workshop.mjs` with a dev server. It writes `artifacts/workshop/` scene sheets, desktop, mobile and compact screenshots (320, 375, 518 and 560 widths), plus the interactive guarantee comparison. These artifacts are untracked and excluded from builds. Human listening and phone/X review remain separate from automation.

@@ -83,15 +83,17 @@ Repair the town's devices by assembling certificates. An implication transforms 
 | 1. A rule for everyone | `(forall x : T, P x) -> P a` | Specialize a universal hypothesis |
 | 2. Pack a certificate | `P a -> exists x : T, P x` | Choose a witness and provide evidence |
 | 3. Open a sealed package | `(exists x : T, P x /\ Q x) -> exists x : T, P x` | Unpack an existential and preserve witness identity |
-| 4. Build a general rule | `(forall x : T, P x -> Q x) -> forall x : T, P x -> Q x` | Introduce an arbitrary object and its assumption |
+| 4. Build a general rule | `(forall x : T, P x /\ Q x) -> forall x : T, P x` | Introduce an arbitrary object; extract its first property |
 | 5. Open the gate | `(exists x : T, Key x) -> (forall x : T, Key x -> Opens x) -> exists x : T, Opens x` | Combine unpacking, specialization, implication, and repackaging |
-| 6. Compare guarantees | Choose which statement follows from supplied evidence | One shared witness versus a witness depending on an input |
+| 6. Compare guarantees | Prove shared-witness ⇒ per-input existence, then test boolean equality | Quantifier order changes the guarantee |
 
-Use `T : Type` and predicates into `Prop`. Introduce inhabitants explicitly where needed; do not assume every type is inhabited. The witness chooser offers finitely many well-typed, in-scope terms. Distractors teach why evidence about Alice does not establish a fact about Bob.
+Use `T : Type` and predicates into `Prop`. Introduce inhabitants explicitly where needed; do not assume every type is inhabited. The witness chooser offers finitely many terms; accepted choices must be well-typed and in scope. Clearly rejected distractors can demonstrate an unavailable object or a type mismatch. Distractors teach why evidence about Alice does not establish a fact about Bob.
 
 Opening an existential gives the player its witness; they cannot replace it with a favorite character. Introducing a universal goal gives an arbitrary object, not a conveniently selected example. Visually mark this distinction.
 
-Chapter completion: construct the gate certificate and inspect its script. Repeat the logic with different names to test learning beyond the story.
+Chapter completion requires all six proofs. Each repairs a distinct workshop landmark: press, packing bench, cabinet, engine, certificate gate, and dispatch desk. The ending gives Pip’s ticket to the planned Induction Railway. At W06, the optional comparison lets the player try `false` and `true` as a shared witness for boolean equality; neither matches both distinct inputs. Rocq checks both per-input existence and shared-witness impossibility. A renamed gate proof is a local fixture; a human transfer challenge remains a playtest task.
+
+The UI displays declarations separately from local facts, with typed discovered/arbitrary objects retained in the ordered context. Accepted unhelpful routes keep their actual remaining goal and offer Undo. They are guided-route limits, not claims of logical impossibility. No new music is selected: both chapters retain the user-selected D02 Storeroom score.
 
 ## Chapter 3 — The Induction Railway
 
@@ -159,7 +161,7 @@ No login is needed to begin or finish a room. Add Continue, Next, and Chapters c
 
 Provide Copy progress / Restore progress with a compact versioned code and an optional resume link carrying the token in its fragment. Validate format, size, versions, IDs, and replay bounds before applying an import; offer a selectable text fallback if clipboard access fails. This supports manual transfer across browsers or from X to the standalone page without a backend. Do not promise automatic cross-device synchronization. Clearing site data or using private browsing can remove saves, and embedded storage may be blocked or partitioned from standalone storage. Chapter access does not depend on a stored unlock flag. See [localStorage behavior](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [storage partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning).
 
-Provisional first-load ceiling: 150 KiB gzipped for the first room's HTML, CSS, JavaScript, data, and required art combined. The Chapter 1 build now enforces this budget; current measurements and limits are in `docs/chapter-one-readiness.md`. Fetch later chapters on demand. Rocq, proof fixtures, skills, TLA+ tooling, and development dependencies never enter public assets. Avoid custom fonts and third-party runtime requests initially.
+Provisional first-load ceiling: 150 KiB gzipped for the first room's HTML, CSS, JavaScript, data, and required art combined. The build enforces this budget; current measurements and limits are in `docs/chapter-two-readiness.md`. Chapters 1–2 share one small static bundle (about 32 KiB gzip including all share pages and posters). This avoids loading-state complexity while comfortably within budget. Revisit on-demand packs when later chapters justify them. Rocq, proof fixtures, skills, TLA+ tooling, and development dependencies never enter public assets. Avoid custom fonts and third-party runtime requests initially.
 
 Sharing is optional and user initiated. Start with a level poster and canonical URL; dynamic result images can follow. Shared completion is a player claim, not a server-validated high score. Competitive leaderboards and accounts are outside the initial scope.
 
@@ -169,7 +171,7 @@ Use a finite authored proof-state graph per level initially. Nodes contain struc
 
 An authoring tool may generate graphs offline. The browser loads data and applies deterministic transitions. There is no general Rocq parser, elaborator, tactic interpreter, or LLM at runtime. Animations consume transition results and cannot decide success.
 
-The broader campaign shapes below remain a design sketch. Chapter 1 implements the narrower `Level`, `ProofNode`, `Action`, `Goal`, and `Formula` types in `src/model.ts`: fixed A/B/C parameters, per-node ordered goals, first-goal moves, and separate accepted/rejected edges. Quantifier/induction types await later chapters.
+The broader campaign shapes below remain a design sketch. Chapters 1–2 implement `Level`, `ProofNode`, `Action`, `Goal`, and `Formula` in `src/model.ts`: explicit typed parameters, predicate applications to named objects, scoped quantifiers, ordered goals, first-goal moves, and separate accepted/rejected edges. Chapter 1 retains fixed A/B/C parameters and unchanged histories. Function terms, dependent definitions, induction, and rewriting await later chapters.
 
 ```text
 Level: id, contentVersion, theorem, declarations, startNode, nodes, edges
@@ -201,7 +203,7 @@ The release checker must cover more than the canonical solution:
 
 Check every published reachable edge of the finite graphs. When merging nodes reached by different histories, establish equivalence of their full states and dependencies; otherwise keep separate nodes. Bounded generated tests of any future general rule engine must state their bounds.
 
-Current baseline: `python3 scripts/check_rocq.py` checks representative proofs and rejects an intentionally wrong proof. This establishes example validity, not transition equivalence. The graph exporter, state adapter, runtime reducer, and CI wiring remain implementation work.
+Current implementation: `npm run test:rocq` checks curriculum fixtures, all 13 exported solutions and every offered edge across both authored graphs (86 states, 161 moves). The pinned XML adapter independently parses Rocq states, compares bound variables up to alpha-renaming while preserving free names, and rejects hidden obligations. Runtime, corruption, and browser checks run separately; see the local verification skill and readiness record.
 
 ## Verification skills and engineering checks
 
@@ -231,3 +233,6 @@ The final title, detailed art treatment, and exact asset budget can evolve in th
 - [Rocq inductive reasoning](https://rocq-prover.org/doc/master/refman/proofs/writing-proofs/reasoning-inductives.html): tactic semantics; executable fixtures are pinned to 9.0.1.
 - [Primary X Player Card implementation report](https://tarasshynkarenko.com/skills/x-player-card): embedding and client-specific testing.
 - [pstack upstream](https://github.com/cursor/plugins/tree/main/pstack): verification workflows; vendored revision recorded separately.
+
+
+Chapter links are static-host compatible: `chapter-1.html` and `chapter-2.html` have distinct initial-HTML card titles, posters and player URLs. The workshop player is `embed.html?chapter=2`; optional `&level=3` selects W03. Existing `#room=D02` links keep working, and `#room=W03` takes precedence over chapter parameters. Invalid/unavailable selections show a warning and return to D01. An unqualified root continues a valid local save, or starts D01 on a fresh browser. `#resume=PQ1…` restores the supplied validated history. No chapter requires unlocks or server state. Existing `dungeon-1` / PQ1 saves remain compatible because the D graph and history format are unchanged; the full edition now accepts W histories too. The limited preview/test editions retain separate storage namespaces and reject unavailable rooms.

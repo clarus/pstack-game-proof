@@ -45,19 +45,43 @@ const title =
   profile === "embed-test"
     ? "Interactive card test"
     : "Proof Quest · The Proof Dungeon";
-for (const file of ["index.html", "embed.html"]) {
-  let html = readFileSync(`${out}/${file}`, "utf8");
+const entryHtml = readFileSync(`${out}/index.html`, "utf8");
+const pages = [
+  "index.html",
+  "embed.html",
+  "chapter-1.html",
+  ...(profile === "chapter" ? ["chapter-2.html"] : []),
+];
+if (profile === "chapter")
+  run("python3", [
+    "scripts/poster.py",
+    `${out}/workshop-poster.png`,
+    "workshop",
+  ]);
+for (const file of pages) {
+  const workshop = file === "chapter-2.html";
+  const chapterPage = /^chapter-/.test(file);
+  let html = chapterPage ? entryHtml : readFileSync(`${out}/${file}`, "utf8");
+  const pageTitle = workshop ? "Proof Quest · The Proof Workshop" : title;
+  html = html.replace(/<title>.*?<\/title>/, `<title>${pageTitle}</title>`);
+  const player = new URL("embed.html", base);
+  if (chapterPage) player.searchParams.set("chapter", workshop ? "2" : "1");
   const tags = [
     ["twitter:card", "player"],
-    ["twitter:title", title],
+    ["twitter:title", pageTitle],
     [
       "twitter:description",
-      profile === "embed-test"
-        ? "One room for testing an interactive card."
-        : "Learn to build proofs, one dungeon room at a time.",
+      workshop
+        ? "Repair six workshop stations with witnesses, rules, and proofs."
+        : profile === "embed-test"
+          ? "One room for testing an interactive card."
+          : "Learn to build proofs, one dungeon room at a time.",
     ],
-    ["twitter:image", new URL("poster.png", base).href],
-    ["twitter:player", new URL("embed.html", base).href],
+    [
+      "twitter:image",
+      new URL(workshop ? "workshop-poster.png" : "poster.png", base).href,
+    ],
+    ["twitter:player", player.href],
     ["twitter:player:width", "560"],
     ["twitter:player:height", "315"],
   ];
@@ -93,7 +117,11 @@ const report = {
   profile,
   siteUrl: base.href,
   contentSha256: coverage.sha256,
-  levels: profile === "chapter" ? 7 : profile === "preview" ? 6 : 1,
+  workshopSha256:
+    profile === "chapter"
+      ? digest(readFileSync("src/content/workshop.json"))
+      : null,
+  levels: profile === "chapter" ? 13 : profile === "preview" ? 6 : 1,
   gzipBytesUpperBound: total,
   files: files(out).map((p) => ({
     path: p.slice(out.length + 1),

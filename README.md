@@ -1,8 +1,10 @@
 # Proof Quest
 
-A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapter 1 is implemented locally:** seven dungeon rooms, live proof states, hints, undo, proof scripts, seven distinct pixel-art settings, a seven-lantern story, a continuous synthesized Storeroom soundtrack, and browser-only progress. Chapters 2–4 remain planned. Compact cards use larger proof/action text and a miniature room; the smallest cards introduce each room with its scene, then switch to a full-width proof view. View room revisits the scene, More holds secondary tools, and ↗ opens the game with your current progress.
+A choice-based Rocq adventure built for compact X cards and ordinary browsers. **Chapters 1–2 are implemented locally:** seven dungeon rooms and six workshop stations, visible proof states, hints, undo, proof scripts, distinct code-drawn scenes, a continuous synthesized Storeroom soundtrack, and browser-only progress. The workshop teaches universal rules, existential witnesses and quantifier order. Chapters 3–4 remain planned.
 
-Nothing has been deployed or posted to X. Local iframe success does not establish X compatibility; see the [readiness record](docs/chapter-one-readiness.md).
+Compact cards use larger proof/action text and a miniature scene; the smallest cards introduce each room with its scene, then switch to full-width proof play. View room revisits the scene, More holds secondary tools, and ↗ opens the game with your current progress.
+
+Chapter 1 has been shown in a user-provided desktop X screenshot. Chapter 2 has not been published or tested inside X; local browser/iframe checks do not establish client compatibility. See [Chapter 2 readiness](docs/chapter-two-readiness.md).
 
 ## Play locally
 
@@ -15,7 +17,9 @@ npm run dev
 
 Open **http://127.0.0.1:5173/**. The developer server uses only your machine. `/iframe-test.html` shows cross-origin sandboxed 320×245 and 560×315 cards. Sound starts only after pressing the sound button. Chapters lets you jump directly to any available room, view the glossary, adjust volume, or open the full game carrying your progress.
 
-Autosaves use edition-specific localStorage keys. Save / restore provides a portable progress code. Saves are validated by replay and may be unavailable or isolated inside an embed. No account, backend, analytics, runtime Rocq, or audio downloads are required.
+Open `/?chapter=2` to start the workshop, or `/?chapter=2&level=3` to jump to its third station. Existing `#room=D02` links and new `#room=W03` links work too.
+
+Autosaves use edition-specific localStorage keys. Existing Chapter 1 saves and PQ1 codes remain valid in the full edition; chapter access does not require unlocks. Save / restore provides a portable progress code. Saves are validated by replay and may be unavailable or isolated inside an embed. No account, backend, analytics, runtime Rocq, or audio downloads are required.
 
 ## Verify and build
 
@@ -39,10 +43,11 @@ On headless Linux, install `pulseaudio` and `pulseaudio-utils`, then use `bash s
 | `npm run content` | Regenerate authored graphs from recipes; inspect and verify changes |
 | `npm run content:check` | Fail if recipes and checked-in graphs differ |
 | `npm test` | Actual runtime replay, rejection, progress, parser, and script behavior |
-| `npm run test:rocq` | 21 fixtures, all 102 offered edges/46 states, seven exported solutions |
-| `npm run test:mutations` | Seven intentionally broken variants must be rejected |
+| `npm run test:rocq` | 26 fixtures, all 161 offered edges/86 states, thirteen exported solutions |
+| `npm run test:mutations` | Fourteen checks: faulty graph variants rejected and bound/free-variable identity preserved |
 | `npm run check` | Content, type checking, runtime, Rocq, mutations, and all static builds |
 | `npm run test:browser` | Three browser engines, accessibility, audio, compact/iframe flows, static editions |
+| `node scripts/capture-workshop.mjs` | Workshop scene sheets, desktop/mobile/compact controls, and witness-comparison screenshots; requires the dev server |
 | `npm run review` | Scene contact sheets, screenshots, walkthrough video, and seven WAV previews; requires the dev server |
 | `npm run format` | Format owned TypeScript, CSS, HTML, and test sources |
 
@@ -50,11 +55,11 @@ Builds require fresh Rocq evidence for the actual content and covered source fil
 
 | Directory | Contents |
 | --- | --- |
-| `dist/chapter/` | All seven Chapter 1 rooms |
+| `dist/chapter/` | All 13 rooms in Chapters 1–2 |
 | `dist/preview/` | First six rooms, the selected initial public preview |
 | `dist/embed-test/` | One room, neutral “Proof Card” branding and test poster |
 
-Every edition has `index.html`, `embed.html`, an initial-HTML Player Card, and a generated PNG poster. Relative asset URLs work under a repository path. Set `SITE_URL` to the final HTTPS root before building; the default is `https://clarus.github.io/pstack-game-proof/`. For example:
+Every edition has `index.html`, `embed.html`, `chapter-1.html`, an initial-HTML Player Card, and a generated PNG poster. The full `chapter` edition also includes `chapter-2.html` with a distinct workshop title/poster and player URL `embed.html?chapter=2`. Share the chapter HTML page for chapter-specific card metadata; query parameters alone do not change static metadata. Relative asset URLs work under a repository path. Set `SITE_URL` to the final HTTPS root before building; the default is `https://clarus.github.io/pstack-game-proof/`. For example:
 
 ```sh
 SITE_URL=https://clarus.github.io/pstack-game-proof/ npm run build:all
@@ -65,10 +70,10 @@ Open **http://127.0.0.1:4173/** for the built game. `artifacts/build-*.json` lis
 
 ## Source and delivery
 
-- [Design](docs/game-design.md), [roadmap](docs/roadmap.md), and [Chapter 1 readiness](docs/chapter-one-readiness.md).
+- [Design](docs/game-design.md), [roadmap](docs/roadmap.md), and [Chapter 1 readiness](docs/chapter-one-readiness.md), and [Chapter 2 readiness](docs/chapter-two-readiness.md).
 - [Art and audio direction](docs/art-and-audio.md), including provenance and listening checks.
 - [Local skills](docs/skills.md) and [dungeon verification skill](skills/game/verify-dungeon-graphs/SKILL.md).
 - `src/model.ts` follows finite authored edges; `scripts/generate-content.ts` authors them offline. The independent Python adapter checks their meaning in Rocq.
-- `.github/workflows/ci.yml` checks pushes and pull requests. `.github/workflows/pages.yml` publishes only through an explicit manual dispatch, defaulting to the one-room test edition. It has not been dispatched. Hosted headers, crawler access, actual X clients, and beginner/device/listening checks remain release gates.
+- `.github/workflows/ci.yml` checks pushes and pull requests. `.github/workflows/pages.yml` publishes only through an explicit manual dispatch, defaulting to the one-room test edition. Publishing this update requires a new manual dispatch with `profile: chapter`; pushing source alone does not deploy it. Hosted headers, crawler access, actual X clients, and beginner/device/listening checks remain release gates.
 
 Generated builds, browser recordings, WAV previews, dependencies, and Rocq binaries stay untracked. Commit sources, recipes, graphs, tests, skills, lockfile, and reviewed coverage records together.

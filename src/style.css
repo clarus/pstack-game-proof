@@ -382,14 +382,14 @@ h1 {
   display: flex;
   flex-direction: column;
 }
-.proof-columns h3 {
+.proof-columns h2 {
   font-size: 9px;
   letter-spacing: 1px;
   font-weight: 700;
   color: #4e5b43;
   margin: 0 0 12px;
 }
-.proof-columns h3 span {
+.proof-columns h2 span {
   font-family: Georgia, serif;
   font-weight: 400;
   text-transform: none;
@@ -786,11 +786,11 @@ dialog label {
   .fact {
     font-size: 15px;
   }
-  .proof-columns h3 {
+  .proof-columns h2 {
     font-size: 8px;
     letter-spacing: 0.5px;
   }
-  .proof-columns h3 span {
+  .proof-columns h2 span {
     display: none;
   }
   .choices {
@@ -953,13 +953,13 @@ dialog label {
     flex-direction: column;
     min-height: 0;
   }
-  .proof-columns h3 {
+  .proof-columns h2 {
     font-size: 11px;
     letter-spacing: 0;
     margin-bottom: 2px;
     flex-shrink: 0;
   }
-  .proof-columns h3 span {
+  .proof-columns h2 span {
     display: none;
   }
   .context {
@@ -1236,4 +1236,16 @@ dd {
   .shell[data-stage="arrival"] .toolbar {
     display: none;
   }
+}
+
+.parameters {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.parameters strong {
+  display: block;
+  margin-bottom: 4px;
 }

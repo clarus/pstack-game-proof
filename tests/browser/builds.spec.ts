@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { readFileSync, readdirSync } from "node:fs";
 
 for (const [profile, count] of [
-  ["chapter", 7],
+  ["chapter", 13],
   ["preview", 6],
   ["embed-test", 1],
 ] as const) {
@@ -37,7 +37,10 @@ for (const [profile, count] of [
       p.endsWith(".js"),
     )!;
     const bundle = readFileSync(`dist/${profile}/assets/${script}`, "utf8");
-    if (count < 7) expect(bundle).not.toContain("The keeper’s gate");
+    if (count < 7) {
+      expect(bundle).not.toContain("The keeper’s gate");
+      expect(bundle).not.toContain("A rule for everyone");
+    }
     if (count === 1) expect(bundle).not.toContain("Open the toolbox");
   });
 }

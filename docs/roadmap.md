@@ -1,6 +1,6 @@
 # Proof Quest implementation roadmap
 
-Status: Chapter 1 implemented for local/browser review, updated 2 November 2026. See [readiness evidence](chapter-one-readiness.md) for test scope and remaining release gates. The user selected A for Q1–Q9, with an explicit requirement that the proof state remain visible. GitHub Pages is the first hosting candidate for Q10, subject to an actual X embed test. Chapter navigation and persistence are browser-only.
+Status: Chapters 1–2 implemented for local/browser review, updated 3 November 2026. See [Chapter 2 evidence](chapter-two-readiness.md) and [Chapter 1 evidence](chapter-one-readiness.md) for test scope and remaining release gates. The user selected A for Q1–Q9, with an explicit requirement that the proof state remain visible. GitHub Pages is the first hosting candidate for Q10, subject to an actual X embed test. Chapter navigation and persistence are browser-only.
 
 The [game design](game-design.md) owns gameplay and learning goals. This roadmap owns task order, level inventory, production work, testing, and release gates. Fixed decisions: four chapters in sequence, X-first delivery, choice-based interaction, and Rocq only during development and CI. Keep these documents aligned when a decision changes scope.
 
@@ -9,9 +9,10 @@ The [game design](game-design.md) owns gameplay and learning goals. This roadmap
 - [x] Four-chapter design and six-room starting sequence documented.
 - [x] Three pstack verification skills vendored with license, pinned revision, and hashes.
 - [x] Local curriculum and X-delivery skills added.
-- [x] Twenty-one representative Rocq theorems compiled with 9.0.1; invalid-proof and runner mutation checks passed during the design work.
+- [x] Twenty-six representative Rocq theorems compiled with 9.0.1; invalid-proof and runner mutation checks passed during the design work.
 - [x] Seven-room browser game, authored graphs, exhaustive Rocq edge comparison, code-drawn dungeon art, synthesized music/effects, progress codes, static build profiles, and local verification skill.
 - [x] CI and manually dispatched Pages workflows authored; first hosted audio failures reproduced and fixed with virtual output. A user-provided desktop X screenshot shows the embedded game; the full client matrix remains pending.
+- [x] Six workshop stations, typed quantifiers and witnesses, independent Rocq scope checks, workshop art and ending, finite guarantee comparison, compatible saves, and chapter-specific static share pages.
 - [ ] Human learning/listening/device checks, actual hosting response checks, and X-client tests.
 
 The core campaign contains **25 levels: 7 dungeon rooms, 6 workshop stations, 6 railway stations, and 6 observatory stages**. The first public slice is the first six dungeon rooms under the recommended release plan. Core content covers conjunction, disjunction, implication, universal and existential quantification, equality, natural numbers, lists, induction, and a robot invariant. Extra rooms for negation, equivalence, deeper list proofs, and additional invariants are separately tracked below.
@@ -37,7 +38,7 @@ The user’s 2 November desktop X screenshot shows room 2 and one lit lantern, b
 | P1 | One-room local playable slice | P0 | D01 plays locally and in compact browser frames; Rocq, art/audio/bundle sample checked |
 | P2 | Reusable authoring, verification, and presentation systems | P1 | Branching and scoped witness examples checked; CI catches representative faults |
 | P3 | Seven-room local dungeon; six-room public preview later | P2 | Local checks first; beginner and X evidence before public release |
-| P4 | Workshop | Local dungeon | D07 is already implemented; W01–W06 and witness scope checks remain |
+| P4 | Workshop | Local dungeon | W01–W06 implemented; local checks and evidence in Chapter 2 readiness; human/X gates remain |
 | P5 | Induction railway | P4 | N01–N06 complete; induction contexts match Rocq |
 | P6 | Invariant observatory | P5 | O01–O06 complete; reachability proof and simulator conformance checked |
 | P7 | Full-campaign beta and release | P3–P6 | All 25 levels pass release gates; rollback rehearsal succeeds |
@@ -78,7 +79,7 @@ Local V04 evidence covers 320×245, 375×245, 560×315 and a 390×844 phone view
 
 ## P2 — Authoring and shared systems
 
-Completed E01/E02/E06/E07 apply to the restricted Chapter 1 propositional schema. E04 offers inspection of any branch while moves operate on the first goal; it does not implement arbitrary Rocq focus. E05 still needs quantifiers/dependent contexts for Chapter 2. E09 has automatic Continue on load, Next, Chapters, hints, glossary, proof scripts, system reduced-motion preference, and sound controls; later campaign-wide UI remains unfinished. E11 is unnecessary for the current single small chapter bundle; defer asynchronous pack loading until more chapters exist. E13 was evaluated: synchronous replay, history-derived completion, and stale-click guards currently warrant real-code tests and direct Rocq comparison; no TLA+ claim is made.
+Completed E01/E02/E06/E07 cover the authored propositional and first-order schemas for Chapters 1–2. E04 offers inspection of any branch while moves operate on the first goal; it does not implement arbitrary Rocq focus. E05 now checks typed quantifiers, parameters, ordered local contexts and free/bound witness identity; dependent definitions remain unsupported for later work. E09 has automatic Continue on load, Next, Chapters, hints, glossary, proof scripts, system reduced-motion preference, and sound controls; both available chapters are directly navigable; later campaign map work remains. E11 is deferred: both chapters together are about 32 KiB gzipped including every static share page and poster, far below the 150 KiB ceiling. Revisit asynchronous packs when their benefit justifies extra loading states. E13 was evaluated: synchronous replay, history-derived completion, and stale-click guards currently warrant real-code tests and direct Rocq comparison; no TLA+ claim is made.
 
 - [x] E01 Specify the level schema: declarations, theorem, nodes, ordered goals, branch contexts, typed actions, edges, exact tactic mapping, hints, display text, and asset references.
 - [x] E02 Build structural validation for missing references, duplicate IDs, invalid scopes, unreachable authored nodes, unresolved obligations, and terminal-state inconsistencies.
@@ -126,7 +127,7 @@ All propositions below quantify the displayed propositional variables. The first
 | D07 | Finale: `A /\ (B \/ C) -> (A /\ B) \/ (A /\ C)` | Nested branching and transfer question on the two OR rules | Implemented; local checks, human/X gate pending |
 
 - [ ] D08 Test D01–D06 as a continuous first-time session before releasing the preview.
-- [x] D09 Add D07 and the dungeon completion scene; the chapter menu explicitly marks the workshop coming soon.
+- [x] D09 Add D07 and the dungeon completion scene; the chapter menu now opens the implemented workshop and marks Chapters 3–4 coming soon.
 
 Chapter gate: users can explain why an OR hypothesis creates two obligations while an OR goal offers one choice. Verification must catch a missing disjunction branch and premature completion.
 
@@ -152,19 +153,22 @@ Use explicit `T : Type`, predicates into `Prop`, and inhabitants where needed. D
 
 | ID | Level and proof/activity | Production focus | Status |
 | --- | --- | --- | --- |
-| W01 | A rule for everyone: `(forall x : T, P x) -> P a` | Select an in-scope specialization term | Planned |
-| W02 | Pack a certificate: `P a -> exists x : T, P x` | Witness plus matching evidence | Planned |
-| W03 | Open a sealed package: `(exists x : T, P x /\ Q x) -> exists x : T, P x` | Unpack and preserve witness identity | Planned |
-| W04 | Build a general rule: `(forall x : T, P x -> Q x) -> forall x : T, P x -> Q x` | Arbitrary variables and scoped assumptions | Planned |
-| W05 | Open the gate: existence of a key holder plus a universal opening rule implies existence of an opener | Combine witness selection, specialization, and implication | Planned |
-| W06 | Compare guarantees: `(exists y : U, forall x : T, R x y) -> forall x : T, exists y : U, R x y` | One shared witness implies per-input existence; show a finite counterexample to the converse | Planned |
+| W01 | A rule for everyone: `(forall x : T, P x) -> P a` | Select an in-scope specialization term | Implemented locally |
+| W02 | Pack a certificate: `P a -> exists x : T, P x` | Witness plus matching evidence | Implemented locally |
+| W03 | Open a sealed package: `(exists x : T, P x /\ Q x) -> exists x : T, P x` | Unpack and preserve witness identity | Implemented locally |
+| W04 | Build a general rule: `(forall x : T, P x /\ Q x) -> forall x : T, P x` | Arbitrary variables and scoped assumptions | Implemented locally |
+| W05 | Open the gate: existence of a key holder plus a universal opening rule implies existence of an opener | Combine witness selection, specialization, and implication | Implemented locally |
+| W06 | Compare guarantees: `(exists y : U, forall x : T, R x y) -> forall x : T, exists y : U, R x y` | One shared witness implies per-input existence; show a finite counterexample to the converse | Implemented locally |
 
 For W06, use two objects and equality as the finite illustration: each input can choose itself, but one object cannot equal both distinct inputs. Provide the distinctness evidence explicitly. Do not present an unproved converse as a theorem.
 
-- [ ] W07 Add a renamed gate challenge and a workshop-to-railway transition.
-- [ ] W08 Test wrong-person evidence, out-of-scope witnesses, and choosing a concrete input when the goal requires an arbitrary one.
+- [x] W07a Add the workshop-to-railway ending, gated on six actual solved proofs, and a renamed gate Rocq fixture.
+- [ ] W07b Conduct a human renamed-gate transfer challenge; a compiling fixture is not evidence of player learning.
+- [x] W08 Test wrong-person evidence, out-of-scope witnesses, and choosing a concrete input when the goal requires an arbitrary one.
 
 Chapter gate: players distinguish supplying a witness from unpacking one, and a universal input from a convenient example.
+
+Local implementation evidence: six scenes in panoramic and compact forms, completion/undo changes, W06 boolean comparison, scoped-object regression cases, all 59 offered workshop edges checked against Rocq, and existing dungeon histories preserved. D02 music continues across both chapters. `chapter-2.html` provides workshop metadata; `embed.html?chapter=2&level=N` selects a station without a server. See [readiness](chapter-two-readiness.md) for exact commands, measurements and remaining release checks.
 
 ## P5 — Chapter 3 inventory
 
@@ -229,7 +233,7 @@ Selected direction, Q5A: deterministic browser synthesis with short effects and 
 
 - [x] S01 Create an audio style sheet: instrument palette, tempo range, loudness targets, cue meanings, and silence policy. Avoid punishing error sounds.
 - [x] S02 Prototype a small Web Audio synthesizer and sequencer. Compare pulse/wave/noise voices with a simpler tonal implementation; retain the smallest option that meets the chosen style.
-- [ ] S03 Compose a shared motif and chapter arrangements: quiet dungeon pulse, workshop percussion, railway rhythm, observatory atmosphere. Store note sequences and patches in source.
+- [x] S03 Keep the authored motif/score sources; use the user-selected D02 arrangement continuously across Chapters 1–2. Per-chapter arrangements are superseded by the continuity preference.
 - [ ] S04 Generate cues for selection, valid move, unavailable move, new branch, closed goal, hint, undo, and chapter completion. Limit repeated cues during rapid input.
 - [ ] S05 Synchronize optional transitions to musical boundaries and preserve musical position where useful. Music state must not affect deterministic proof replay.
 - [x] S06 Implement explicit user activation, mute and volume controls, suspended-context recovery, background pause, resume, and disposal of scheduled voices. Keep the game fully playable when audio cannot start.
@@ -240,7 +244,7 @@ Selected direction, Q5A: deterministic browser synthesis with short effects and 
 
 Exit: sound works after user activation on supported clients, has no required role in solving puzzles, and does not cause performance or lifecycle regressions.
 
-S03/S04/S05 produced seven authored scores. The later user direction selects the Storeroom/D02 track for every room and edition, preserving playback across navigation instead of changing music. Tonal/noise cues remain. Later chapter arrangements and cross-chapter transitions are pending. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
+S03/S04/S05 produced seven authored scores. The later user direction selects the Storeroom/D02 track for every room and edition, preserving playback across navigation instead of changing music. Tonal/noise cues remain. Per-chapter music changes are superseded by that preference; the implemented workshop keeps the same D02 bus and score. S07 remains physical-device CPU and human listening; offline signal checks do not replace those.
 
 ## Testing and continuous verification workstream
 

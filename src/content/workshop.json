@@ -1,0 +1,2541 @@
+[
+  {
+    "id": "W01",
+    "title": "A rule for everyone",
+    "subtitle": "From every object to this object.",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "P",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "a",
+        "type": "T"
+      },
+      {
+        "name": "b",
+        "type": "T"
+      }
+    ],
+    "theorem": "(forall x : T, P x) -> P a",
+    "lesson": "A universal fact can be used at any in-scope object of its input type. Applying it to a gives P a, not P b.",
+    "story": "The workshop is waking up. This press has a rule for every object. Try it on a: a rule for everyone also covers this one object.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "forall",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              "right": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "a"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "intro Hall.",
+            "label": "Assume the rule",
+            "next": "n1",
+            "feedback": "Introduce the universal rule Hall."
+          }
+        ],
+        "hint": "Introduce the universal rule Hall. (intro Hall.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "a"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "pose proof (Hall a) as Ha.",
+            "label": "Use the rule for a",
+            "next": "n2",
+            "feedback": "Specialize Hall at a and keep the result as Ha."
+          },
+          {
+            "id": "choice1",
+            "tactic": "pose proof (Hall b) as Hb.",
+            "label": "Use the rule for b",
+            "feedback": "That is a valid use of the rule, but it proves P b. The goal asks about a. Undo to follow the guided route.",
+            "next": "alt1_choice1"
+          }
+        ],
+        "hint": "Specialize Hall at a and keep the result as Ha. (pose proof (Hall a) as Ha.)",
+        "complete": false
+      },
+      {
+        "id": "alt1_choice1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Hb",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "b"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "a"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This move is legal, but this guided lesson follows a different route. Inspect the goal and undo.",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Ha",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "a"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "a"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact Hall.",
+            "label": "Use the whole rule",
+            "feedback": "The goal asks for evidence about a. The rule must first be applied to that object.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "exact Ha.",
+            "label": "Use evidence for a",
+            "next": "n3",
+            "feedback": "Ha proves P a exactly."
+          }
+        ],
+        "hint": "Ha proves P a exactly. (exact Ha.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [],
+        "actions": [],
+        "hint": "A universal fact can be used at any in-scope object of its input type. Applying it to a gives P a, not P b.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "W02",
+    "title": "Pack a certificate",
+    "subtitle": "An object and its evidence.",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "P",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "a",
+        "type": "T"
+      },
+      {
+        "name": "b",
+        "type": "T"
+      }
+    ],
+    "theorem": "P a -> exists x : T, P x",
+    "lesson": "To prove that something has a property, choose a witness and then supply evidence about that same object.",
+    "story": "We have evidence about a. Pack a and its matching evidence together. That is enough to promise that something has the property.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "a"
+                ]
+              },
+              "right": {
+                "kind": "exists",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "intro Ha.",
+            "label": "Assume evidence for a",
+            "next": "n1",
+            "feedback": "Keep the given proof of P a as Ha."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Keep the given proof of P a as Ha. (intro Ha.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Ha",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "a"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "x"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "exists a.",
+            "label": "Choose witness a",
+            "next": "n2",
+            "feedback": "We have P a, so choose a as the witness."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exists b.",
+            "label": "Choose witness b",
+            "feedback": "Choosing b is legal, but the evidence is about another object. Compare the remaining goal, then undo.",
+            "next": "alt1_choice1"
+          },
+          {
+            "id": "choice2",
+            "tactic": "exists unseen.",
+            "label": "Choose unseen",
+            "feedback": "That object is not in scope. Choose an available object of type T.",
+            "next": null
+          }
+        ],
+        "hint": "We have P a, so choose a as the witness. (exists a.)",
+        "complete": false
+      },
+      {
+        "id": "alt1_choice1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Ha",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "a"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "b"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This move is legal, but this guided lesson follows a different route. Inspect the goal and undo.",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Ha",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "a"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "a"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "exact Ha.",
+            "label": "Pack its evidence",
+            "next": "n3",
+            "feedback": "The remaining goal is P a, exactly what Ha proves."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "The remaining goal is P a, exactly what Ha proves. (exact Ha.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [],
+        "actions": [],
+        "hint": "To prove that something has a property, choose a witness and then supply evidence about that same object.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "W03",
+    "title": "Open a sealed package",
+    "subtitle": "Keep track of what you discover.",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "P",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "Q",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "a",
+        "type": "T"
+      },
+      {
+        "name": "b",
+        "type": "T"
+      }
+    ],
+    "theorem": "(exists x : T, P x /\\ Q x) -> exists x : T, P x",
+    "lesson": "Unpacking an existential introduces a witness and evidence about it. The witness is discovered, not chosen by you.",
+    "story": "A package contains an unknown object and two facts about it. Open it carefully, keep its identity, and repack only the fact we need.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "exists",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Q",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              "right": {
+                "kind": "exists",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "intro Hpackage.",
+            "label": "Accept the package",
+            "next": "n1",
+            "feedback": "Assume the existential certificate."
+          }
+        ],
+        "hint": "Assume the existential certificate. (intro Hpackage.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hpackage",
+                "type": {
+                  "kind": "exists",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "x"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "destruct Hpackage as [x Hboth].",
+            "label": "Discover its witness",
+            "next": "n2",
+            "feedback": "Unpack a fresh x and its certificate Hboth."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact x.",
+            "label": "Use x before opening",
+            "feedback": "The package's witness is not available until you unpack it.",
+            "next": null
+          }
+        ],
+        "hint": "Unpack a fresh x and its certificate Hboth. (destruct Hpackage as [x Hboth].)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hboth",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Q",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "x"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "destruct Hboth as [HP HQ].",
+            "label": "Unpack both facts",
+            "next": "n3",
+            "feedback": "Hboth contains P x and Q x."
+          }
+        ],
+        "hint": "Hboth contains P x and Q x. (destruct Hboth as [HP HQ].)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "HP",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "HQ",
+                "type": {
+                  "kind": "app",
+                  "name": "Q",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "x"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "exists x.",
+            "label": "Keep witness x",
+            "next": "n4",
+            "feedback": "Repackage the same x, since HP concerns x."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exists b.",
+            "label": "Choose witness b",
+            "feedback": "Choosing b is legal, but the evidence is about another object. Compare the remaining goal, then undo.",
+            "next": "alt3_choice1"
+          }
+        ],
+        "hint": "Repackage the same x, since HP concerns x. (exists x.)",
+        "complete": false
+      },
+      {
+        "id": "alt3_choice1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "HP",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "HQ",
+                "type": {
+                  "kind": "app",
+                  "name": "Q",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "b"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This move is legal, but this guided lesson follows a different route. Inspect the goal and undo.",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "HP",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "HQ",
+                "type": {
+                  "kind": "app",
+                  "name": "Q",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact HQ.",
+            "label": "Use the other property",
+            "feedback": "HQ proves Q x. The goal needs P x, even though the object is the same.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "exact HP.",
+            "label": "Keep the first fact",
+            "next": "n5",
+            "feedback": "HP proves P x; HQ is about the other property."
+          }
+        ],
+        "hint": "HP proves P x; HQ is about the other property. (exact HP.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [],
+        "actions": [],
+        "hint": "Unpacking an existential introduces a witness and evidence about it. The witness is discovered, not chosen by you.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "W04",
+    "title": "Build a general rule",
+    "subtitle": "Any input, not a favorite example.",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "P",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "Q",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "a",
+        "type": "T"
+      },
+      {
+        "name": "b",
+        "type": "T"
+      }
+    ],
+    "theorem": "(forall x : T, P x /\\ Q x) -> forall x : T, P x",
+    "lesson": "To establish a universal goal, introduce an arbitrary object. A proof for a particular a does not establish the claim for every x.",
+    "story": "This engine must work for any input. Take an arbitrary object x, use the two-part certificate for x, and keep its first fact.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "forall",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Q",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              "right": {
+                "kind": "forall",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "intro Hall.",
+            "label": "Assume the general rule",
+            "next": "n1",
+            "feedback": "Hall supplies both properties for every input."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Hall supplies both properties for every input. (intro Hall.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "forall",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "P",
+                "args": [
+                  "x"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact (Hall a).",
+            "label": "Use just the example a",
+            "feedback": "A certificate for a particular a is not a rule for every x.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "intro x.",
+            "label": "Take an arbitrary x",
+            "next": "n2",
+            "feedback": "Introduce an arbitrary x of type T."
+          }
+        ],
+        "hint": "Introduce an arbitrary x of type T. (intro x.)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "pose proof (Hall x) as Hboth.",
+            "label": "Use the rule for x",
+            "next": "n3",
+            "feedback": "Apply Hall to this arbitrary x."
+          },
+          {
+            "id": "choice1",
+            "tactic": "pose proof (Hall a) as Ha.",
+            "label": "Use the rule for a",
+            "feedback": "This is valid evidence about a. Our current goal is about arbitrary x, so undo to follow the guided route.",
+            "next": "alt2_choice1"
+          }
+        ],
+        "hint": "Apply Hall to this arbitrary x. (pose proof (Hall x) as Hboth.)",
+        "complete": false
+      },
+      {
+        "id": "alt2_choice1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Ha",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "a"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Q",
+                    "args": [
+                      "a"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This move is legal, but this guided lesson follows a different route. Inspect the goal and undo.",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hboth",
+                "type": {
+                  "kind": "and",
+                  "left": {
+                    "kind": "app",
+                    "name": "P",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Q",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "destruct Hboth as [HP HQ].",
+            "label": "Unpack x's certificate",
+            "next": "n4",
+            "feedback": "Extract both properties of x."
+          }
+        ],
+        "hint": "Extract both properties of x. (destruct Hboth as [HP HQ].)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "and",
+                    "left": {
+                      "kind": "app",
+                      "name": "P",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Q",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "HP",
+                "type": {
+                  "kind": "app",
+                  "name": "P",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "HQ",
+                "type": {
+                  "kind": "app",
+                  "name": "Q",
+                  "args": [
+                    "x"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "P",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "exact HP.",
+            "label": "Return the first fact",
+            "next": "n5",
+            "feedback": "HP establishes P x for the arbitrary input."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "HP establishes P x for the arbitrary input. (exact HP.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [],
+        "actions": [],
+        "hint": "To establish a universal goal, introduce an arbitrary object. A proof for a particular a does not establish the claim for every x.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "W05",
+    "title": "Open the gate",
+    "subtitle": "The same key holder all the way through.",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "Key",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "Opens",
+        "type": "T -> Prop"
+      },
+      {
+        "name": "a",
+        "type": "T"
+      },
+      {
+        "name": "b",
+        "type": "T"
+      }
+    ],
+    "theorem": "(exists x : T, Key x) -> (forall x : T, Key x -> Opens x) -> exists z : T, Opens z",
+    "lesson": "Unpack the key holder, use the opening rule for that same person, and package the resulting opening evidence.",
+    "story": "Someone carries a key. Our rule says every key holder can open the gate. Find that same person's opening certificate and package it.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "exists",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              "right": {
+                "kind": "implies",
+                "left": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                },
+                "right": {
+                  "kind": "exists",
+                  "variable": "z",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "z"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "intro Hholder.",
+            "label": "Accept a key holder",
+            "next": "n1",
+            "feedback": "Assume someone has a key."
+          }
+        ],
+        "hint": "Assume someone has a key. (intro Hholder.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hholder",
+                "type": {
+                  "kind": "exists",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "forall",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              "right": {
+                "kind": "exists",
+                "variable": "z",
+                "domain": "T",
+                "body": {
+                  "kind": "app",
+                  "name": "Opens",
+                  "args": [
+                    "z"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "intro Hrule.",
+            "label": "Accept the opening rule",
+            "next": "n2",
+            "feedback": "Assume the rule for every key holder."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Assume the rule for every key holder. (intro Hrule.)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hholder",
+                "type": {
+                  "kind": "exists",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "z",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "Opens",
+                "args": [
+                  "z"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "destruct Hholder as [x Hkey].",
+            "label": "Discover the key holder",
+            "next": "n3",
+            "feedback": "Unpack x and the proof Hkey : Key x."
+          }
+        ],
+        "hint": "Unpack x and the proof Hkey : Key x. (destruct Hholder as [x Hkey].)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hkey",
+                "type": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "z",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "Opens",
+                "args": [
+                  "z"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "pose proof (Hrule x) as Hopen.",
+            "label": "Use the rule for x",
+            "next": "n4",
+            "feedback": "Hopen is now Key x → Opens x."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Hopen is now Key x → Opens x. (pose proof (Hrule x) as Hopen.)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hkey",
+                "type": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "Hopen",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "z",
+              "domain": "T",
+              "body": {
+                "kind": "app",
+                "name": "Opens",
+                "args": [
+                  "z"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exists b.",
+            "label": "Choose witness b",
+            "feedback": "Choosing b is legal, but the evidence is about another object. Compare the remaining goal, then undo.",
+            "next": "alt4_choice1"
+          },
+          {
+            "id": "advance",
+            "tactic": "exists x.",
+            "label": "Name x as the opener",
+            "next": "n5",
+            "feedback": "Choose the person whose key we actually have."
+          }
+        ],
+        "hint": "Choose the person whose key we actually have. (exists x.)",
+        "complete": false
+      },
+      {
+        "id": "alt4_choice1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hkey",
+                "type": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "Hopen",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "Opens",
+              "args": [
+                "b"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "hint": "This move is legal, but this guided lesson follows a different route. Inspect the goal and undo.",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hkey",
+                "type": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "Hopen",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "Opens",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "apply Hopen.",
+            "label": "Use x's opening rule",
+            "next": "n6",
+            "feedback": "To establish Opens x, Hopen asks for Key x."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "To establish Opens x, Hopen asks for Key x. (apply Hopen.)",
+        "complete": false
+      },
+      {
+        "id": "n6",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hkey",
+                "type": {
+                  "kind": "app",
+                  "name": "Key",
+                  "args": [
+                    "x"
+                  ]
+                }
+              },
+              {
+                "name": "Hrule",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "implies",
+                    "left": {
+                      "kind": "app",
+                      "name": "Key",
+                      "args": [
+                        "x"
+                      ]
+                    },
+                    "right": {
+                      "kind": "app",
+                      "name": "Opens",
+                      "args": [
+                        "x"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "Hopen",
+                "type": {
+                  "kind": "implies",
+                  "left": {
+                    "kind": "app",
+                    "name": "Key",
+                    "args": [
+                      "x"
+                    ]
+                  },
+                  "right": {
+                    "kind": "app",
+                    "name": "Opens",
+                    "args": [
+                      "x"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "Key",
+              "args": [
+                "x"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "exact Hkey.",
+            "label": "Present x's key",
+            "next": "n7",
+            "feedback": "Hkey supplies the required evidence."
+          }
+        ],
+        "hint": "Hkey supplies the required evidence. (exact Hkey.)",
+        "complete": false
+      },
+      {
+        "id": "n7",
+        "goals": [],
+        "actions": [],
+        "hint": "Unpack the key holder, use the opening rule for that same person, and package the resulting opening evidence.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  },
+  {
+    "id": "W06",
+    "title": "Compare guarantees",
+    "subtitle": "One for everyone, or one for each?",
+    "parameters": [
+      {
+        "name": "T",
+        "type": "Type"
+      },
+      {
+        "name": "U",
+        "type": "Type"
+      },
+      {
+        "name": "R",
+        "type": "T -> U -> Prop"
+      }
+    ],
+    "theorem": "(exists y : U, forall x : T, R x y) -> forall x : T, exists z : U, R x z",
+    "lesson": "One shared witness works for each input. The reverse does not follow: different inputs may require different witnesses.",
+    "story": "One tool works for everyone. Can we issue each customer a suitable tool? Use the shared witness, then check why the reverse promise is different.",
+    "nodes": [
+      {
+        "id": "n0",
+        "goals": [
+          {
+            "context": [],
+            "conclusion": {
+              "kind": "implies",
+              "left": {
+                "kind": "exists",
+                "variable": "y",
+                "domain": "U",
+                "body": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "y"
+                    ]
+                  }
+                }
+              },
+              "right": {
+                "kind": "forall",
+                "variable": "x",
+                "domain": "T",
+                "body": {
+                  "kind": "exists",
+                  "variable": "z",
+                  "domain": "U",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "z"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "intro Hshared.",
+            "label": "Accept a shared tool",
+            "next": "n1",
+            "feedback": "Assume one witness works for every input."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Assume one witness works for every input. (intro Hshared.)",
+        "complete": false
+      },
+      {
+        "id": "n1",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "Hshared",
+                "type": {
+                  "kind": "exists",
+                  "variable": "y",
+                  "domain": "U",
+                  "body": {
+                    "kind": "forall",
+                    "variable": "x",
+                    "domain": "T",
+                    "body": {
+                      "kind": "app",
+                      "name": "R",
+                      "args": [
+                        "x",
+                        "y"
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "forall",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "exists",
+                "variable": "z",
+                "domain": "U",
+                "body": {
+                  "kind": "app",
+                  "name": "R",
+                  "args": [
+                    "x",
+                    "z"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "destruct Hshared as [y Hall].",
+            "label": "Unpack the shared tool",
+            "next": "n2",
+            "feedback": "Discover y : U and Hall, its rule for every x."
+          }
+        ],
+        "hint": "Discover y : U and Hall, its rule for every x. (destruct Hshared as [y Hall].)",
+        "complete": false
+      },
+      {
+        "id": "n2",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "y",
+                "type": {
+                  "kind": "atom",
+                  "name": "U"
+                }
+              },
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "y"
+                    ]
+                  }
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "forall",
+              "variable": "x",
+              "domain": "T",
+              "body": {
+                "kind": "exists",
+                "variable": "z",
+                "domain": "U",
+                "body": {
+                  "kind": "app",
+                  "name": "R",
+                  "args": [
+                    "x",
+                    "z"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "intro x.",
+            "label": "Take any customer x",
+            "next": "n3",
+            "feedback": "Introduce an arbitrary input of type T."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Introduce an arbitrary input of type T. (intro x.)",
+        "complete": false
+      },
+      {
+        "id": "n3",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "y",
+                "type": {
+                  "kind": "atom",
+                  "name": "U"
+                }
+              },
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "y"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "exists",
+              "variable": "z",
+              "domain": "U",
+              "body": {
+                "kind": "app",
+                "name": "R",
+                "args": [
+                  "x",
+                  "z"
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exists x.",
+            "label": "Issue the input x",
+            "feedback": "The witness must have type U. Our input x has type T; these types are not interchangeable.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "exists y.",
+            "label": "Issue the shared tool y",
+            "next": "n4",
+            "feedback": "Choose the witness that already works for everyone."
+          }
+        ],
+        "hint": "Choose the witness that already works for everyone. (exists y.)",
+        "complete": false
+      },
+      {
+        "id": "n4",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "y",
+                "type": {
+                  "kind": "atom",
+                  "name": "U"
+                }
+              },
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "y"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "R",
+              "args": [
+                "x",
+                "y"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "advance",
+            "tactic": "pose proof (Hall x) as Hxy.",
+            "label": "Check this customer's fit",
+            "next": "n5",
+            "feedback": "Hall x gives R x y."
+          },
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          }
+        ],
+        "hint": "Hall x gives R x y. (pose proof (Hall x) as Hxy.)",
+        "complete": false
+      },
+      {
+        "id": "n5",
+        "goals": [
+          {
+            "context": [
+              {
+                "name": "y",
+                "type": {
+                  "kind": "atom",
+                  "name": "U"
+                }
+              },
+              {
+                "name": "Hall",
+                "type": {
+                  "kind": "forall",
+                  "variable": "x",
+                  "domain": "T",
+                  "body": {
+                    "kind": "app",
+                    "name": "R",
+                    "args": [
+                      "x",
+                      "y"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "x",
+                "type": {
+                  "kind": "atom",
+                  "name": "T"
+                }
+              },
+              {
+                "name": "Hxy",
+                "type": {
+                  "kind": "app",
+                  "name": "R",
+                  "args": [
+                    "x",
+                    "y"
+                  ]
+                }
+              }
+            ],
+            "conclusion": {
+              "kind": "app",
+              "name": "R",
+              "args": [
+                "x",
+                "y"
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "choice1",
+            "tactic": "exact missing.",
+            "label": "Use an unseen fact",
+            "feedback": "That fact is not in this context. Use evidence that is actually available.",
+            "next": null
+          },
+          {
+            "id": "advance",
+            "tactic": "exact Hxy.",
+            "label": "Supply the fit certificate",
+            "next": "n6",
+            "feedback": "The same y works for this arbitrary x."
+          }
+        ],
+        "hint": "The same y works for this arbitrary x. (exact Hxy.)",
+        "complete": false
+      },
+      {
+        "id": "n6",
+        "goals": [],
+        "actions": [],
+        "hint": "One shared witness works for each input. The reverse does not follow: different inputs may require different witnesses.",
+        "complete": true
+      }
+    ],
+    "solution": [
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance",
+      "advance"
+    ]
+  }
+]

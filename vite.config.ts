@@ -21,11 +21,19 @@ export default defineConfig(({ mode }) => {
             const levels = JSON.parse(
               readFileSync("src/content/dungeon.json", "utf8"),
             ).slice(0, limit);
+            if (profile === "chapter") {
+              this.addWatchFile(resolve("src/content/workshop.json"));
+              levels.push(
+                ...JSON.parse(
+                  readFileSync("src/content/workshop.json", "utf8"),
+                ),
+              );
+            }
             return `export default ${JSON.stringify(levels)}`;
           }
         },
         handleHotUpdate(ctx) {
-          if (ctx.file.endsWith("/src/content/dungeon.json")) {
+          if (/\/src\/content\/(dungeon|workshop)\.json$/.test(ctx.file)) {
             const mod =
               ctx.server.moduleGraph.getModuleById("\0virtual:levels");
             if (mod) {
